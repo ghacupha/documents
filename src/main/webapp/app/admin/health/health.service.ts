@@ -15,7 +15,7 @@ export type HealthKey =
   | 'diskSpace'
   | 'mail'
   | 'ping'
-  | 'mongo';
+  | 'db';
 
 export interface Health {
   status: HealthStatus;

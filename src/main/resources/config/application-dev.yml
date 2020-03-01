@@ -54,10 +54,26 @@ spring:
       bootstrap-servers: localhost:9092
       key-serializer: org.apache.kafka.common.serialization.StringSerializer
       value-serializer: org.apache.kafka.common.serialization.StringSerializer
-  data:
-    mongodb:
-      uri: mongodb://localhost:27017/?waitQueueMultiple=1000
-      database: documents
+  datasource:
+    type: com.zaxxer.hikari.HikariDataSource
+    url: jdbc:postgresql://localhost:5432/documents
+    username: documents
+    password:
+    hikari:
+      poolName: Hikari
+      auto-commit: false
+  jpa:
+    database-platform: io.github.jhipster.domain.util.FixedPostgreSQL10Dialect
+    show-sql: true
+    properties:
+      hibernate.id.new_generator_mappings: true
+      hibernate.connection.provider_disables_autocommit: true
+      hibernate.cache.use_second_level_cache: false
+      hibernate.cache.use_query_cache: false
+      hibernate.generate_statistics: false
+  liquibase:
+    # Remove 'faker' if you do not want the sample data to be loaded automatically
+    contexts: dev, faker
   mail:
     host: localhost
     port: 25
@@ -78,7 +94,7 @@ spring:
         enabled: true
 
 server:
-  port: 13000
+  port: 8080
 
 # ===================================================================
 # JHipster specific properties
@@ -87,6 +103,14 @@ server:
 # ===================================================================
 
 jhipster:
+  cache: # Cache configuration
+    hazelcast: # Hazelcast distributed cache
+      time-to-live-seconds: 3600
+      backup-count: 1
+      management-center: # Full reference is available at: http://docs.hazelcast.org/docs/management-center/3.9/manual/html/Deploying_and_Starting.html
+        enabled: false
+        update-interval: 3
+        url: http://localhost:8180/hazelcast-mancenter
   # CORS is only enabled by default with the "dev" profile, so BrowserSync can access the API
   cors:
     allowed-origins: '*'
@@ -99,12 +123,12 @@ jhipster:
     authentication:
       jwt:
         # This token must be encoded using Base64 and be at least 256 bits long (you can type `openssl rand -base64 64` on your command line to generate a 512 bits one)
-        base64-secret: ODU1OTlkM2EzMzI5NTk4YmQxNzRjNmRiMTM4ZDk0NmNhY2U2MTEyNzVkYzkxNjM0ZmNlNTI0YzI5MGMxNmEwOTNlM2U3YTBmNjViYjY1ZjlkNzJlY2MzMDI4MmY2N2E3NTljN2MyMDJhMGZkNDlmZmQzZTkyNjgyZjdjNWMxZmQ=
+        base64-secret: MTBlOGViZjkwODkzOTdiZDk4OTc3NWQ1Mzc4YWUyZDAzOTcyOGUzNTc3MmRlOTQ0NDFmZGYwMThhNjU2NmRjNDViODhhZDc5NjE5NGFmOGYyN2RiNjA2ZmUxMTE1NTQ1Zjc4ZjAzMDMyNDYxZWZiOGEwZDZjMjVhYmJhZWUzMjE=
         # Token is valid 24 hours
         token-validity-in-seconds: 86400
         token-validity-in-seconds-for-remember-me: 2592000
   mail: # specific JHipster mail property, for standard properties see MailProperties
-    base-url: http://127.0.0.1:13000
+    base-url: http://127.0.0.1:8080
   metrics:
     logs: # Reports metrics in the logs
       enabled: false

@@ -8,16 +8,15 @@ services:
       - MANAGEMENT_METRICS_EXPORT_PROMETHEUS_ENABLED=true
       - EUREKA_CLIENT_SERVICE_URL_DEFAULTZONE=http://admin:$${jhipster.registry.password}@jhipster-registry:8761/eureka
       - SPRING_CLOUD_CONFIG_URI=http://admin:$${jhipster.registry.password}@jhipster-registry:8761/config
-      - SPRING_DATA_MONGODB_URI=mongodb://documents-mongodb:27017/?waitQueueMultiple=1000
-      - SPRING_DATA_MONGODB_DATABASE=documents
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://documents-postgresql:5432/documents
       - JHIPSTER_SLEEP=30 # gives time for other services to boot before the application
       - KAFKA_BOOTSTRAPSERVERS=kafka:9092
     ports:
-      - 13000:13000
-  documents-mongodb:
+      - 8080:8080
+  documents-postgresql:
     extends:
-      file: mongodb.yml
-      service: documents-mongodb
+      file: postgresql.yml
+      service: documents-postgresql
   kafka:
     extends:
       file: kafka.yml

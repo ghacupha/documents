@@ -7,6 +7,7 @@ import { StateStorageService } from 'app/core/auth/state-storage.service';
 
 import { SERVER_API_URL } from 'app/app.constants';
 import { Account } from 'app/core/user/account.model';
+import { TrackerService } from '../tracker/tracker.service';
 
 @Injectable({ providedIn: 'root' })
 export class AccountService {
@@ -14,7 +15,12 @@ export class AccountService {
   private authenticationState = new ReplaySubject<Account | null>(1);
   private accountCache$?: Observable<Account | null>;
 
-  constructor(private http: HttpClient, private stateStorageService: StateStorageService, private router: Router) {}
+  constructor(
+    private http: HttpClient,
+    private trackerService: TrackerService,
+    private stateStorageService: StateStorageService,
+    private router: Router
+  ) {}
 
   save(account: Account): Observable<{}> {
     return this.http.post(SERVER_API_URL + 'api/account', account);
@@ -23,6 +29,11 @@ export class AccountService {
   authenticate(identity: Account | null): void {
     this.userIdentity = identity;
     this.authenticationState.next(this.userIdentity);
+    if (identity) {
+      this.trackerService.connect();
+    } else {
+      this.trackerService.disconnect();
+    }
   }
 
   hasAnyAuthority(authorities: string[] | string): boolean {

@@ -28,7 +28,7 @@ import { MockEventManager } from './helpers/mock-event-manager.service';
     },
     {
       provide: ActivatedRoute,
-      useValue: new MockActivatedRoute({ id: '123' })
+      useValue: new MockActivatedRoute({ id: 123 })
     },
     {
       provide: Router,

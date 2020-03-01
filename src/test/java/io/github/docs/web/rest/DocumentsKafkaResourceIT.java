@@ -10,7 +10,9 @@ import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.http.MediaType;
-import org.springframework.test.web.reactive.server.WebTestClient;
+import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.MvcResult;
+import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.testcontainers.containers.KafkaContainer;
 
 import java.time.Duration;
@@ -19,13 +21,17 @@ import java.util.HashMap;
 import java.util.Map;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.fail;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 class DocumentsKafkaResourceIT {
 
     private static boolean started = false;
     private static KafkaContainer kafkaContainer;
 
-    private WebTestClient client;
+    private MockMvc restMockMvc;
 
     @BeforeAll
     static void startServer() {
@@ -52,15 +58,14 @@ class DocumentsKafkaResourceIT {
 
         DocumentsKafkaResource kafkaResource = new DocumentsKafkaResource(kafkaProperties);
 
-        client = WebTestClient.bindToController(kafkaResource).build();
+        restMockMvc = MockMvcBuilders.standaloneSetup(kafkaResource).build();
     }
 
     @Test
-    void producesMessages() {
-        client.post().uri("/api/jhipster-kafka/publish/topic-produce?message=value-produce")
-            .exchange()
-            .expectStatus().isOk()
-            .expectHeader().contentType(MediaType.APPLICATION_JSON);
+    void producesMessages() throws Exception {
+        restMockMvc.perform(post("/api/documents-kafka/publish/topic-produce?message=value-produce"))
+            .andExpect(status().isOk())
+            .andExpect(content().contentType(MediaType.APPLICATION_JSON));
 
         Map<String, Object> consumerProps = new HashMap<>(getConsumerProps("group-produce"));
         KafkaConsumer<String, String> consumer = new KafkaConsumer<>(consumerProps);
@@ -73,21 +78,25 @@ class DocumentsKafkaResourceIT {
     }
 
     @Test
-    void consumesMessages() {
+    void consumesMessages() throws Exception {
         Map<String, Object> producerProps = new HashMap<>(getProducerProps());
         KafkaProducer<String, String> producer = new KafkaProducer<>(producerProps);
 
         producer.send(new ProducerRecord<>("topic-consume", "value-consume"));
 
-        String value = client.get().uri("/api/jhipster-kafka/consume?topic=topic-consume")
-            .accept(MediaType.TEXT_EVENT_STREAM)
-            .exchange()
-            .expectStatus().isOk()
-            .expectHeader().contentTypeCompatibleWith(MediaType.TEXT_EVENT_STREAM)
-            .returnResult(String.class)
-            .getResponseBody().blockFirst(Duration.ofSeconds(10));
+        MvcResult mvcResult = restMockMvc.perform(get("/api/documents-kafka/consume?topic=topic-consume"))
+            .andExpect(status().isOk())
+            .andExpect(request().asyncStarted())
+            .andReturn();
 
-        assertThat(value).isEqualTo("value-consume");
+        for (int i = 0; i < 100; i++) {
+            Thread.sleep(100);
+            String content = mvcResult.getResponse().getContentAsString();
+            if (content.contains("data:value-consume")) {
+                return;
+            }
+        }
+        fail("Expected content data:value-consume not received");
     }
 
     private Map<String, String> getProducerProps() {

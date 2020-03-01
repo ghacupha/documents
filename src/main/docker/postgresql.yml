@@ -1,0 +1,11 @@
+version: '2'
+services:
+  documents-postgresql:
+    image: postgres:12.1
+    # volumes:
+    #     - ~/volumes/jhipster/documents/postgresql/:/var/lib/postgresql/data/
+    environment:
+      - POSTGRES_USER=documents
+      - POSTGRES_PASSWORD=
+    ports:
+      - 5432:5432
