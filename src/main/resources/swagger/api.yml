@@ -5,9 +5,9 @@ info:
   title: 'documents'
   version: 0.0.1
 servers:
-  - url: http://localhost:8080/api
+  - url: http://localhost:13000/api
     description: Development server
-  - url: https://localhost:8080/api
+  - url: https://localhost:13000/api
     description: Development server with TLS Profile
 paths: {}
 components:

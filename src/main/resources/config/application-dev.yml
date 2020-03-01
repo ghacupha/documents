@@ -56,9 +56,9 @@ spring:
       value-serializer: org.apache.kafka.common.serialization.StringSerializer
   datasource:
     type: com.zaxxer.hikari.HikariDataSource
-    url: jdbc:postgresql://localhost:5432/documents
-    username: documents
-    password:
+    url: jdbc:postgresql://localhost:13001/documents
+    username: ${PG_DATABASE_DEV_USER}
+    password: ${PG_DATABASE_DEV_PASSWORD}
     hikari:
       poolName: Hikari
       auto-commit: false
@@ -94,7 +94,7 @@ spring:
         enabled: true
 
 server:
-  port: 8080
+  port: 13000
 
 # ===================================================================
 # JHipster specific properties
@@ -128,7 +128,7 @@ jhipster:
         token-validity-in-seconds: 86400
         token-validity-in-seconds-for-remember-me: 2592000
   mail: # specific JHipster mail property, for standard properties see MailProperties
-    base-url: http://127.0.0.1:8080
+    base-url: http://127.0.0.1:13000
   metrics:
     logs: # Reports metrics in the logs
       enabled: false

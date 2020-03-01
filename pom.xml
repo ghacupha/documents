@@ -39,6 +39,8 @@
         <profile.swagger />
         <profile.tls />
 
+        <docker.image.prefix>ghacupha</docker.image.prefix>
+
         <!-- Dependency versions -->
         <jhipster-dependencies.version>3.4.0</jhipster-dependencies.version>
         <!-- The spring-boot version should match the one managed by
@@ -648,7 +650,7 @@
                             <image>adoptopenjdk:11-jre-hotspot</image>
                         </from>
                         <to>
-                            <image>documents:latest</image>
+                            <image>${docker.image.prefix}/${project.artifactId}:${project.version}</image>
                         </to>
                         <container>
                             <entrypoint>
@@ -657,7 +659,7 @@
                                 <arg>chmod +x /entrypoint.sh &amp;&amp; sync &amp;&amp; /entrypoint.sh</arg>
                             </entrypoint>
                             <ports>
-                                <port>8080</port>
+                                <port>13000</port>
                                 <port>5701/udp</port>
                             </ports>
                             <environment>
@@ -676,10 +678,10 @@
                         <changeLogFile>${project.basedir}/src/main/resources/config/liquibase/master.xml</changeLogFile>
                         <diffChangeLogFile>${project.basedir}/src/main/resources/config/liquibase/changelog/${maven.build.timestamp}_changelog.xml</diffChangeLogFile>
                         <driver>org.postgresql.Driver</driver>
-                        <url>jdbc:postgresql://localhost:5432/documents</url>
+                        <url>jdbc:postgresql://localhost:13001/documents</url>
                         <defaultSchemaName></defaultSchemaName>
-                        <username>documents</username>
-                        <password></password>
+                        <username>${env.PG_DATABASE_DEV_USER}</username>
+                        <password>${env.PG_DATABASE_DEV_PASSWORD}</password>
                         <referenceUrl>hibernate:spring:io.github.docs.domain?dialect=io.github.jhipster.domain.util.FixedPostgreSQL10Dialect&amp;hibernate.physical_naming_strategy=org.springframework.boot.orm.jpa.hibernate.SpringPhysicalNamingStrategy&amp;hibernate.implicit_naming_strategy=org.springframework.boot.orm.jpa.hibernate.SpringImplicitNamingStrategy</referenceUrl>
                         <verbose>true</verbose>
                         <logging>debug</logging>

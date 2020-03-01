@@ -8,7 +8,7 @@
     "baseName": "documents",
     "packageName": "io.github.docs",
     "packageFolder": "io/github/docs",
-    "serverPort": "8080",
+    "serverPort": "13000",
     "authenticationType": "jwt",
     "cacheProvider": "hazelcast",
     "enableHibernateCache": false,
