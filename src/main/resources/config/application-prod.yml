@@ -58,7 +58,7 @@ spring:
       poolName: Hikari
       auto-commit: false
   jpa:
-    database-platform: io.github.jhipster.domain.util.FixedPostgreSQL10Dialect
+    database-platform: io.github.jhipster.domain.util.FixedPostgreSQL95Dialect
     show-sql: false
     properties:
       hibernate.id.new_generator_mappings: true

@@ -1,0 +1,91 @@
+<?xml version="1.1" encoding="UTF-8" standalone="no"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog" xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.6.xsd">
+    <changeSet author="edwin (generated)" id="1583092977942-1">
+        <createSequence sequenceName="sequence_generator"/>
+    </changeSet>
+    <changeSet author="edwin (generated)" id="1583092977942-2">
+        <createTable tableName="gha_authority">
+            <column name="name" type="VARCHAR(50)">
+                <constraints primaryKey="true" primaryKeyName="gha_authorityPK"/>
+            </column>
+        </createTable>
+    </changeSet>
+    <changeSet author="edwin (generated)" id="1583092977942-3">
+        <createTable tableName="gha_persistent_audit_event">
+            <column autoIncrement="true" name="event_id" type="BIGINT">
+                <constraints primaryKey="true" primaryKeyName="gha_persistent_audit_eventPK"/>
+            </column>
+            <column name="event_date" type="TIMESTAMP WITHOUT TIME ZONE"/>
+            <column name="event_type" type="VARCHAR(255)"/>
+            <column name="principal" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+    <changeSet author="edwin (generated)" id="1583092977942-4">
+        <createTable tableName="gha_persistent_audit_evt_data">
+            <column name="event_id" type="BIGINT">
+                <constraints primaryKey="true"/>
+            </column>
+            <column name="value" type="VARCHAR(255)"/>
+            <column name="name" type="VARCHAR(255)">
+                <constraints primaryKey="true"/>
+            </column>
+        </createTable>
+    </changeSet>
+    <changeSet author="edwin (generated)" id="1583092977942-5">
+        <createTable tableName="gha_user">
+            <column autoIncrement="true" name="id" type="BIGINT">
+                <constraints primaryKey="true" primaryKeyName="gha_userPK"/>
+            </column>
+            <column name="created_by" type="VARCHAR(50)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="created_date" type="TIMESTAMP WITHOUT TIME ZONE"/>
+            <column name="last_modified_by" type="VARCHAR(50)"/>
+            <column name="last_modified_date" type="TIMESTAMP WITHOUT TIME ZONE"/>
+            <column name="activated" type="BOOLEAN">
+                <constraints nullable="false"/>
+            </column>
+            <column name="activation_key" type="VARCHAR(20)"/>
+            <column name="email" type="VARCHAR(254)"/>
+            <column name="first_name" type="VARCHAR(50)"/>
+            <column name="image_url" type="VARCHAR(256)"/>
+            <column name="lang_key" type="VARCHAR(10)"/>
+            <column name="last_name" type="VARCHAR(50)"/>
+            <column name="login" type="VARCHAR(50)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="password_hash" type="VARCHAR(60)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="reset_date" type="TIMESTAMP WITHOUT TIME ZONE"/>
+            <column name="reset_key" type="VARCHAR(20)"/>
+        </createTable>
+    </changeSet>
+    <changeSet author="edwin (generated)" id="1583092977942-6">
+        <createTable tableName="gha_user_authority">
+            <column name="user_id" type="BIGINT">
+                <constraints primaryKey="true"/>
+            </column>
+            <column name="authority_name" type="VARCHAR(50)">
+                <constraints primaryKey="true"/>
+            </column>
+        </createTable>
+    </changeSet>
+    <changeSet author="edwin (generated)" id="1583092977942-7">
+        <addUniqueConstraint columnNames="email" constraintName="UC_GHA_USEREMAIL_COL" tableName="gha_user"/>
+    </changeSet>
+    <changeSet author="edwin (generated)" id="1583092977942-8">
+        <addUniqueConstraint columnNames="login" constraintName="UC_GHA_USERLOGIN_COL" tableName="gha_user"/>
+    </changeSet>
+    <changeSet author="edwin (generated)" id="1583092977942-9">
+        <addForeignKeyConstraint baseColumnNames="authority_name" baseTableName="gha_user_authority" constraintName="FK7vpii2smu77en3hw0ypiknl4r" deferrable="false" initiallyDeferred="false" referencedColumnNames="name" referencedTableName="gha_authority" validate="true"/>
+    </changeSet>
+    <changeSet author="edwin (generated)" id="1583092977942-10">
+        <addForeignKeyConstraint baseColumnNames="event_id" baseTableName="gha_persistent_audit_evt_data" constraintName="FKj4lrxuk5snmvbbk82tjs767r0" deferrable="false" initiallyDeferred="false" referencedColumnNames="event_id" referencedTableName="gha_persistent_audit_event" validate="true"/>
+    </changeSet>
+    <changeSet author="edwin (generated)" id="1583092977942-11">
+        <addForeignKeyConstraint baseColumnNames="user_id" baseTableName="gha_user_authority" constraintName="FKm0rqfeneuk5xl48iyj1hcp7p3" deferrable="false" initiallyDeferred="false" referencedColumnNames="id" referencedTableName="gha_user" validate="true"/>
+    </changeSet>
+</databaseChangeLog>
