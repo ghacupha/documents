@@ -1,0 +1,41 @@
+{
+  "generator-jhipster": {
+    "promptValues": {
+      "packageName": "io.github.docs"
+    },
+    "jhipsterVersion": "6.7.1",
+    "applicationType": "monolith",
+    "baseName": "documents",
+    "packageName": "io.github.docs",
+    "packageFolder": "io/github/docs",
+    "serverPort": "13000",
+    "authenticationType": "jwt",
+    "cacheProvider": "no",
+    "enableHibernateCache": false,
+    "websocket": false,
+    "databaseType": "mongodb",
+    "devDatabaseType": "mongodb",
+    "prodDatabaseType": "mongodb",
+    "searchEngine": false,
+    "messageBroker": "kafka",
+    "serviceDiscoveryType": "eureka",
+    "buildTool": "maven",
+    "enableSwaggerCodegen": true,
+    "jwtSecretKey": "ODU1OTlkM2EzMzI5NTk4YmQxNzRjNmRiMTM4ZDk0NmNhY2U2MTEyNzVkYzkxNjM0ZmNlNTI0YzI5MGMxNmEwOTNlM2U3YTBmNjViYjY1ZjlkNzJlY2MzMDI4MmY2N2E3NTljN2MyMDJhMGZkNDlmZmQzZTkyNjgyZjdjNWMxZmQ=",
+    "embeddableLaunchScript": false,
+    "useSass": true,
+    "clientPackageManager": "npm",
+    "clientFramework": "angularX",
+    "clientTheme": "journal",
+    "clientThemeVariant": "dark",
+    "creationTimestamp": 1583045152140,
+    "testFrameworks": ["gatling", "cucumber", "protractor"],
+    "jhiPrefix": "gha",
+    "entitySuffix": "",
+    "dtoSuffix": "DTO",
+    "otherModules": [],
+    "enableTranslation": false,
+    "blueprints": [],
+    "reactive": true
+  }
+}
