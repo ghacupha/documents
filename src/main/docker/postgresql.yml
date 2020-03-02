@@ -3,7 +3,7 @@ services:
   documents-postgresql:
     image: postgres:12.1
     volumes:
-      - ~/volumes/documents/documents/postgresql/:/var/lib/documents/data/
+      - ~/volumes/jhipster/documentsApp/postgresql/:/var/lib/documentsApp/data/
     environment:
       - POSTGRES_USER=${PG_DATABASE_DEV_USER}
       - POSTGRES_PASSWORD=${PG_DATABASE_DEV_PASSWORD}
