@@ -161,10 +161,10 @@ jhipster:
     description: documents API documentation
     version: 0.0.1
     terms-of-service-url:
-    contact-name:
+    contact-name: Edwin Njeru
     contact-url:
-    contact-email:
-    license:
+    contact-email: mailnjeru@gmail.com
+    license: GPLv3
     license-url:
 kafka:
   bootstrap-servers: localhost:9092
