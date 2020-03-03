@@ -157,15 +157,15 @@ jhipster:
     from: documents@localhost
   swagger:
     default-include-pattern: /api/.*
-    title: documents API
-    description: documents API documentation
+    title: Documents API
+    description: Documents API documentation
     version: 0.0.1
     terms-of-service-url:
     contact-name: Edwin Njeru
     contact-url:
     contact-email: mailnjeru@gmail.com
     license: GPLv3
-    license-url:
+    license-url: https://www.gnu.org/licenses/gpl-3.0.txt
 kafka:
   bootstrap-servers: localhost:9092
   consumer:
