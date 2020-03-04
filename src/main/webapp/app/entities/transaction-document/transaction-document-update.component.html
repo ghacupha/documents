@@ -1,0 +1,139 @@
+<div class="row justify-content-center">
+    <div class="col-8">
+        <form name="editForm" role="form" novalidate (ngSubmit)="save()" [formGroup]="editForm">
+            <h2 id="gha-transaction-document-heading">Create or edit a Transaction Document</h2>
+
+            <div>
+                <gha-alert-error></gha-alert-error>
+
+                <div class="form-group" [hidden]="!editForm.get('id')!.value">
+                    <label for="id">ID</label>
+                    <input type="text" class="form-control" id="id" name="id" formControlName="id" readonly />
+                </div>
+
+                <div class="form-group">
+                    <label class="form-control-label" for="field_transactionNumber">Transaction Number</label>
+                    <input type="text" class="form-control" name="transactionNumber" id="field_transactionNumber"
+                           formControlName="transactionNumber"/>
+                    <div *ngIf="editForm.get('transactionNumber')!.invalid && (editForm.get('transactionNumber')!.dirty || editForm.get('transactionNumber')!.touched)">
+                        <small class="form-text text-danger"
+                               *ngIf="editForm.get('transactionNumber')?.errors?.required">
+                        This field is required.
+                        </small>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-control-label" for="field_transactionDate">Transaction Date</label>
+                    <div class="input-group">
+                        <input id="field_transactionDate" type="text" class="form-control" name="transactionDate" ngbDatepicker #transactionDateDp="ngbDatepicker" formControlName="transactionDate"/>
+                        <span class="input-group-append">
+                            <button type="button" class="btn btn-secondary" (click)="transactionDateDp.toggle()"><fa-icon icon="calendar-alt"></fa-icon></button>
+                        </span>
+                    </div>
+                    <div *ngIf="editForm.get('transactionDate')!.invalid && (editForm.get('transactionDate')!.dirty || editForm.get('transactionDate')!.touched)">
+                        <small class="form-text text-danger"
+                               *ngIf="editForm.get('transactionDate')?.errors?.required">
+                        This field is required.
+                        </small>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-control-label" for="field_briefDescription">Brief Description</label>
+                    <input type="text" class="form-control" name="briefDescription" id="field_briefDescription"
+                           formControlName="briefDescription"/>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-control-label" for="field_justification">Justification</label>
+                    <input type="text" class="form-control" name="justification" id="field_justification"
+                           formControlName="justification"/>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-control-label" for="field_transactionAmount">Transaction Amount</label>
+                    <input type="number" class="form-control" name="transactionAmount" id="field_transactionAmount"
+                           formControlName="transactionAmount"/>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-control-label" for="field_payeeName">Payee Name</label>
+                    <input type="text" class="form-control" name="payeeName" id="field_payeeName"
+                           formControlName="payeeName"/>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-control-label" for="field_invoiceNumber">Invoice Number</label>
+                    <input type="text" class="form-control" name="invoiceNumber" id="field_invoiceNumber"
+                           formControlName="invoiceNumber"/>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-control-label" for="field_lpoNumber">Lpo Number</label>
+                    <input type="text" class="form-control" name="lpoNumber" id="field_lpoNumber"
+                           formControlName="lpoNumber"/>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-control-label" for="field_debitNoteNumber">Debit Note Number</label>
+                    <input type="text" class="form-control" name="debitNoteNumber" id="field_debitNoteNumber"
+                           formControlName="debitNoteNumber"/>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-control-label" for="field_logisticReferenceNumber">Logistic Reference Number</label>
+                    <input type="text" class="form-control" name="logisticReferenceNumber" id="field_logisticReferenceNumber"
+                           formControlName="logisticReferenceNumber"/>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-control-label" for="field_memoNumber">Memo Number</label>
+                    <input type="text" class="form-control" name="memoNumber" id="field_memoNumber"
+                           formControlName="memoNumber"/>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-control-label" for="field_documentStandardNumber">Document Standard Number</label>
+                    <input type="text" class="form-control" name="documentStandardNumber" id="field_documentStandardNumber"
+                           formControlName="documentStandardNumber"/>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-control-label" for="field_transactionAttachment">Transaction Attachment</label>
+                    <div>
+                        <div *ngIf="editForm.get('transactionAttachment')!.value" class="form-text text-danger clearfix">
+                            <a class="pull-left" (click)="openFile(editForm.get('transactionAttachmentContentType')!.value, editForm.get('transactionAttachment')!.value)">open</a><br>
+                            <span class="pull-left">{{ editForm.get('transactionAttachmentContentType')!.value }}, {{ byteSize(editForm.get('transactionAttachment')!.value) }}</span>
+                            <button type="button" (click)="editForm.patchValue({transactionAttachment: null});editForm.patchValue({transactionAttachmentContentType: null});"
+                                    class="btn btn-secondary btn-xs pull-right">
+                                <fa-icon icon="times"></fa-icon>
+                            </button>
+                        </div>
+                        <input type="file" id="file_transactionAttachment" (change)="setFileData($event, 'transactionAttachment', false)"/>
+                    </div>
+                    <input type="hidden" class="form-control" name="transactionAttachment" id="field_transactionAttachment"
+                           formControlName="transactionAttachment"/>
+                    <input type="hidden" class="form-control" name="transactionAttachmentContentType" id="field_transactionAttachmentContentType"
+                           formControlName="transactionAttachmentContentType" />
+                    <div *ngIf="editForm.get('transactionAttachment')!.invalid && (editForm.get('transactionAttachment')!.dirty || editForm.get('transactionAttachment')!.touched)">
+                        <small class="form-text text-danger"
+                               *ngIf="editForm.get('transactionAttachment')?.errors?.required">
+                        This field is required.
+                        </small>
+                    </div>
+                </div>
+            </div>
+
+            <div>
+                <button type="button" id="cancel-save" class="btn btn-secondary" (click)="previousState()">
+                    <fa-icon icon="ban"></fa-icon>&nbsp;<span>Cancel</span>
+                </button>
+
+                <button type="submit" id="save-entity" [disabled]="editForm.invalid || isSaving" class="btn btn-primary">
+                    <fa-icon icon="save"></fa-icon>&nbsp;<span>Save</span>
+                </button>
+            </div>
+        </form>
+    </div>
+</div>

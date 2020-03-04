@@ -29,6 +29,13 @@ public interface UserProfileService {
     Page<UserProfileDTO> findAll(Pageable pageable);
 
     /**
+     * Get all the userProfiles with eager load of many-to-many relationships.
+     *
+     * @return the list of entities.
+     */
+    Page<UserProfileDTO> findAllWithEagerRelationships(Pageable pageable);
+
+    /**
      * Get the "id" userProfile.
      *
      * @param id the id of the entity.

@@ -38,6 +38,13 @@
                         <option [ngValue]="departmentOption.id" *ngFor="let departmentOption of departments; trackBy: trackById">{{ departmentOption.departmentNumber }}</option>
                     </select>
                 </div>
+
+                <div class="form-group">
+                    <label for="field_transactionDocuments">Transaction Documents</label>
+                    <select class="form-control" id="field_transactionDocuments" multiple name="transactionDocuments" formControlName="transactionDocuments">
+                        <option [ngValue]="getSelected(editForm.get('transactionDocuments')!.value, transactionDocumentOption)" *ngFor="let transactionDocumentOption of transactiondocuments; trackBy: trackById">{{ transactionDocumentOption.documentStandardNumber }}</option>
+                    </select>
+                </div>
             </div>
 
             <div>

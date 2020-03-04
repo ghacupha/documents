@@ -11,6 +11,10 @@ import { RouterModule } from '@angular/router';
       {
         path: 'user-profile',
         loadChildren: () => import('./user-profile/user-profile.module').then(m => m.DocumentsUserProfileModule)
+      },
+      {
+        path: 'transaction-document',
+        loadChildren: () => import('./transaction-document/transaction-document.module').then(m => m.DocumentsTransactionDocumentModule)
       }
       /* jhipster-needle-add-entity-route - JHipster will add entity modules routes here */
     ])

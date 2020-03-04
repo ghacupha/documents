@@ -27,6 +27,17 @@
 
     <changeSet id="20200303182903-1-relations" author="jhipster">
 
+        <createTable tableName="user_profile_transaction_documents">
+            <column name="transaction_documents_id" type="bigint">
+                <constraints nullable="false"/>
+            </column>
+            <column name="user_profile_id" type="bigint">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+
+        <addPrimaryKey columnNames="user_profile_id, transaction_documents_id" tableName="user_profile_transaction_documents"/>
+        
     </changeSet>
     <!-- jhipster-needle-liquibase-add-changeset - JHipster will add changesets here, do not remove-->
 

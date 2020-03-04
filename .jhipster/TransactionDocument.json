@@ -62,12 +62,16 @@
             "fieldType": "String"
         },
         {
-            "fieldName": "documentAttachment",
+            "fieldName": "documentStandardNumber",
             "fieldType": "String"
         },
         {
-            "fieldName": "documentStandardNumber",
-            "fieldType": "String"
+            "fieldName": "transactionAttachment",
+            "fieldType": "byte[]",
+            "fieldTypeBlobContent": "any",
+            "fieldValidateRules": [
+                "required"
+            ]
         }
     ],
     "changelogDate": "20200304064736",

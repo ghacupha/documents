@@ -11,8 +11,10 @@ import { IUser } from 'app/core/user/user.model';
 import { UserService } from 'app/core/user/user.service';
 import { IDepartment } from 'app/shared/model/department.model';
 import { DepartmentService } from 'app/entities/department/department.service';
+import { ITransactionDocument } from 'app/shared/model/transaction-document.model';
+import { TransactionDocumentService } from 'app/entities/transaction-document/transaction-document.service';
 
-type SelectableEntity = IUser | IDepartment;
+type SelectableEntity = IUser | IDepartment | ITransactionDocument;
 
 @Component({
   selector: 'gha-user-profile-update',
@@ -22,18 +24,21 @@ export class UserProfileUpdateComponent implements OnInit {
   isSaving = false;
   users: IUser[] = [];
   departments: IDepartment[] = [];
+  transactiondocuments: ITransactionDocument[] = [];
 
   editForm = this.fb.group({
     id: [],
     staffNumber: [],
     userId: [null, Validators.required],
-    departmentId: []
+    departmentId: [],
+    transactionDocuments: []
   });
 
   constructor(
     protected userProfileService: UserProfileService,
     protected userService: UserService,
     protected departmentService: DepartmentService,
+    protected transactionDocumentService: TransactionDocumentService,
     protected activatedRoute: ActivatedRoute,
     private fb: FormBuilder
   ) {}
@@ -45,6 +50,10 @@ export class UserProfileUpdateComponent implements OnInit {
       this.userService.query().subscribe((res: HttpResponse<IUser[]>) => (this.users = res.body || []));
 
       this.departmentService.query().subscribe((res: HttpResponse<IDepartment[]>) => (this.departments = res.body || []));
+
+      this.transactionDocumentService
+        .query()
+        .subscribe((res: HttpResponse<ITransactionDocument[]>) => (this.transactiondocuments = res.body || []));
     });
   }
 
@@ -53,7 +62,8 @@ export class UserProfileUpdateComponent implements OnInit {
       id: userProfile.id,
       staffNumber: userProfile.staffNumber,
       userId: userProfile.userId,
-      departmentId: userProfile.departmentId
+      departmentId: userProfile.departmentId,
+      transactionDocuments: userProfile.transactionDocuments
     });
   }
 
@@ -77,7 +87,8 @@ export class UserProfileUpdateComponent implements OnInit {
       id: this.editForm.get(['id'])!.value,
       staffNumber: this.editForm.get(['staffNumber'])!.value,
       userId: this.editForm.get(['userId'])!.value,
-      departmentId: this.editForm.get(['departmentId'])!.value
+      departmentId: this.editForm.get(['departmentId'])!.value,
+      transactionDocuments: this.editForm.get(['transactionDocuments'])!.value
     };
   }
 
@@ -99,5 +110,16 @@ export class UserProfileUpdateComponent implements OnInit {
 
   trackById(index: number, item: SelectableEntity): any {
     return item.id;
+  }
+
+  getSelected(selectedVals: ITransactionDocument[], option: ITransactionDocument): ITransactionDocument {
+    if (selectedVals) {
+      for (let i = 0; i < selectedVals.length; i++) {
+        if (option.id === selectedVals[i].id) {
+          return selectedVals[i];
+        }
+      }
+    }
+    return option;
   }
 }

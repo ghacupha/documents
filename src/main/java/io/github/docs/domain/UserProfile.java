@@ -6,6 +6,8 @@ import javax.persistence.*;
 import javax.validation.constraints.*;
 
 import java.io.Serializable;
+import java.util.HashSet;
+import java.util.Set;
 
 /**
  * A UserProfile.
@@ -32,6 +34,12 @@ public class UserProfile implements Serializable {
     @ManyToOne
     @JsonIgnoreProperties("userProfiles")
     private Department department;
+
+    @ManyToMany
+    @JoinTable(name = "user_profile_transaction_documents",
+               joinColumns = @JoinColumn(name = "user_profile_id", referencedColumnName = "id"),
+               inverseJoinColumns = @JoinColumn(name = "transaction_documents_id", referencedColumnName = "id"))
+    private Set<TransactionDocument> transactionDocuments = new HashSet<>();
 
     // jhipster-needle-entity-add-field - JHipster will add fields here, do not remove
     public Long getId() {
@@ -79,6 +87,31 @@ public class UserProfile implements Serializable {
 
     public void setDepartment(Department department) {
         this.department = department;
+    }
+
+    public Set<TransactionDocument> getTransactionDocuments() {
+        return transactionDocuments;
+    }
+
+    public UserProfile transactionDocuments(Set<TransactionDocument> transactionDocuments) {
+        this.transactionDocuments = transactionDocuments;
+        return this;
+    }
+
+    public UserProfile addTransactionDocuments(TransactionDocument transactionDocument) {
+        this.transactionDocuments.add(transactionDocument);
+        transactionDocument.getDocumentOwners().add(this);
+        return this;
+    }
+
+    public UserProfile removeTransactionDocuments(TransactionDocument transactionDocument) {
+        this.transactionDocuments.remove(transactionDocument);
+        transactionDocument.getDocumentOwners().remove(this);
+        return this;
+    }
+
+    public void setTransactionDocuments(Set<TransactionDocument> transactionDocuments) {
+        this.transactionDocuments = transactionDocuments;
     }
     // jhipster-needle-entity-add-getters-setters - JHipster will add getters and setters here, do not remove
 

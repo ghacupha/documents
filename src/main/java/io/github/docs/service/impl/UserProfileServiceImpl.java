@@ -68,6 +68,15 @@ public class UserProfileServiceImpl implements UserProfileService {
     }
 
     /**
+     * Get all the userProfiles with eager load of many-to-many relationships.
+     *
+     * @return the list of entities.
+     */
+    public Page<UserProfileDTO> findAllWithEagerRelationships(Pageable pageable) {
+        return userProfileRepository.findAllWithEagerRelationships(pageable).map(userProfileMapper::toDto);
+    }
+
+    /**
      * Get one userProfile by id.
      *
      * @param id the id of the entity.
@@ -77,7 +86,7 @@ public class UserProfileServiceImpl implements UserProfileService {
     @Transactional(readOnly = true)
     public Optional<UserProfileDTO> findOne(Long id) {
         log.debug("Request to get UserProfile : {}", id);
-        return userProfileRepository.findById(id)
+        return userProfileRepository.findOneWithEagerRelationships(id)
             .map(userProfileMapper::toDto);
     }
 

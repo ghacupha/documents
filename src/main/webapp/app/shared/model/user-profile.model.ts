@@ -1,3 +1,5 @@
+import { ITransactionDocument } from 'app/shared/model/transaction-document.model';
+
 export interface IUserProfile {
   id?: number;
   staffNumber?: string;
@@ -5,6 +7,7 @@ export interface IUserProfile {
   userId?: number;
   departmentDepartmentNumber?: string;
   departmentId?: number;
+  transactionDocuments?: ITransactionDocument[];
 }
 
 export class UserProfile implements IUserProfile {
@@ -14,6 +17,7 @@ export class UserProfile implements IUserProfile {
     public userLogin?: string,
     public userId?: number,
     public departmentDepartmentNumber?: string,
-    public departmentId?: number
+    public departmentId?: number,
+    public transactionDocuments?: ITransactionDocument[]
   ) {}
 }

@@ -20,6 +20,14 @@
             "relationshipType": "many-to-one",
             "otherEntityField": "departmentNumber",
             "otherEntityRelationshipName": "userProfile"
+        },
+        {
+            "relationshipName": "transactionDocuments",
+            "otherEntityName": "transactionDocument",
+            "relationshipType": "many-to-many",
+            "otherEntityField": "documentStandardNumber",
+            "ownerSide": true,
+            "otherEntityRelationshipName": "documentOwners"
         }
     ],
     "fields": [

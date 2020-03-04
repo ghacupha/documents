@@ -2,6 +2,8 @@ package io.github.docs.service.dto;
 
 import javax.validation.constraints.*;
 import java.io.Serializable;
+import java.util.HashSet;
+import java.util.Set;
 import java.util.Objects;
 
 /**
@@ -21,6 +23,8 @@ public class UserProfileDTO implements Serializable {
     private Long departmentId;
 
     private String departmentDepartmentNumber;
+
+    private Set<TransactionDocumentDTO> transactionDocuments = new HashSet<>();
 
     public Long getId() {
         return id;
@@ -68,6 +72,14 @@ public class UserProfileDTO implements Serializable {
 
     public void setDepartmentDepartmentNumber(String departmentDepartmentNumber) {
         this.departmentDepartmentNumber = departmentDepartmentNumber;
+    }
+
+    public Set<TransactionDocumentDTO> getTransactionDocuments() {
+        return transactionDocuments;
+    }
+
+    public void setTransactionDocuments(Set<TransactionDocumentDTO> transactionDocuments) {
+        this.transactionDocuments = transactionDocuments;
     }
 
     @Override

@@ -4,6 +4,7 @@ import io.github.docs.DocumentsApp;
 import io.github.docs.domain.UserProfile;
 import io.github.docs.domain.User;
 import io.github.docs.domain.Department;
+import io.github.docs.domain.TransactionDocument;
 import io.github.docs.repository.UserProfileRepository;
 import io.github.docs.service.UserProfileService;
 import io.github.docs.service.dto.UserProfileDTO;
@@ -14,9 +15,12 @@ import io.github.docs.service.UserProfileQueryService;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.web.PageableHandlerMethodArgumentResolver;
 import org.springframework.http.MediaType;
 import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
@@ -26,11 +30,13 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.validation.Validator;
 
 import javax.persistence.EntityManager;
+import java.util.ArrayList;
 import java.util.List;
 
 import static io.github.docs.web.rest.TestUtil.createFormattingConversionService;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.Matchers.hasItem;
+import static org.mockito.Mockito.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
@@ -46,8 +52,14 @@ public class UserProfileResourceIT {
     @Autowired
     private UserProfileRepository userProfileRepository;
 
+    @Mock
+    private UserProfileRepository userProfileRepositoryMock;
+
     @Autowired
     private UserProfileMapper userProfileMapper;
+
+    @Mock
+    private UserProfileService userProfileServiceMock;
 
     @Autowired
     private UserProfileService userProfileService;
@@ -218,6 +230,39 @@ public class UserProfileResourceIT {
             .andExpect(jsonPath("$.[*].staffNumber").value(hasItem(DEFAULT_STAFF_NUMBER)));
     }
     
+    @SuppressWarnings({"unchecked"})
+    public void getAllUserProfilesWithEagerRelationshipsIsEnabled() throws Exception {
+        UserProfileResource userProfileResource = new UserProfileResource(userProfileServiceMock, userProfileQueryService);
+        when(userProfileServiceMock.findAllWithEagerRelationships(any())).thenReturn(new PageImpl(new ArrayList<>()));
+
+        MockMvc restUserProfileMockMvc = MockMvcBuilders.standaloneSetup(userProfileResource)
+            .setCustomArgumentResolvers(pageableArgumentResolver)
+            .setControllerAdvice(exceptionTranslator)
+            .setConversionService(createFormattingConversionService())
+            .setMessageConverters(jacksonMessageConverter).build();
+
+        restUserProfileMockMvc.perform(get("/api/user-profiles?eagerload=true"))
+        .andExpect(status().isOk());
+
+        verify(userProfileServiceMock, times(1)).findAllWithEagerRelationships(any());
+    }
+
+    @SuppressWarnings({"unchecked"})
+    public void getAllUserProfilesWithEagerRelationshipsIsNotEnabled() throws Exception {
+        UserProfileResource userProfileResource = new UserProfileResource(userProfileServiceMock, userProfileQueryService);
+            when(userProfileServiceMock.findAllWithEagerRelationships(any())).thenReturn(new PageImpl(new ArrayList<>()));
+            MockMvc restUserProfileMockMvc = MockMvcBuilders.standaloneSetup(userProfileResource)
+            .setCustomArgumentResolvers(pageableArgumentResolver)
+            .setControllerAdvice(exceptionTranslator)
+            .setConversionService(createFormattingConversionService())
+            .setMessageConverters(jacksonMessageConverter).build();
+
+        restUserProfileMockMvc.perform(get("/api/user-profiles?eagerload=true"))
+        .andExpect(status().isOk());
+
+            verify(userProfileServiceMock, times(1)).findAllWithEagerRelationships(any());
+    }
+
     @Test
     @Transactional
     public void getUserProfile() throws Exception {
@@ -363,6 +408,26 @@ public class UserProfileResourceIT {
 
         // Get all the userProfileList where department equals to departmentId + 1
         defaultUserProfileShouldNotBeFound("departmentId.equals=" + (departmentId + 1));
+    }
+
+
+    @Test
+    @Transactional
+    public void getAllUserProfilesByTransactionDocumentsIsEqualToSomething() throws Exception {
+        // Initialize the database
+        userProfileRepository.saveAndFlush(userProfile);
+        TransactionDocument transactionDocuments = TransactionDocumentResourceIT.createEntity(em);
+        em.persist(transactionDocuments);
+        em.flush();
+        userProfile.addTransactionDocuments(transactionDocuments);
+        userProfileRepository.saveAndFlush(userProfile);
+        Long transactionDocumentsId = transactionDocuments.getId();
+
+        // Get all the userProfileList where transactionDocuments equals to transactionDocumentsId
+        defaultUserProfileShouldBeFound("transactionDocumentsId.equals=" + transactionDocumentsId);
+
+        // Get all the userProfileList where transactionDocuments equals to transactionDocumentsId + 1
+        defaultUserProfileShouldNotBeFound("transactionDocumentsId.equals=" + (transactionDocumentsId + 1));
     }
 
     /**

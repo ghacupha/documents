@@ -20,5 +20,17 @@
                                  referencedColumnNames="id"
                                  referencedTableName="department"/>
 
+        <addForeignKeyConstraint baseColumnNames="user_profile_id"
+                                 baseTableName="user_profile_transaction_documents"
+                                 constraintName="fk_user_profile_transaction_documents_user_profile_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="user_profile"/>
+
+        <addForeignKeyConstraint baseColumnNames="transaction_documents_id"
+                                 baseTableName="user_profile_transaction_documents"
+                                 constraintName="fk_user_profile_transaction_documents_transaction_documents_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="transaction_document"/>
+        
     </changeSet>
 </databaseChangeLog>

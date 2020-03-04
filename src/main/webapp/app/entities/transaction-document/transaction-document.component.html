@@ -1,0 +1,98 @@
+<div>
+    <h2 id="page-heading">
+        <span>Transaction Documents</span>
+
+        <button id="jh-create-entity" class="btn btn-primary float-right jh-create-entity create-transaction-document" [routerLink]="['/transaction-document/new']">
+            <fa-icon icon="plus"></fa-icon>
+            <span>
+            Create a new Transaction Document
+            </span>
+        </button>
+    </h2>
+
+    <gha-alert-error></gha-alert-error>
+
+    <gha-alert></gha-alert>
+
+    <div class="alert alert-warning" id="no-result" *ngIf="transactionDocuments?.length === 0">
+        <span>No transactionDocuments found</span>
+    </div>
+
+    <div class="table-responsive" id="entities" *ngIf="transactionDocuments?.length > 0">
+        <table class="table table-striped" aria-describedby="page-heading">
+            <thead>
+                <tr jhiSort [(predicate)]="predicate" [(ascending)]="ascending" [callback]="loadPage.bind(this)">
+                    <th scope="col"  jhiSortBy="id"><span>ID</span> <fa-icon icon="sort"></fa-icon></th>
+                    <th scope="col"  jhiSortBy="transactionNumber"><span>Transaction Number</span> <fa-icon icon="sort"></fa-icon></th>
+                    <th scope="col"  jhiSortBy="transactionDate"><span>Transaction Date</span> <fa-icon icon="sort"></fa-icon></th>
+                    <th scope="col"  jhiSortBy="briefDescription"><span>Brief Description</span> <fa-icon icon="sort"></fa-icon></th>
+                    <th scope="col"  jhiSortBy="justification"><span>Justification</span> <fa-icon icon="sort"></fa-icon></th>
+                    <th scope="col"  jhiSortBy="transactionAmount"><span>Transaction Amount</span> <fa-icon icon="sort"></fa-icon></th>
+                    <th scope="col"  jhiSortBy="payeeName"><span>Payee Name</span> <fa-icon icon="sort"></fa-icon></th>
+                    <th scope="col"  jhiSortBy="invoiceNumber"><span>Invoice Number</span> <fa-icon icon="sort"></fa-icon></th>
+                    <th scope="col"  jhiSortBy="lpoNumber"><span>Lpo Number</span> <fa-icon icon="sort"></fa-icon></th>
+                    <th scope="col"  jhiSortBy="debitNoteNumber"><span>Debit Note Number</span> <fa-icon icon="sort"></fa-icon></th>
+                    <th scope="col"  jhiSortBy="logisticReferenceNumber"><span>Logistic Reference Number</span> <fa-icon icon="sort"></fa-icon></th>
+                    <th scope="col"  jhiSortBy="memoNumber"><span>Memo Number</span> <fa-icon icon="sort"></fa-icon></th>
+                    <th scope="col"  jhiSortBy="documentStandardNumber"><span>Document Standard Number</span> <fa-icon icon="sort"></fa-icon></th>
+                    <th scope="col"  jhiSortBy="transactionAttachment"><span>Transaction Attachment</span> <fa-icon icon="sort"></fa-icon></th>
+                    <th scope="col"></th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let transactionDocument of transactionDocuments ;trackBy: trackId">
+                    <td><a [routerLink]="['/transaction-document', transactionDocument.id, 'view']">{{ transactionDocument.id }}</a></td>
+                    <td>{{ transactionDocument.transactionNumber }}</td>
+                    <td>{{ transactionDocument.transactionDate | date:'mediumDate' }}</td>
+                    <td>{{ transactionDocument.briefDescription }}</td>
+                    <td>{{ transactionDocument.justification }}</td>
+                    <td>{{ transactionDocument.transactionAmount }}</td>
+                    <td>{{ transactionDocument.payeeName }}</td>
+                    <td>{{ transactionDocument.invoiceNumber }}</td>
+                    <td>{{ transactionDocument.lpoNumber }}</td>
+                    <td>{{ transactionDocument.debitNoteNumber }}</td>
+                    <td>{{ transactionDocument.logisticReferenceNumber }}</td>
+                    <td>{{ transactionDocument.memoNumber }}</td>
+                    <td>{{ transactionDocument.documentStandardNumber }}</td>
+                    <td>
+                        <a *ngIf="transactionDocument.transactionAttachment" (click)="openFile(transactionDocument.transactionAttachmentContentType, transactionDocument.transactionAttachment)">open</a>
+                        <span *ngIf="transactionDocument.transactionAttachment">{{ transactionDocument.transactionAttachmentContentType }}, {{ byteSize(transactionDocument.transactionAttachment) }}</span>
+                    </td>
+                    <td class="text-right">
+                        <div class="btn-group">
+                            <button type="submit"
+                                    [routerLink]="['/transaction-document', transactionDocument.id, 'view']"
+                                    class="btn btn-info btn-sm">
+                                <fa-icon icon="eye"></fa-icon>
+                                <span class="d-none d-md-inline">View</span>
+                            </button>
+
+                            <button type="submit"
+                                    [routerLink]="['/transaction-document', transactionDocument.id, 'edit']"
+                                    class="btn btn-primary btn-sm">
+                                <fa-icon icon="pencil-alt"></fa-icon>
+                                <span class="d-none d-md-inline">Edit</span>
+                            </button>
+
+                            <button type="submit" (click)="delete(transactionDocument)"
+                                    class="btn btn-danger btn-sm">
+                                <fa-icon icon="times"></fa-icon>
+                                <span class="d-none d-md-inline">Delete</span>
+                            </button>
+                        </div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <div *ngIf="transactionDocuments?.length > 0">
+        <div class="row justify-content-center">
+            <jhi-item-count [page]="page" [total]="totalItems" [itemsPerPage]="itemsPerPage"></jhi-item-count>
+        </div>
+
+        <div class="row justify-content-center">
+            <ngb-pagination [collectionSize]="totalItems" [(page)]="ngbPaginationPage" [pageSize]="itemsPerPage" [maxSize]="5" [rotate]="true" [boundaryLinks]="true" (pageChange)="loadPage($event)"></ngb-pagination>
+        </div>
+    </div>
+</div>

@@ -32,6 +32,8 @@ public class UserProfileCriteria implements Serializable, Criteria {
 
     private LongFilter departmentId;
 
+    private LongFilter transactionDocumentsId;
+
     public UserProfileCriteria() {
     }
 
@@ -40,6 +42,7 @@ public class UserProfileCriteria implements Serializable, Criteria {
         this.staffNumber = other.staffNumber == null ? null : other.staffNumber.copy();
         this.userId = other.userId == null ? null : other.userId.copy();
         this.departmentId = other.departmentId == null ? null : other.departmentId.copy();
+        this.transactionDocumentsId = other.transactionDocumentsId == null ? null : other.transactionDocumentsId.copy();
     }
 
     @Override
@@ -79,6 +82,14 @@ public class UserProfileCriteria implements Serializable, Criteria {
         this.departmentId = departmentId;
     }
 
+    public LongFilter getTransactionDocumentsId() {
+        return transactionDocumentsId;
+    }
+
+    public void setTransactionDocumentsId(LongFilter transactionDocumentsId) {
+        this.transactionDocumentsId = transactionDocumentsId;
+    }
+
 
     @Override
     public boolean equals(Object o) {
@@ -93,7 +104,8 @@ public class UserProfileCriteria implements Serializable, Criteria {
             Objects.equals(id, that.id) &&
             Objects.equals(staffNumber, that.staffNumber) &&
             Objects.equals(userId, that.userId) &&
-            Objects.equals(departmentId, that.departmentId);
+            Objects.equals(departmentId, that.departmentId) &&
+            Objects.equals(transactionDocumentsId, that.transactionDocumentsId);
     }
 
     @Override
@@ -102,7 +114,8 @@ public class UserProfileCriteria implements Serializable, Criteria {
         id,
         staffNumber,
         userId,
-        departmentId
+        departmentId,
+        transactionDocumentsId
         );
     }
 
@@ -113,6 +126,7 @@ public class UserProfileCriteria implements Serializable, Criteria {
                 (staffNumber != null ? "staffNumber=" + staffNumber + ", " : "") +
                 (userId != null ? "userId=" + userId + ", " : "") +
                 (departmentId != null ? "departmentId=" + departmentId + ", " : "") +
+                (transactionDocumentsId != null ? "transactionDocumentsId=" + transactionDocumentsId + ", " : "") +
             "}";
     }
 

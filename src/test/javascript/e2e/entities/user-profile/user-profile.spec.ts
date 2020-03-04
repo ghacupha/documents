@@ -51,6 +51,7 @@ describe('UserProfile e2e test', () => {
             userProfileUpdatePage.setStaffNumberInput('staffNumber'),
             userProfileUpdatePage.userSelectLastOption(),
             userProfileUpdatePage.departmentSelectLastOption(),
+            // userProfileUpdatePage.transactionDocumentsSelectLastOption(),
         ]);
 
         expect(await userProfileUpdatePage.getStaffNumberInput()).to.eq('staffNumber', 'Expected StaffNumber value to be equals to staffNumber');

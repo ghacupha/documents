@@ -1,0 +1,81 @@
+<div class="row justify-content-center">
+    <div class="col-8">
+        <div *ngIf="transactionDocument">
+            <h2><span>Transaction Document</span> {{ transactionDocument.id }}</h2>
+
+            <hr>
+
+            <gha-alert-error></gha-alert-error>
+
+            <dl class="row-md jh-entity-details">
+                <dt><span>Transaction Number</span></dt>
+                <dd>
+                    <span>{{ transactionDocument.transactionNumber }}</span>
+                </dd>
+                <dt><span>Transaction Date</span></dt>
+                <dd>
+                    <span>{{ transactionDocument.transactionDate }}</span>
+                </dd>
+                <dt><span>Brief Description</span></dt>
+                <dd>
+                    <span>{{ transactionDocument.briefDescription }}</span>
+                </dd>
+                <dt><span>Justification</span></dt>
+                <dd>
+                    <span>{{ transactionDocument.justification }}</span>
+                </dd>
+                <dt><span>Transaction Amount</span></dt>
+                <dd>
+                    <span>{{ transactionDocument.transactionAmount }}</span>
+                </dd>
+                <dt><span>Payee Name</span></dt>
+                <dd>
+                    <span>{{ transactionDocument.payeeName }}</span>
+                </dd>
+                <dt><span>Invoice Number</span></dt>
+                <dd>
+                    <span>{{ transactionDocument.invoiceNumber }}</span>
+                </dd>
+                <dt><span>Lpo Number</span></dt>
+                <dd>
+                    <span>{{ transactionDocument.lpoNumber }}</span>
+                </dd>
+                <dt><span>Debit Note Number</span></dt>
+                <dd>
+                    <span>{{ transactionDocument.debitNoteNumber }}</span>
+                </dd>
+                <dt><span>Logistic Reference Number</span></dt>
+                <dd>
+                    <span>{{ transactionDocument.logisticReferenceNumber }}</span>
+                </dd>
+                <dt><span>Memo Number</span></dt>
+                <dd>
+                    <span>{{ transactionDocument.memoNumber }}</span>
+                </dd>
+                <dt><span>Document Standard Number</span></dt>
+                <dd>
+                    <span>{{ transactionDocument.documentStandardNumber }}</span>
+                </dd>
+                <dt><span>Transaction Attachment</span></dt>
+                <dd>
+                    <div *ngIf="transactionDocument.transactionAttachment">
+                        <a (click)="openFile(transactionDocument.transactionAttachmentContentType!, transactionDocument.transactionAttachment)">open</a>
+                        {{ transactionDocument.transactionAttachmentContentType }}, {{ byteSize(transactionDocument.transactionAttachment) }}
+                    </div>
+                </dd>
+            </dl>
+
+            <button type="submit"
+                    (click)="previousState()"
+                    class="btn btn-info">
+                <fa-icon icon="arrow-left"></fa-icon>&nbsp;<span>Back</span>
+            </button>
+
+            <button type="button"
+                    [routerLink]="['/transaction-document', transactionDocument.id, 'edit']"
+                    class="btn btn-primary">
+                <fa-icon icon="pencil-alt"></fa-icon>&nbsp;<span>Edit</span>
+            </button>
+        </div>
+    </div>
+</div>
