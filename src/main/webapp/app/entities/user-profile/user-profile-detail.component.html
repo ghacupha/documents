@@ -1,0 +1,40 @@
+<div class="row justify-content-center">
+    <div class="col-8">
+        <div *ngIf="userProfile">
+            <h2><span>User Profile</span> {{ userProfile.id }}</h2>
+
+            <hr>
+
+            <gha-alert-error></gha-alert-error>
+
+            <dl class="row-md jh-entity-details">
+                <dt><span>Staff Number</span></dt>
+                <dd>
+                    <span>{{ userProfile.staffNumber }}</span>
+                </dd>
+                <dt><span>User</span></dt>
+                <dd>
+                    {{ userProfile.userLogin }}
+                </dd>
+                <dt><span>Department</span></dt>
+                <dd>
+                    <div *ngIf="userProfile.departmentId">
+                        <a [routerLink]="['/department', userProfile.departmentId, 'view']">{{ userProfile.departmentDepartmentNumber }}</a>
+                    </div>
+                </dd>
+            </dl>
+
+            <button type="submit"
+                    (click)="previousState()"
+                    class="btn btn-info">
+                <fa-icon icon="arrow-left"></fa-icon>&nbsp;<span>Back</span>
+            </button>
+
+            <button type="button"
+                    [routerLink]="['/user-profile', userProfile.id, 'edit']"
+                    class="btn btn-primary">
+                <fa-icon icon="pencil-alt"></fa-icon>&nbsp;<span>Edit</span>
+            </button>
+        </div>
+    </div>
+</div>
