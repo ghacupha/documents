@@ -34,6 +34,7 @@ export class UserProfileUpdatePage {
   userSelect = element(by.id('field_user'));
   departmentSelect = element(by.id('field_department'));
   transactionDocumentsSelect = element(by.id('field_transactionDocuments'));
+  formalDocumentsSelect = element(by.id('field_formalDocuments'));
 
   async getPageTitle(): Promise<string> {
     return this.pageTitle.getText();
@@ -102,6 +103,25 @@ export class UserProfileUpdatePage {
 
   async getTransactionDocumentsSelectedOption(): Promise<string> {
     return await this.transactionDocumentsSelect.element(by.css('option:checked')).getText();
+  }
+
+  async formalDocumentsSelectLastOption(): Promise<void> {
+    await this.formalDocumentsSelect
+      .all(by.tagName('option'))
+      .last()
+      .click();
+  }
+
+  async formalDocumentsSelectOption(option: string): Promise<void> {
+    await this.formalDocumentsSelect.sendKeys(option);
+  }
+
+  getFormalDocumentsSelect(): ElementFinder {
+    return this.formalDocumentsSelect;
+  }
+
+  async getFormalDocumentsSelectedOption(): Promise<string> {
+    return await this.formalDocumentsSelect.element(by.css('option:checked')).getText();
   }
 
   async save(): Promise<void> {

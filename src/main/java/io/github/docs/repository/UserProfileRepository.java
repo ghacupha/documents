@@ -17,14 +17,14 @@ import java.util.Optional;
 @Repository
 public interface UserProfileRepository extends JpaRepository<UserProfile, Long>, JpaSpecificationExecutor<UserProfile> {
 
-    @Query(value = "select distinct userProfile from UserProfile userProfile left join fetch userProfile.transactionDocuments",
+    @Query(value = "select distinct userProfile from UserProfile userProfile left join fetch userProfile.transactionDocuments left join fetch userProfile.formalDocuments",
         countQuery = "select count(distinct userProfile) from UserProfile userProfile")
     Page<UserProfile> findAllWithEagerRelationships(Pageable pageable);
 
-    @Query("select distinct userProfile from UserProfile userProfile left join fetch userProfile.transactionDocuments")
+    @Query("select distinct userProfile from UserProfile userProfile left join fetch userProfile.transactionDocuments left join fetch userProfile.formalDocuments")
     List<UserProfile> findAllWithEagerRelationships();
 
-    @Query("select userProfile from UserProfile userProfile left join fetch userProfile.transactionDocuments where userProfile.id =:id")
+    @Query("select userProfile from UserProfile userProfile left join fetch userProfile.transactionDocuments left join fetch userProfile.formalDocuments where userProfile.id =:id")
     Optional<UserProfile> findOneWithEagerRelationships(@Param("id") Long id);
 
 }

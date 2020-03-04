@@ -28,6 +28,12 @@
                         <a [routerLink]="['/transaction-document', transactionDocuments?.id, 'view']">{{ transactionDocuments.documentStandardNumber }}</a>{{ last ? '' : ', ' }}
                     </span>
                 </dd>
+                <dt><span>Formal Documents</span></dt>
+                <dd>
+                    <span *ngFor="let formalDocuments of userProfile.formalDocuments; let last = last">
+                        <a [routerLink]="['/formal-document', formalDocuments?.id, 'view']">{{ formalDocuments.documentStandardNumber }}</a>{{ last ? '' : ', ' }}
+                    </span>
+                </dd>
             </dl>
 
             <button type="submit"

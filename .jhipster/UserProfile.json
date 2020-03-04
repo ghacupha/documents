@@ -28,6 +28,14 @@
             "otherEntityField": "documentStandardNumber",
             "ownerSide": true,
             "otherEntityRelationshipName": "documentOwners"
+        },
+        {
+            "relationshipName": "formalDocuments",
+            "otherEntityName": "formalDocument",
+            "relationshipType": "many-to-many",
+            "otherEntityField": "documentStandardNumber",
+            "ownerSide": true,
+            "otherEntityRelationshipName": "documentOwners"
         }
     ],
     "fields": [

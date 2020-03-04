@@ -26,6 +26,8 @@ public class UserProfileDTO implements Serializable {
 
     private Set<TransactionDocumentDTO> transactionDocuments = new HashSet<>();
 
+    private Set<FormalDocumentDTO> formalDocuments = new HashSet<>();
+
     public Long getId() {
         return id;
     }
@@ -80,6 +82,14 @@ public class UserProfileDTO implements Serializable {
 
     public void setTransactionDocuments(Set<TransactionDocumentDTO> transactionDocuments) {
         this.transactionDocuments = transactionDocuments;
+    }
+
+    public Set<FormalDocumentDTO> getFormalDocuments() {
+        return formalDocuments;
+    }
+
+    public void setFormalDocuments(Set<FormalDocumentDTO> formalDocuments) {
+        this.formalDocuments = formalDocuments;
     }
 
     @Override

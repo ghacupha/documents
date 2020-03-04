@@ -15,6 +15,10 @@ import { RouterModule } from '@angular/router';
       {
         path: 'transaction-document',
         loadChildren: () => import('./transaction-document/transaction-document.module').then(m => m.DocumentsTransactionDocumentModule)
+      },
+      {
+        path: 'formal-document',
+        loadChildren: () => import('./formal-document/formal-document.module').then(m => m.DocumentsFormalDocumentModule)
       }
       /* jhipster-needle-add-entity-route - JHipster will add entity modules routes here */
     ])

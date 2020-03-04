@@ -5,6 +5,7 @@ import io.github.docs.domain.UserProfile;
 import io.github.docs.domain.User;
 import io.github.docs.domain.Department;
 import io.github.docs.domain.TransactionDocument;
+import io.github.docs.domain.FormalDocument;
 import io.github.docs.repository.UserProfileRepository;
 import io.github.docs.service.UserProfileService;
 import io.github.docs.service.dto.UserProfileDTO;
@@ -428,6 +429,26 @@ public class UserProfileResourceIT {
 
         // Get all the userProfileList where transactionDocuments equals to transactionDocumentsId + 1
         defaultUserProfileShouldNotBeFound("transactionDocumentsId.equals=" + (transactionDocumentsId + 1));
+    }
+
+
+    @Test
+    @Transactional
+    public void getAllUserProfilesByFormalDocumentsIsEqualToSomething() throws Exception {
+        // Initialize the database
+        userProfileRepository.saveAndFlush(userProfile);
+        FormalDocument formalDocuments = FormalDocumentResourceIT.createEntity(em);
+        em.persist(formalDocuments);
+        em.flush();
+        userProfile.addFormalDocuments(formalDocuments);
+        userProfileRepository.saveAndFlush(userProfile);
+        Long formalDocumentsId = formalDocuments.getId();
+
+        // Get all the userProfileList where formalDocuments equals to formalDocumentsId
+        defaultUserProfileShouldBeFound("formalDocumentsId.equals=" + formalDocumentsId);
+
+        // Get all the userProfileList where formalDocuments equals to formalDocumentsId + 1
+        defaultUserProfileShouldNotBeFound("formalDocumentsId.equals=" + (formalDocumentsId + 1));
     }
 
     /**

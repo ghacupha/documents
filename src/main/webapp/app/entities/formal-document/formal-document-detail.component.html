@@ -1,0 +1,57 @@
+<div class="row justify-content-center">
+    <div class="col-8">
+        <div *ngIf="formalDocument">
+            <h2><span>Formal Document</span> {{ formalDocument.id }}</h2>
+
+            <hr>
+
+            <gha-alert-error></gha-alert-error>
+
+            <dl class="row-md jh-entity-details">
+                <dt><span>Document Title</span></dt>
+                <dd>
+                    <span>{{ formalDocument.documentTitle }}</span>
+                </dd>
+                <dt><span>Document Subject</span></dt>
+                <dd>
+                    <span>{{ formalDocument.documentSubject }}</span>
+                </dd>
+                <dt><span>Brief Description</span></dt>
+                <dd>
+                    <span>{{ formalDocument.briefDescription }}</span>
+                </dd>
+                <dt><span>Document Date</span></dt>
+                <dd>
+                    <span>{{ formalDocument.documentDate }}</span>
+                </dd>
+                <dt><span>Document Type</span></dt>
+                <dd>
+                    <span>{{ formalDocument.documentType }}</span>
+                </dd>
+                <dt><span>Document Standard Number</span></dt>
+                <dd>
+                    <span>{{ formalDocument.documentStandardNumber }}</span>
+                </dd>
+                <dt><span>Document Attachment</span></dt>
+                <dd>
+                    <div *ngIf="formalDocument.documentAttachment">
+                        <a (click)="openFile(formalDocument.documentAttachmentContentType!, formalDocument.documentAttachment)">open</a>
+                        {{ formalDocument.documentAttachmentContentType }}, {{ byteSize(formalDocument.documentAttachment) }}
+                    </div>
+                </dd>
+            </dl>
+
+            <button type="submit"
+                    (click)="previousState()"
+                    class="btn btn-info">
+                <fa-icon icon="arrow-left"></fa-icon>&nbsp;<span>Back</span>
+            </button>
+
+            <button type="button"
+                    [routerLink]="['/formal-document', formalDocument.id, 'edit']"
+                    class="btn btn-primary">
+                <fa-icon icon="pencil-alt"></fa-icon>&nbsp;<span>Edit</span>
+            </button>
+        </div>
+    </div>
+</div>

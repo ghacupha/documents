@@ -41,6 +41,12 @@ public class UserProfile implements Serializable {
                inverseJoinColumns = @JoinColumn(name = "transaction_documents_id", referencedColumnName = "id"))
     private Set<TransactionDocument> transactionDocuments = new HashSet<>();
 
+    @ManyToMany
+    @JoinTable(name = "user_profile_formal_documents",
+               joinColumns = @JoinColumn(name = "user_profile_id", referencedColumnName = "id"),
+               inverseJoinColumns = @JoinColumn(name = "formal_documents_id", referencedColumnName = "id"))
+    private Set<FormalDocument> formalDocuments = new HashSet<>();
+
     // jhipster-needle-entity-add-field - JHipster will add fields here, do not remove
     public Long getId() {
         return id;
@@ -112,6 +118,31 @@ public class UserProfile implements Serializable {
 
     public void setTransactionDocuments(Set<TransactionDocument> transactionDocuments) {
         this.transactionDocuments = transactionDocuments;
+    }
+
+    public Set<FormalDocument> getFormalDocuments() {
+        return formalDocuments;
+    }
+
+    public UserProfile formalDocuments(Set<FormalDocument> formalDocuments) {
+        this.formalDocuments = formalDocuments;
+        return this;
+    }
+
+    public UserProfile addFormalDocuments(FormalDocument formalDocument) {
+        this.formalDocuments.add(formalDocument);
+        formalDocument.getDocumentOwners().add(this);
+        return this;
+    }
+
+    public UserProfile removeFormalDocuments(FormalDocument formalDocument) {
+        this.formalDocuments.remove(formalDocument);
+        formalDocument.getDocumentOwners().remove(this);
+        return this;
+    }
+
+    public void setFormalDocuments(Set<FormalDocument> formalDocuments) {
+        this.formalDocuments = formalDocuments;
     }
     // jhipster-needle-entity-add-getters-setters - JHipster will add getters and setters here, do not remove
 

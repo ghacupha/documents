@@ -106,6 +106,10 @@ public class UserProfileQueryService extends QueryService<UserProfile> {
                 specification = specification.and(buildSpecification(criteria.getTransactionDocumentsId(),
                     root -> root.join(UserProfile_.transactionDocuments, JoinType.LEFT).get(TransactionDocument_.id)));
             }
+            if (criteria.getFormalDocumentsId() != null) {
+                specification = specification.and(buildSpecification(criteria.getFormalDocumentsId(),
+                    root -> root.join(UserProfile_.formalDocuments, JoinType.LEFT).get(FormalDocument_.id)));
+            }
         }
         return specification;
     }

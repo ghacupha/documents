@@ -38,6 +38,17 @@
 
         <addPrimaryKey columnNames="user_profile_id, transaction_documents_id" tableName="user_profile_transaction_documents"/>
         
+        <createTable tableName="user_profile_formal_documents">
+            <column name="formal_documents_id" type="bigint">
+                <constraints nullable="false"/>
+            </column>
+            <column name="user_profile_id" type="bigint">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+
+        <addPrimaryKey columnNames="user_profile_id, formal_documents_id" tableName="user_profile_formal_documents"/>
+        
     </changeSet>
     <!-- jhipster-needle-liquibase-add-changeset - JHipster will add changesets here, do not remove-->
 

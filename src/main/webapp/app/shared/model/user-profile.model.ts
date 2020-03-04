@@ -1,4 +1,5 @@
 import { ITransactionDocument } from 'app/shared/model/transaction-document.model';
+import { IFormalDocument } from 'app/shared/model/formal-document.model';
 
 export interface IUserProfile {
   id?: number;
@@ -8,6 +9,7 @@ export interface IUserProfile {
   departmentDepartmentNumber?: string;
   departmentId?: number;
   transactionDocuments?: ITransactionDocument[];
+  formalDocuments?: IFormalDocument[];
 }
 
 export class UserProfile implements IUserProfile {
@@ -18,6 +20,7 @@ export class UserProfile implements IUserProfile {
     public userId?: number,
     public departmentDepartmentNumber?: string,
     public departmentId?: number,
-    public transactionDocuments?: ITransactionDocument[]
+    public transactionDocuments?: ITransactionDocument[],
+    public formalDocuments?: IFormalDocument[]
   ) {}
 }

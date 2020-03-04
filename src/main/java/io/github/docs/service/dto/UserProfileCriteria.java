@@ -34,6 +34,8 @@ public class UserProfileCriteria implements Serializable, Criteria {
 
     private LongFilter transactionDocumentsId;
 
+    private LongFilter formalDocumentsId;
+
     public UserProfileCriteria() {
     }
 
@@ -43,6 +45,7 @@ public class UserProfileCriteria implements Serializable, Criteria {
         this.userId = other.userId == null ? null : other.userId.copy();
         this.departmentId = other.departmentId == null ? null : other.departmentId.copy();
         this.transactionDocumentsId = other.transactionDocumentsId == null ? null : other.transactionDocumentsId.copy();
+        this.formalDocumentsId = other.formalDocumentsId == null ? null : other.formalDocumentsId.copy();
     }
 
     @Override
@@ -90,6 +93,14 @@ public class UserProfileCriteria implements Serializable, Criteria {
         this.transactionDocumentsId = transactionDocumentsId;
     }
 
+    public LongFilter getFormalDocumentsId() {
+        return formalDocumentsId;
+    }
+
+    public void setFormalDocumentsId(LongFilter formalDocumentsId) {
+        this.formalDocumentsId = formalDocumentsId;
+    }
+
 
     @Override
     public boolean equals(Object o) {
@@ -105,7 +116,8 @@ public class UserProfileCriteria implements Serializable, Criteria {
             Objects.equals(staffNumber, that.staffNumber) &&
             Objects.equals(userId, that.userId) &&
             Objects.equals(departmentId, that.departmentId) &&
-            Objects.equals(transactionDocumentsId, that.transactionDocumentsId);
+            Objects.equals(transactionDocumentsId, that.transactionDocumentsId) &&
+            Objects.equals(formalDocumentsId, that.formalDocumentsId);
     }
 
     @Override
@@ -115,7 +127,8 @@ public class UserProfileCriteria implements Serializable, Criteria {
         staffNumber,
         userId,
         departmentId,
-        transactionDocumentsId
+        transactionDocumentsId,
+        formalDocumentsId
         );
     }
 
@@ -127,6 +140,7 @@ public class UserProfileCriteria implements Serializable, Criteria {
                 (userId != null ? "userId=" + userId + ", " : "") +
                 (departmentId != null ? "departmentId=" + departmentId + ", " : "") +
                 (transactionDocumentsId != null ? "transactionDocumentsId=" + transactionDocumentsId + ", " : "") +
+                (formalDocumentsId != null ? "formalDocumentsId=" + formalDocumentsId + ", " : "") +
             "}";
     }
 
