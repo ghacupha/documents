@@ -1,0 +1,82 @@
+{
+    "fluentMethods": true,
+    "clientRootFolder": "",
+    "relationships": [
+        {
+            "relationshipName": "documentOwners",
+            "otherEntityName": "userProfile",
+            "relationshipType": "many-to-many",
+            "ownerSide": false,
+            "otherEntityRelationshipName": "transactionDocuments"
+        }
+    ],
+    "fields": [
+        {
+            "fieldName": "transactionNumber",
+            "fieldType": "String",
+            "fieldValidateRules": [
+                "required"
+            ]
+        },
+        {
+            "fieldName": "transactionDate",
+            "fieldType": "LocalDate",
+            "fieldValidateRules": [
+                "required"
+            ]
+        },
+        {
+            "fieldName": "briefDescription",
+            "fieldType": "String"
+        },
+        {
+            "fieldName": "justification",
+            "fieldType": "String"
+        },
+        {
+            "fieldName": "transactionAmount",
+            "fieldType": "BigDecimal"
+        },
+        {
+            "fieldName": "payeeName",
+            "fieldType": "String"
+        },
+        {
+            "fieldName": "invoiceNumber",
+            "fieldType": "String"
+        },
+        {
+            "fieldName": "lpoNumber",
+            "fieldType": "String"
+        },
+        {
+            "fieldName": "debitNoteNumber",
+            "fieldType": "String"
+        },
+        {
+            "fieldName": "logisticReferenceNumber",
+            "fieldType": "String"
+        },
+        {
+            "fieldName": "memoNumber",
+            "fieldType": "String"
+        },
+        {
+            "fieldName": "documentAttachment",
+            "fieldType": "String"
+        },
+        {
+            "fieldName": "documentStandardNumber",
+            "fieldType": "String"
+        }
+    ],
+    "changelogDate": "20200304064736",
+    "dto": "mapstruct",
+    "searchEngine": false,
+    "service": "serviceImpl",
+    "entityTableName": "transaction_document",
+    "databaseType": "sql",
+    "readOnly": false,
+    "jpaMetamodelFiltering": true,
+    "pagination": "pagination"
+}
