@@ -118,7 +118,7 @@
                     <span *ngIf="!getImageUrl()">
                         <fa-icon icon="user"></fa-icon>
                         <span>
-                            Account
+                            {{ account.login | titlecase}}
                         </span>
                     </span>
                     <span *ngIf="getImageUrl()">
