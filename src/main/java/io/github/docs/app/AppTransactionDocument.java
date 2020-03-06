@@ -19,11 +19,14 @@ import java.net.URISyntaxException;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/api")
+@RequestMapping("/api/app")
 public class AppTransactionDocument extends TransactionDocumentResourceDecorator implements ITransactionDocumentResource {
 
-    public AppTransactionDocument(final TransactionDocumentResource transactionDocumentResource) {
+    private final DocumentIntercept documentIntercept;
+
+    public AppTransactionDocument(final TransactionDocumentResource transactionDocumentResource, final DocumentIntercept documentIntercept) {
         super(transactionDocumentResource);
+        this.documentIntercept = documentIntercept;
     }
 
     /**
@@ -37,8 +40,22 @@ public class AppTransactionDocument extends TransactionDocumentResourceDecorator
     @PostMapping("/transaction-documents")
     public ResponseEntity<TransactionDocumentDTO> createTransactionDocument(@Valid @RequestBody TransactionDocumentDTO transactionDocumentDTO) throws URISyntaxException {
 
-        return super.createTransactionDocument(transactionDocumentDTO);
+        return documentIntercept.intercept(super.createTransactionDocument(transactionDocumentDTO));
     }
+
+//    private ResponseEntity<TransactionDocumentDTO> intercept(final ResponseEntity<TransactionDocumentDTO> responseEntity) {
+//        UserDTO currentUser = userMapper.userToUserDTO(userService.getUserWithAuthorities().get());
+//        UserProfileCriteria userProfileCriteria = new UserProfileCriteria();
+//        LongFilter userIdFilter = new LongFilter();
+//        userIdFilter.setEquals(currentUser.getId());
+//        userProfileCriteria.setUserId(userIdFilter);
+//
+//        // Add this document to all profiles of this User
+//        List<UserProfileDTO> userProfiles = userProfileQueryService.findByCriteria(userProfileCriteria);
+//        userProfiles.forEach(profile -> userProfileMapper.fromId(profile.getId()).addTransactionDocuments(transactionDocumentMapper.fromId(responseEntity.getBody().getId())));
+//
+//        return responseEntity;
+//    }
 
     /**
      * {@code PUT  /transaction-documents} : Updates an existing transactionDocument.

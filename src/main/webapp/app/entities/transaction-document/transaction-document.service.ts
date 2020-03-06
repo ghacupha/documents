@@ -14,7 +14,7 @@ type EntityArrayResponseType = HttpResponse<ITransactionDocument[]>;
 
 @Injectable({ providedIn: 'root' })
 export class TransactionDocumentService {
-  public resourceUrl = SERVER_API_URL + 'api/transaction-documents';
+  public resourceUrl = SERVER_API_URL + 'api/app/transaction-documents';
 
   constructor(protected http: HttpClient) {}
 
