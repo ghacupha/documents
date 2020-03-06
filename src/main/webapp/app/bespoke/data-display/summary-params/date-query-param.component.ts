@@ -5,9 +5,9 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { RouteStateService } from 'app/bespoke/route-state.service';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { QuestionBase } from 'app/bespoke/questionnaire/question-base.model';
-import { ISummaryQuery, SummaryQuery } from 'app/bespoke/model/summary-query.model';
 import { SummaryQueryModalQuestionServiceService } from 'app/bespoke/data-display/summary-params/summary-query-modal-question-service.service';
 import * as moment from 'moment';
+import { ISummaryQuery, SummaryQuery } from 'app/bespoke/model/summary-query.model';
 
 /**
  * Am adding a new feature that looks into the type of navigation that should be accomplished
