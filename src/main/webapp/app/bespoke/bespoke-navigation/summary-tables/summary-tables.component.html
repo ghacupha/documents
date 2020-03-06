@@ -1,0 +1,59 @@
+<li
+    *ghaHasAnyAuthority="'ROLE_USER'"
+    ngbDropdown
+    class="nav-item dropdown pointer"
+    routerLinkActive="active"
+    [routerLinkActiveOptions]="{ exact: true }"
+>
+    <a class="nav-link dropdown-toggle" ngbDropdownToggle href="javascript:void(0);" id="admin-menu">
+        <span>
+          <fa-icon icon="divide"></fa-icon>
+          <span>Summaries</span>
+        </span>
+    </a>
+    <ul class="dropdown-menu" ngbDropdownMenu aria-labelledby="admin-menu">
+        <li>
+            <!--<a class="dropdown-item" routerLink="/summary/branch-summary" routerLinkActive="active">-->
+            <a class="dropdown-item" (click)="navigateBranchSummary()" routerLinkActive="active">
+                <fa-icon icon="asterisk" fixedWidth="true"></fa-icon>
+                <span>Branches</span>
+            </a>
+        </li>
+        <li>
+            <a class="dropdown-item" (click)="navigateCurrencySummary()" routerLinkActive="active">
+                <fa-icon icon="asterisk" fixedWidth="true"></fa-icon>
+                <span>Currencies</span>
+            </a>
+        </li>
+        <li>
+            <a class="dropdown-item" (click)="navigateMoneyMarketReport()" routerLinkActive="active">
+                <fa-icon icon="asterisk" fixedWidth="true"></fa-icon>
+                <span>Money Markets</span>
+            </a>
+        </li>
+        <li>
+            <a class="dropdown-item" (click)="navigateSbuReport()" routerLinkActive="active">
+                <fa-icon icon="asterisk" fixedWidth="true"></fa-icon>
+                <span>SBU Report</span>
+            </a>
+        </li>
+        <li>
+            <a class="dropdown-item" (click)="navigateTableFReport()" routerLinkActive="active">
+                <fa-icon icon="asterisk" fixedWidth="true"></fa-icon>
+                <span>Table F Report</span>
+            </a>
+        </li>
+        <li>
+            <a class="dropdown-item" (click)="navigateTableFNewReport()" routerLinkActive="active">
+                <fa-icon icon="asterisk" fixedWidth="true"></fa-icon>
+                <span>Table F New Report</span>
+            </a>
+        </li>
+        <li>
+            <a class="dropdown-item" (click)="navigateDpfReport()" routerLinkActive="active">
+                <fa-icon icon="asterisk" fixedWidth="true"></fa-icon>
+                <span>DPF Report</span>
+            </a>
+        </li>
+    </ul>
+</li>
