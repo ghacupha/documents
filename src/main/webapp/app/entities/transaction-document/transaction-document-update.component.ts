@@ -9,6 +9,8 @@ import { JhiDataUtils, JhiFileLoadError, JhiEventManager, JhiEventWithContent } 
 import { ITransactionDocument, TransactionDocument } from 'app/shared/model/transaction-document.model';
 import { TransactionDocumentService } from './transaction-document.service';
 import { AlertError } from 'app/shared/alert/alert-error.model';
+import { IUserProfile } from 'app/shared/model/user-profile.model';
+import { UserProfileService } from 'app/entities/user-profile/user-profile.service';
 
 @Component({
   selector: 'gha-transaction-document-update',
@@ -16,6 +18,7 @@ import { AlertError } from 'app/shared/alert/alert-error.model';
 })
 export class TransactionDocumentUpdateComponent implements OnInit {
   isSaving = false;
+  userprofiles: IUserProfile[] = [];
   transactionDateDp: any;
 
   editForm = this.fb.group({
@@ -33,13 +36,15 @@ export class TransactionDocumentUpdateComponent implements OnInit {
     memoNumber: [],
     documentStandardNumber: [],
     transactionAttachment: [null, [Validators.required]],
-    transactionAttachmentContentType: []
+    transactionAttachmentContentType: [],
+    documentOwners: []
   });
 
   constructor(
     protected dataUtils: JhiDataUtils,
     protected eventManager: JhiEventManager,
     protected transactionDocumentService: TransactionDocumentService,
+    protected userProfileService: UserProfileService,
     protected activatedRoute: ActivatedRoute,
     private fb: FormBuilder
   ) {}
@@ -47,6 +52,8 @@ export class TransactionDocumentUpdateComponent implements OnInit {
   ngOnInit(): void {
     this.activatedRoute.data.subscribe(({ transactionDocument }) => {
       this.updateForm(transactionDocument);
+
+      this.userProfileService.query().subscribe((res: HttpResponse<IUserProfile[]>) => (this.userprofiles = res.body || []));
     });
   }
 
@@ -66,7 +73,8 @@ export class TransactionDocumentUpdateComponent implements OnInit {
       memoNumber: transactionDocument.memoNumber,
       documentStandardNumber: transactionDocument.documentStandardNumber,
       transactionAttachment: transactionDocument.transactionAttachment,
-      transactionAttachmentContentType: transactionDocument.transactionAttachmentContentType
+      transactionAttachmentContentType: transactionDocument.transactionAttachmentContentType,
+      documentOwners: transactionDocument.documentOwners
     });
   }
 
@@ -117,7 +125,8 @@ export class TransactionDocumentUpdateComponent implements OnInit {
       memoNumber: this.editForm.get(['memoNumber'])!.value,
       documentStandardNumber: this.editForm.get(['documentStandardNumber'])!.value,
       transactionAttachmentContentType: this.editForm.get(['transactionAttachmentContentType'])!.value,
-      transactionAttachment: this.editForm.get(['transactionAttachment'])!.value
+      transactionAttachment: this.editForm.get(['transactionAttachment'])!.value,
+      documentOwners: this.editForm.get(['documentOwners'])!.value
     };
   }
 
@@ -135,5 +144,20 @@ export class TransactionDocumentUpdateComponent implements OnInit {
 
   protected onSaveError(): void {
     this.isSaving = false;
+  }
+
+  trackById(index: number, item: IUserProfile): any {
+    return item.id;
+  }
+
+  getSelected(selectedVals: IUserProfile[], option: IUserProfile): IUserProfile {
+    if (selectedVals) {
+      for (let i = 0; i < selectedVals.length; i++) {
+        if (option.id === selectedVals[i].id) {
+          return selectedVals[i];
+        }
+      }
+    }
+    return option;
   }
 }

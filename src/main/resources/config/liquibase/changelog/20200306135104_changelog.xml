@@ -1,0 +1,36 @@
+<?xml version="1.1" encoding="UTF-8" standalone="no"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog" xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.6.xsd">
+    <changeSet author="edwin.njeru (generated)" id="1583502898720-3">
+        <createTable tableName="transaction_document_document_owners">
+            <column name="transaction_document_id" type="BIGINT">
+                <constraints primaryKey="true"/>
+            </column>
+            <column name="document_owners_id" type="BIGINT">
+                <constraints primaryKey="true"/>
+            </column>
+        </createTable>
+    </changeSet>
+    <changeSet author="edwin.njeru (generated)" id="1583502898720-4">
+        <addForeignKeyConstraint baseColumnNames="transaction_document_id" baseTableName="transaction_document_document_owners" constraintName="FK46x236a5bqsh1pxk3pe6gkhk6" deferrable="false" initiallyDeferred="false" referencedColumnNames="id" referencedTableName="transaction_document" validate="true"/>
+    </changeSet>
+    <changeSet author="edwin.njeru (generated)" id="1583502898720-5">
+        <addForeignKeyConstraint baseColumnNames="document_owners_id" baseTableName="transaction_document_document_owners" constraintName="FK5xjdb9vy65u2bl5h8qh18819l" deferrable="false" initiallyDeferred="false" referencedColumnNames="id" referencedTableName="user_profile" validate="true"/>
+    </changeSet>
+    <changeSet author="edwin.njeru (generated)" id="1583502898720-6">
+        <dropForeignKeyConstraint baseTableName="user_profile_transaction_documents" constraintName="fk_user_profile_transaction_documents_transaction_documents_id"/>
+    </changeSet>
+    <changeSet author="edwin.njeru (generated)" id="1583502898720-7">
+        <dropForeignKeyConstraint baseTableName="user_profile_transaction_documents" constraintName="fk_user_profile_transaction_documents_user_profile_id"/>
+    </changeSet>
+    <changeSet author="edwin.njeru (generated)" id="1583502898720-8">
+        <dropTable tableName="user_profile_transaction_documents"/>
+    </changeSet>
+    <changeSet author="edwin.njeru (generated)" id="1583502898720-1">
+        <dropUniqueConstraint constraintName="UC_GHA_USEREMAIL_COL" tableName="gha_user"/>
+        <addUniqueConstraint columnNames="email" constraintName="UC_GHA_USEREMAIL_COL" tableName="gha_user"/>
+    </changeSet>
+    <changeSet author="edwin.njeru (generated)" id="1583502898720-2">
+        <dropUniqueConstraint constraintName="UC_GHA_USERLOGIN_COL" tableName="gha_user"/>
+        <addUniqueConstraint columnNames="login" constraintName="UC_GHA_USERLOGIN_COL" tableName="gha_user"/>
+    </changeSet>
+</databaseChangeLog>

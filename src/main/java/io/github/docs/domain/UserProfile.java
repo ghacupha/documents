@@ -1,5 +1,6 @@
 package io.github.docs.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import javax.persistence.*;
@@ -35,10 +36,8 @@ public class UserProfile implements Serializable {
     @JsonIgnoreProperties("userProfiles")
     private Department department;
 
-    @ManyToMany
-    @JoinTable(name = "user_profile_transaction_documents",
-               joinColumns = @JoinColumn(name = "user_profile_id", referencedColumnName = "id"),
-               inverseJoinColumns = @JoinColumn(name = "transaction_documents_id", referencedColumnName = "id"))
+    @ManyToMany(mappedBy = "documentOwners")
+    @JsonIgnore
     private Set<TransactionDocument> transactionDocuments = new HashSet<>();
 
     @ManyToMany

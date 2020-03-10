@@ -51,7 +51,6 @@ describe('UserProfile e2e test', () => {
             userProfileUpdatePage.setStaffNumberInput('staffNumber'),
             userProfileUpdatePage.userSelectLastOption(),
             userProfileUpdatePage.departmentSelectLastOption(),
-            // userProfileUpdatePage.transactionDocumentsSelectLastOption(),
             // userProfileUpdatePage.formalDocumentsSelectLastOption(),
         ]);
 

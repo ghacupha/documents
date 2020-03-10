@@ -22,12 +22,6 @@
                         <a [routerLink]="['/department', userProfile.departmentId, 'view']">{{ userProfile.departmentDepartmentNumber }}</a>
                     </div>
                 </dd>
-                <dt><span>Transaction Documents</span></dt>
-                <dd>
-                    <span *ngFor="let transactionDocuments of userProfile.transactionDocuments; let last = last">
-                        <a [routerLink]="['/transaction-document', transactionDocuments?.id, 'view']">{{ transactionDocuments.documentStandardNumber }}</a>{{ last ? '' : ', ' }}
-                    </span>
-                </dd>
                 <dt><span>Formal Documents</span></dt>
                 <dd>
                     <span *ngFor="let formalDocuments of userProfile.formalDocuments; let last = last">

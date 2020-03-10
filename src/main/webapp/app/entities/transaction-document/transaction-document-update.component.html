@@ -123,6 +123,13 @@
                         </small>
                     </div>
                 </div>
+
+                <div class="form-group">
+                    <label for="field_documentOwners">Document Owners</label>
+                    <select class="form-control" id="field_documentOwners" multiple name="documentOwners" formControlName="documentOwners">
+                        <option [ngValue]="getSelected(editForm.get('documentOwners')!.value, userProfileOption)" *ngFor="let userProfileOption of userprofiles; trackBy: trackById">{{ userProfileOption.id }}</option>
+                    </select>
+                </div>
             </div>
 
             <div>

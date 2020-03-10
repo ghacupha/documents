@@ -9,7 +9,7 @@ import org.mapstruct.*;
 /**
  * Mapper for the entity {@link UserProfile} and its DTO {@link UserProfileDTO}.
  */
-@Mapper(componentModel = "spring", uses = {UserMapper.class, DepartmentMapper.class, TransactionDocumentMapper.class, FormalDocumentMapper.class})
+@Mapper(componentModel = "spring", uses = {UserMapper.class, DepartmentMapper.class, FormalDocumentMapper.class})
 public interface UserProfileMapper extends EntityMapper<UserProfileDTO, UserProfile> {
 
     @Mapping(source = "user.id", target = "userId")
@@ -20,6 +20,7 @@ public interface UserProfileMapper extends EntityMapper<UserProfileDTO, UserProf
 
     @Mapping(source = "userId", target = "user")
     @Mapping(source = "departmentId", target = "department")
+    @Mapping(target = "transactionDocuments", ignore = true)
     @Mapping(target = "removeTransactionDocuments", ignore = true)
     @Mapping(target = "removeFormalDocuments", ignore = true)
     UserProfile toEntity(UserProfileDTO userProfileDTO);

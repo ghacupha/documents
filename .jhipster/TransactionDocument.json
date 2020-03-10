@@ -6,7 +6,7 @@
             "relationshipName": "documentOwners",
             "otherEntityName": "userProfile",
             "relationshipType": "many-to-many",
-            "ownerSide": false,
+            "ownerSide": true,
             "otherEntityRelationshipName": "transactionDocuments"
         }
     ],

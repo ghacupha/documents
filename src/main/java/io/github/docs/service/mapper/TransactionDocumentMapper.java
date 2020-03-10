@@ -9,13 +9,11 @@ import org.mapstruct.*;
 /**
  * Mapper for the entity {@link TransactionDocument} and its DTO {@link TransactionDocumentDTO}.
  */
-@Mapper(componentModel = "spring", uses = {})
+@Mapper(componentModel = "spring", uses = {UserProfileMapper.class})
 public interface TransactionDocumentMapper extends EntityMapper<TransactionDocumentDTO, TransactionDocument> {
 
 
-    @Mapping(target = "documentOwners", ignore = true)
     @Mapping(target = "removeDocumentOwners", ignore = true)
-    TransactionDocument toEntity(TransactionDocumentDTO transactionDocumentDTO);
 
     default TransactionDocument fromId(Long id) {
         if (id == null) {

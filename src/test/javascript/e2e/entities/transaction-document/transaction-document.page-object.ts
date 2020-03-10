@@ -43,6 +43,8 @@ export class TransactionDocumentUpdatePage {
   documentStandardNumberInput = element(by.id('field_documentStandardNumber'));
   transactionAttachmentInput = element(by.id('file_transactionAttachment'));
 
+  documentOwnersSelect = element(by.id('field_documentOwners'));
+
   async getPageTitle(): Promise<string> {
     return this.pageTitle.getText();
   }
@@ -149,6 +151,25 @@ export class TransactionDocumentUpdatePage {
 
   async getTransactionAttachmentInput(): Promise<string> {
     return await this.transactionAttachmentInput.getAttribute('value');
+  }
+
+  async documentOwnersSelectLastOption(): Promise<void> {
+    await this.documentOwnersSelect
+      .all(by.tagName('option'))
+      .last()
+      .click();
+  }
+
+  async documentOwnersSelectOption(option: string): Promise<void> {
+    await this.documentOwnersSelect.sendKeys(option);
+  }
+
+  getDocumentOwnersSelect(): ElementFinder {
+    return this.documentOwnersSelect;
+  }
+
+  async getDocumentOwnersSelectedOption(): Promise<string> {
+    return await this.documentOwnersSelect.element(by.css('option:checked')).getText();
   }
 
   async save(): Promise<void> {

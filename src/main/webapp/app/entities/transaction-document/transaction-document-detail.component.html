@@ -63,6 +63,12 @@
                         {{ transactionDocument.transactionAttachmentContentType }}, {{ byteSize(transactionDocument.transactionAttachment) }}
                     </div>
                 </dd>
+                <dt><span>Document Owners</span></dt>
+                <dd>
+                    <span *ngFor="let documentOwners of transactionDocument.documentOwners; let last = last">
+                        <a [routerLink]="['/user-profile', documentOwners?.id, 'view']">{{ documentOwners.id }}</a>{{ last ? '' : ', ' }}
+                    </span>
+                </dd>
             </dl>
 
             <button type="submit"

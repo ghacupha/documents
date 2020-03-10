@@ -11,14 +11,10 @@ import { IUser } from 'app/core/user/user.model';
 import { UserService } from 'app/core/user/user.service';
 import { IDepartment } from 'app/shared/model/department.model';
 import { DepartmentService } from 'app/entities/department/department.service';
-import { ITransactionDocument } from 'app/shared/model/transaction-document.model';
-import { TransactionDocumentService } from 'app/entities/transaction-document/transaction-document.service';
 import { IFormalDocument } from 'app/shared/model/formal-document.model';
 import { FormalDocumentService } from 'app/entities/formal-document/formal-document.service';
 
-type SelectableEntity = IUser | IDepartment | ITransactionDocument | IFormalDocument;
-
-type SelectableManyToManyEntity = ITransactionDocument | IFormalDocument;
+type SelectableEntity = IUser | IDepartment | IFormalDocument;
 
 @Component({
   selector: 'gha-user-profile-update',
@@ -28,7 +24,6 @@ export class UserProfileUpdateComponent implements OnInit {
   isSaving = false;
   users: IUser[] = [];
   departments: IDepartment[] = [];
-  transactiondocuments: ITransactionDocument[] = [];
   formaldocuments: IFormalDocument[] = [];
 
   editForm = this.fb.group({
@@ -36,7 +31,6 @@ export class UserProfileUpdateComponent implements OnInit {
     staffNumber: [],
     userId: [null, Validators.required],
     departmentId: [],
-    transactionDocuments: [],
     formalDocuments: []
   });
 
@@ -44,7 +38,6 @@ export class UserProfileUpdateComponent implements OnInit {
     protected userProfileService: UserProfileService,
     protected userService: UserService,
     protected departmentService: DepartmentService,
-    protected transactionDocumentService: TransactionDocumentService,
     protected formalDocumentService: FormalDocumentService,
     protected activatedRoute: ActivatedRoute,
     private fb: FormBuilder
@@ -58,10 +51,6 @@ export class UserProfileUpdateComponent implements OnInit {
 
       this.departmentService.query().subscribe((res: HttpResponse<IDepartment[]>) => (this.departments = res.body || []));
 
-      this.transactionDocumentService
-        .query()
-        .subscribe((res: HttpResponse<ITransactionDocument[]>) => (this.transactiondocuments = res.body || []));
-
       this.formalDocumentService.query().subscribe((res: HttpResponse<IFormalDocument[]>) => (this.formaldocuments = res.body || []));
     });
   }
@@ -72,7 +61,6 @@ export class UserProfileUpdateComponent implements OnInit {
       staffNumber: userProfile.staffNumber,
       userId: userProfile.userId,
       departmentId: userProfile.departmentId,
-      transactionDocuments: userProfile.transactionDocuments,
       formalDocuments: userProfile.formalDocuments
     });
   }
@@ -98,7 +86,6 @@ export class UserProfileUpdateComponent implements OnInit {
       staffNumber: this.editForm.get(['staffNumber'])!.value,
       userId: this.editForm.get(['userId'])!.value,
       departmentId: this.editForm.get(['departmentId'])!.value,
-      transactionDocuments: this.editForm.get(['transactionDocuments'])!.value,
       formalDocuments: this.editForm.get(['formalDocuments'])!.value
     };
   }
@@ -123,7 +110,7 @@ export class UserProfileUpdateComponent implements OnInit {
     return item.id;
   }
 
-  getSelected(selectedVals: SelectableManyToManyEntity[], option: SelectableManyToManyEntity): SelectableManyToManyEntity {
+  getSelected(selectedVals: IFormalDocument[], option: IFormalDocument): IFormalDocument {
     if (selectedVals) {
       for (let i = 0; i < selectedVals.length; i++) {
         if (option.id === selectedVals[i].id) {
