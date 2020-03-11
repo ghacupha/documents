@@ -62,7 +62,7 @@ public class TransactionDocument implements Serializable {
     @Column(name = "document_standard_number")
     private String documentStandardNumber;
 
-
+    
     @Lob
     @Column(name = "transaction_attachment", nullable = false)
     private byte[] transactionAttachment;
@@ -71,7 +71,7 @@ public class TransactionDocument implements Serializable {
     private String transactionAttachmentContentType;
 
     @ManyToMany
-    @JoinTable(name = "transaction_document_owners",
+    @JoinTable(name = "transaction_document_document_owners",
                joinColumns = @JoinColumn(name = "transaction_document_id", referencedColumnName = "id"),
                inverseJoinColumns = @JoinColumn(name = "document_owners_id", referencedColumnName = "id"))
     private Set<UserProfile> documentOwners = new HashSet<>();

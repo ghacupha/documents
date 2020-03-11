@@ -63,6 +63,17 @@
 
     <changeSet id="20200304064736-1-relations" author="jhipster">
 
+        <createTable tableName="transaction_document_document_owners">
+            <column name="document_owners_id" type="bigint">
+                <constraints nullable="false"/>
+            </column>
+            <column name="transaction_document_id" type="bigint">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+
+        <addPrimaryKey columnNames="transaction_document_id, document_owners_id" tableName="transaction_document_document_owners"/>
+        
     </changeSet>
     <!-- jhipster-needle-liquibase-add-changeset - JHipster will add changesets here, do not remove-->
 

@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<databaseChangeLog
+    xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.6.xsd">
+    <!--
+        Added the constraints for entity TransactionDocument.
+    -->
+    <changeSet id="20200304064736-2" author="jhipster">
+        
+        <addForeignKeyConstraint baseColumnNames="transaction_document_id"
+                                 baseTableName="transaction_document_document_owners"
+                                 constraintName="transaction_document_document__transaction_document_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="transaction_document"/>
+
+        <addForeignKeyConstraint baseColumnNames="document_owners_id"
+                                 baseTableName="transaction_document_document_owners"
+                                 constraintName="fk_transaction_document_document_owners_document_owners_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="user_profile"/>
+        
+    </changeSet>
+</databaseChangeLog>

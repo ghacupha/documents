@@ -40,6 +40,13 @@
                 </div>
 
                 <div class="form-group">
+                    <label for="field_transactionDocuments">Transaction Documents</label>
+                    <select class="form-control" id="field_transactionDocuments" multiple name="transactionDocuments" formControlName="transactionDocuments">
+                        <option [ngValue]="getSelected(editForm.get('transactionDocuments')!.value, transactionDocumentOption)" *ngFor="let transactionDocumentOption of transactiondocuments; trackBy: trackById">{{ transactionDocumentOption.documentStandardNumber }}</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
                     <label for="field_formalDocuments">Formal Documents</label>
                     <select class="form-control" id="field_formalDocuments" multiple name="formalDocuments" formControlName="formalDocuments">
                         <option [ngValue]="getSelected(editForm.get('formalDocuments')!.value, formalDocumentOption)" *ngFor="let formalDocumentOption of formaldocuments; trackBy: trackById">{{ formalDocumentOption.documentStandardNumber }}</option>

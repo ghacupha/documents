@@ -24,6 +24,8 @@ public class UserProfileDTO implements Serializable {
 
     private String departmentDepartmentNumber;
 
+    private Set<TransactionDocumentDTO> transactionDocuments = new HashSet<>();
+
     private Set<FormalDocumentDTO> formalDocuments = new HashSet<>();
 
     public Long getId() {
@@ -72,6 +74,14 @@ public class UserProfileDTO implements Serializable {
 
     public void setDepartmentDepartmentNumber(String departmentDepartmentNumber) {
         this.departmentDepartmentNumber = departmentDepartmentNumber;
+    }
+
+    public Set<TransactionDocumentDTO> getTransactionDocuments() {
+        return transactionDocuments;
+    }
+
+    public void setTransactionDocuments(Set<TransactionDocumentDTO> transactionDocuments) {
+        this.transactionDocuments = transactionDocuments;
     }
 
     public Set<FormalDocumentDTO> getFormalDocuments() {
