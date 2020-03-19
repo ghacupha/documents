@@ -13,9 +13,6 @@ import org.mapstruct.*;
 public interface FormalDocumentMapper extends EntityMapper<FormalDocumentDTO, FormalDocument> {
 
 
-    @Mapping(target = "documentOwners", ignore = true)
-    @Mapping(target = "removeDocumentOwners", ignore = true)
-    FormalDocument toEntity(FormalDocumentDTO formalDocumentDTO);
 
     default FormalDocument fromId(Long id) {
         if (id == null) {

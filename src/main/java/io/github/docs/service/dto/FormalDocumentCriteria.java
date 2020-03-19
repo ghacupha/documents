@@ -58,8 +58,6 @@ public class FormalDocumentCriteria implements Serializable, Criteria {
 
     private StringFilter documentStandardNumber;
 
-    private LongFilter documentOwnersId;
-
     public FormalDocumentCriteria() {
     }
 
@@ -71,7 +69,6 @@ public class FormalDocumentCriteria implements Serializable, Criteria {
         this.documentDate = other.documentDate == null ? null : other.documentDate.copy();
         this.documentType = other.documentType == null ? null : other.documentType.copy();
         this.documentStandardNumber = other.documentStandardNumber == null ? null : other.documentStandardNumber.copy();
-        this.documentOwnersId = other.documentOwnersId == null ? null : other.documentOwnersId.copy();
     }
 
     @Override
@@ -135,14 +132,6 @@ public class FormalDocumentCriteria implements Serializable, Criteria {
         this.documentStandardNumber = documentStandardNumber;
     }
 
-    public LongFilter getDocumentOwnersId() {
-        return documentOwnersId;
-    }
-
-    public void setDocumentOwnersId(LongFilter documentOwnersId) {
-        this.documentOwnersId = documentOwnersId;
-    }
-
 
     @Override
     public boolean equals(Object o) {
@@ -160,8 +149,7 @@ public class FormalDocumentCriteria implements Serializable, Criteria {
             Objects.equals(briefDescription, that.briefDescription) &&
             Objects.equals(documentDate, that.documentDate) &&
             Objects.equals(documentType, that.documentType) &&
-            Objects.equals(documentStandardNumber, that.documentStandardNumber) &&
-            Objects.equals(documentOwnersId, that.documentOwnersId);
+            Objects.equals(documentStandardNumber, that.documentStandardNumber);
     }
 
     @Override
@@ -173,8 +161,7 @@ public class FormalDocumentCriteria implements Serializable, Criteria {
         briefDescription,
         documentDate,
         documentType,
-        documentStandardNumber,
-        documentOwnersId
+        documentStandardNumber
         );
     }
 
@@ -188,7 +175,6 @@ public class FormalDocumentCriteria implements Serializable, Criteria {
                 (documentDate != null ? "documentDate=" + documentDate + ", " : "") +
                 (documentType != null ? "documentType=" + documentType + ", " : "") +
                 (documentStandardNumber != null ? "documentStandardNumber=" + documentStandardNumber + ", " : "") +
-                (documentOwnersId != null ? "documentOwnersId=" + documentOwnersId + ", " : "") +
             "}";
     }
 

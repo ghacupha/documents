@@ -1,15 +1,7 @@
 {
     "fluentMethods": true,
     "clientRootFolder": "",
-    "relationships": [
-        {
-            "relationshipName": "documentOwners",
-            "otherEntityName": "userProfile",
-            "relationshipType": "many-to-many",
-            "ownerSide": true,
-            "otherEntityRelationshipName": "transactionDocuments"
-        }
-    ],
+    "relationships": [],
     "fields": [
         {
             "fieldName": "transactionNumber",

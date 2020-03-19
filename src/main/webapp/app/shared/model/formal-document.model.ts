@@ -1,5 +1,4 @@
 import { Moment } from 'moment';
-import { IUserProfile } from 'app/shared/model/user-profile.model';
 import { DocumentType } from 'app/shared/model/enumerations/document-type.model';
 
 export interface IFormalDocument {
@@ -12,7 +11,6 @@ export interface IFormalDocument {
   documentStandardNumber?: string;
   documentAttachmentContentType?: string;
   documentAttachment?: any;
-  documentOwners?: IUserProfile[];
 }
 
 export class FormalDocument implements IFormalDocument {
@@ -25,7 +23,6 @@ export class FormalDocument implements IFormalDocument {
     public documentType?: DocumentType,
     public documentStandardNumber?: string,
     public documentAttachmentContentType?: string,
-    public documentAttachment?: any,
-    public documentOwners?: IUserProfile[]
+    public documentAttachment?: any
   ) {}
 }

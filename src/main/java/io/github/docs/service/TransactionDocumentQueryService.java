@@ -127,10 +127,6 @@ public class TransactionDocumentQueryService extends QueryService<TransactionDoc
             if (criteria.getDocumentStandardNumber() != null) {
                 specification = specification.and(buildStringSpecification(criteria.getDocumentStandardNumber(), TransactionDocument_.documentStandardNumber));
             }
-            if (criteria.getDocumentOwnersId() != null) {
-                specification = specification.and(buildSpecification(criteria.getDocumentOwnersId(),
-                    root -> root.join(TransactionDocument_.documentOwners, JoinType.LEFT).get(UserProfile_.id)));
-            }
         }
         return specification;
     }

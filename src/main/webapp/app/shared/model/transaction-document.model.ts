@@ -1,5 +1,4 @@
 import { Moment } from 'moment';
-import { IUserProfile } from 'app/shared/model/user-profile.model';
 
 export interface ITransactionDocument {
   id?: number;
@@ -17,7 +16,6 @@ export interface ITransactionDocument {
   documentStandardNumber?: string;
   transactionAttachmentContentType?: string;
   transactionAttachment?: any;
-  documentOwners?: IUserProfile[];
 }
 
 export class TransactionDocument implements ITransactionDocument {
@@ -36,7 +34,6 @@ export class TransactionDocument implements ITransactionDocument {
     public memoNumber?: string,
     public documentStandardNumber?: string,
     public transactionAttachmentContentType?: string,
-    public transactionAttachment?: any,
-    public documentOwners?: IUserProfile[]
+    public transactionAttachment?: any
   ) {}
 }

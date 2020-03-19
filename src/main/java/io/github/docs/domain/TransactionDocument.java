@@ -1,20 +1,22 @@
 package io.github.docs.domain;
 
+import org.hibernate.annotations.Cache;
+import org.hibernate.annotations.CacheConcurrencyStrategy;
 
 import javax.persistence.*;
 import javax.validation.constraints.*;
 
 import java.io.Serializable;
+import java.util.Objects;
 import java.math.BigDecimal;
 import java.time.LocalDate;
-import java.util.HashSet;
-import java.util.Set;
 
 /**
  * A TransactionDocument.
  */
 @Entity
 @Table(name = "transaction_document")
+@Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
 public class TransactionDocument implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -69,12 +71,6 @@ public class TransactionDocument implements Serializable {
 
     @Column(name = "transaction_attachment_content_type", nullable = false)
     private String transactionAttachmentContentType;
-
-    @ManyToMany
-    @JoinTable(name = "transaction_document_document_owners",
-               joinColumns = @JoinColumn(name = "transaction_document_id", referencedColumnName = "id"),
-               inverseJoinColumns = @JoinColumn(name = "document_owners_id", referencedColumnName = "id"))
-    private Set<UserProfile> documentOwners = new HashSet<>();
 
     // jhipster-needle-entity-add-field - JHipster will add fields here, do not remove
     public Long getId() {
@@ -265,31 +261,6 @@ public class TransactionDocument implements Serializable {
 
     public void setTransactionAttachmentContentType(String transactionAttachmentContentType) {
         this.transactionAttachmentContentType = transactionAttachmentContentType;
-    }
-
-    public Set<UserProfile> getDocumentOwners() {
-        return documentOwners;
-    }
-
-    public TransactionDocument documentOwners(Set<UserProfile> userProfiles) {
-        this.documentOwners = userProfiles;
-        return this;
-    }
-
-    public TransactionDocument addDocumentOwners(UserProfile userProfile) {
-        this.documentOwners.add(userProfile);
-        userProfile.getTransactionDocuments().add(this);
-        return this;
-    }
-
-    public TransactionDocument removeDocumentOwners(UserProfile userProfile) {
-        this.documentOwners.remove(userProfile);
-        userProfile.getTransactionDocuments().remove(this);
-        return this;
-    }
-
-    public void setDocumentOwners(Set<UserProfile> userProfiles) {
-        this.documentOwners = userProfiles;
     }
     // jhipster-needle-entity-add-getters-setters - JHipster will add getters and setters here, do not remove
 

@@ -1,23 +1,12 @@
 <?xml version="1.1" encoding="UTF-8" standalone="no"?>
-<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog" xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.6.xsd">
-    <changeSet author="edwin.njeru (generated)" id="1583506333018-1">
-        <createSequence sequenceName="sequence_generator"/>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog" xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext" xmlns:pro="http://www.liquibase.org/xml/ns/pro" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd http://www.liquibase.org/xml/ns/pro http://www.liquibase.org/xml/ns/pro/liquibase-pro-3.8.xsd http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.8.xsd">
+    <changeSet author="edwin.njeru (generated)" id="1584445126711-1">
+        <createSequence incrementBy="50" sequenceName="sequence_generator" startValue="1"/>
     </changeSet>
-    <changeSet author="edwin.njeru (generated)" id="1583506333018-2">
-        <createTable tableName="department">
-            <column autoIncrement="true" name="id" type="BIGINT">
-                <constraints primaryKey="true" primaryKeyName="departmentPK"/>
-            </column>
-            <column name="department_name" type="VARCHAR(255)">
-                <constraints nullable="false"/>
-            </column>
-            <column name="department_number" type="VARCHAR(255)"/>
-        </createTable>
-    </changeSet>
-    <changeSet author="edwin.njeru (generated)" id="1583506333018-3">
+    <changeSet author="edwin.njeru (generated)" id="1584445126711-2">
         <createTable tableName="formal_document">
             <column autoIncrement="true" name="id" type="BIGINT">
-                <constraints primaryKey="true" primaryKeyName="formal_documentPK"/>
+                <constraints nullable="false" primaryKey="true" primaryKeyName="formal_documentPK"/>
             </column>
             <column name="brief_description" type="VARCHAR(255)"/>
             <column name="document_attachment" type="BYTEA">
@@ -35,17 +24,17 @@
             <column name="document_type" type="VARCHAR(255)"/>
         </createTable>
     </changeSet>
-    <changeSet author="edwin.njeru (generated)" id="1583506333018-4">
+    <changeSet author="edwin.njeru (generated)" id="1584445126711-3">
         <createTable tableName="gha_authority">
             <column name="name" type="VARCHAR(50)">
-                <constraints primaryKey="true" primaryKeyName="gha_authorityPK"/>
+                <constraints nullable="false" primaryKey="true" primaryKeyName="gha_authorityPK"/>
             </column>
         </createTable>
     </changeSet>
-    <changeSet author="edwin.njeru (generated)" id="1583506333018-5">
+    <changeSet author="edwin.njeru (generated)" id="1584445126711-4">
         <createTable tableName="gha_persistent_audit_event">
             <column autoIncrement="true" name="event_id" type="BIGINT">
-                <constraints primaryKey="true" primaryKeyName="gha_persistent_audit_eventPK"/>
+                <constraints nullable="false" primaryKey="true" primaryKeyName="gha_persistent_audit_eventPK"/>
             </column>
             <column name="event_date" type="TIMESTAMP WITHOUT TIME ZONE"/>
             <column name="event_type" type="VARCHAR(255)"/>
@@ -54,21 +43,21 @@
             </column>
         </createTable>
     </changeSet>
-    <changeSet author="edwin.njeru (generated)" id="1583506333018-6">
+    <changeSet author="edwin.njeru (generated)" id="1584445126711-5">
         <createTable tableName="gha_persistent_audit_evt_data">
             <column name="event_id" type="BIGINT">
-                <constraints primaryKey="true"/>
+                <constraints nullable="false" primaryKey="true"/>
             </column>
             <column name="value" type="VARCHAR(255)"/>
             <column name="name" type="VARCHAR(255)">
-                <constraints primaryKey="true"/>
+                <constraints nullable="false" primaryKey="true"/>
             </column>
         </createTable>
     </changeSet>
-    <changeSet author="edwin.njeru (generated)" id="1583506333018-7">
+    <changeSet author="edwin.njeru (generated)" id="1584445126711-6">
         <createTable tableName="gha_user">
             <column autoIncrement="true" name="id" type="BIGINT">
-                <constraints primaryKey="true" primaryKeyName="gha_userPK"/>
+                <constraints nullable="false" primaryKey="true" primaryKeyName="gha_userPK"/>
             </column>
             <column name="created_by" type="VARCHAR(50)">
                 <constraints nullable="false"/>
@@ -95,20 +84,20 @@
             <column name="reset_key" type="VARCHAR(20)"/>
         </createTable>
     </changeSet>
-    <changeSet author="edwin.njeru (generated)" id="1583506333018-8">
+    <changeSet author="edwin.njeru (generated)" id="1584445126711-7">
         <createTable tableName="gha_user_authority">
             <column name="user_id" type="BIGINT">
-                <constraints primaryKey="true"/>
+                <constraints nullable="false" primaryKey="true"/>
             </column>
             <column name="authority_name" type="VARCHAR(50)">
-                <constraints primaryKey="true"/>
+                <constraints nullable="false" primaryKey="true"/>
             </column>
         </createTable>
     </changeSet>
-    <changeSet author="edwin.njeru (generated)" id="1583506333018-9">
+    <changeSet author="edwin.njeru (generated)" id="1584445126711-8">
         <createTable tableName="transaction_document">
             <column autoIncrement="true" name="id" type="BIGINT">
-                <constraints primaryKey="true" primaryKeyName="transaction_documentPK"/>
+                <constraints nullable="false" primaryKey="true" primaryKeyName="transaction_documentPK"/>
             </column>
             <column name="brief_description" type="VARCHAR(255)"/>
             <column name="debit_note_number" type="VARCHAR(255)"/>
@@ -134,66 +123,19 @@
             </column>
         </createTable>
     </changeSet>
-    <changeSet author="edwin.njeru (generated)" id="1583506333018-10">
-        <createTable tableName="transaction_document_owners">
-            <column name="transaction_document_id" type="BIGINT">
-                <constraints primaryKey="true"/>
-            </column>
-            <column name="document_owners_id" type="BIGINT">
-                <constraints primaryKey="true"/>
-            </column>
-        </createTable>
-    </changeSet>
-    <changeSet author="edwin.njeru (generated)" id="1583506333018-11">
-        <createTable tableName="user_profile">
-            <column name="id" type="BIGINT">
-                <constraints primaryKey="true" primaryKeyName="user_profilePK"/>
-            </column>
-            <column name="staff_number" type="VARCHAR(255)"/>
-            <column name="department_id" type="BIGINT"/>
-        </createTable>
-    </changeSet>
-    <changeSet author="edwin.njeru (generated)" id="1583506333018-12">
-        <createTable tableName="user_profile_formal_documents">
-            <column name="user_profile_id" type="BIGINT">
-                <constraints primaryKey="true"/>
-            </column>
-            <column name="formal_documents_id" type="BIGINT">
-                <constraints primaryKey="true"/>
-            </column>
-        </createTable>
-    </changeSet>
-    <changeSet author="edwin.njeru (generated)" id="1583506333018-13">
+    <changeSet author="edwin.njeru (generated)" id="1584445126711-9">
         <addUniqueConstraint columnNames="email" constraintName="UC_GHA_USEREMAIL_COL" tableName="gha_user"/>
     </changeSet>
-    <changeSet author="edwin.njeru (generated)" id="1583506333018-14">
+    <changeSet author="edwin.njeru (generated)" id="1584445126711-10">
         <addUniqueConstraint columnNames="login" constraintName="UC_GHA_USERLOGIN_COL" tableName="gha_user"/>
     </changeSet>
-    <changeSet author="edwin.njeru (generated)" id="1583506333018-15">
+    <changeSet author="edwin.njeru (generated)" id="1584445126711-11">
         <addForeignKeyConstraint baseColumnNames="authority_name" baseTableName="gha_user_authority" constraintName="FK7vpii2smu77en3hw0ypiknl4r" deferrable="false" initiallyDeferred="false" referencedColumnNames="name" referencedTableName="gha_authority" validate="true"/>
     </changeSet>
-    <changeSet author="edwin.njeru (generated)" id="1583506333018-16">
-        <addForeignKeyConstraint baseColumnNames="id" baseTableName="user_profile" constraintName="FKcjiwwguymahlkgjkqduqf7b1q" deferrable="false" initiallyDeferred="false" referencedColumnNames="id" referencedTableName="gha_user" validate="true"/>
-    </changeSet>
-    <changeSet author="edwin.njeru (generated)" id="1583506333018-17">
-        <addForeignKeyConstraint baseColumnNames="user_profile_id" baseTableName="user_profile_formal_documents" constraintName="FKi0b2f0v2qcokmbk4n5r2x5o4w" deferrable="false" initiallyDeferred="false" referencedColumnNames="id" referencedTableName="user_profile" validate="true"/>
-    </changeSet>
-    <changeSet author="edwin.njeru (generated)" id="1583506333018-18">
+    <changeSet author="edwin.njeru (generated)" id="1584445126711-12">
         <addForeignKeyConstraint baseColumnNames="event_id" baseTableName="gha_persistent_audit_evt_data" constraintName="FKj4lrxuk5snmvbbk82tjs767r0" deferrable="false" initiallyDeferred="false" referencedColumnNames="event_id" referencedTableName="gha_persistent_audit_event" validate="true"/>
     </changeSet>
-    <changeSet author="edwin.njeru (generated)" id="1583506333018-19">
-        <addForeignKeyConstraint baseColumnNames="transaction_document_id" baseTableName="transaction_document_owners" constraintName="FKlb9kbf0cc1weubwx937heqiq1" deferrable="false" initiallyDeferred="false" referencedColumnNames="id" referencedTableName="transaction_document" validate="true"/>
-    </changeSet>
-    <changeSet author="edwin.njeru (generated)" id="1583506333018-20">
+    <changeSet author="edwin.njeru (generated)" id="1584445126711-13">
         <addForeignKeyConstraint baseColumnNames="user_id" baseTableName="gha_user_authority" constraintName="FKm0rqfeneuk5xl48iyj1hcp7p3" deferrable="false" initiallyDeferred="false" referencedColumnNames="id" referencedTableName="gha_user" validate="true"/>
-    </changeSet>
-    <changeSet author="edwin.njeru (generated)" id="1583506333018-21">
-        <addForeignKeyConstraint baseColumnNames="department_id" baseTableName="user_profile" constraintName="FKodibb04qvql4ccofn8nt70422" deferrable="false" initiallyDeferred="false" referencedColumnNames="id" referencedTableName="department" validate="true"/>
-    </changeSet>
-    <changeSet author="edwin.njeru (generated)" id="1583506333018-22">
-        <addForeignKeyConstraint baseColumnNames="formal_documents_id" baseTableName="user_profile_formal_documents" constraintName="FKrjo51tjxvylf8kot7naygtmj2" deferrable="false" initiallyDeferred="false" referencedColumnNames="id" referencedTableName="formal_document" validate="true"/>
-    </changeSet>
-    <changeSet author="edwin.njeru (generated)" id="1583506333018-23">
-        <addForeignKeyConstraint baseColumnNames="document_owners_id" baseTableName="transaction_document_owners" constraintName="FKsvmmi6hkjc0iv46ciic7yovd1" deferrable="false" initiallyDeferred="false" referencedColumnNames="id" referencedTableName="user_profile" validate="true"/>
     </changeSet>
 </databaseChangeLog>

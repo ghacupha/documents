@@ -43,17 +43,6 @@ spring:
   jackson:
     serialization:
       indent-output: true
-  kafka:
-    consumer:
-      bootstrap-servers: localhost:9092
-      group-id: group_id
-      auto-offset-reset: earliest
-      key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
-      value-deserializer: org.apache.kafka.common.serialization.StringDeserializer
-    producer:
-      bootstrap-servers: localhost:9092
-      key-serializer: org.apache.kafka.common.serialization.StringSerializer
-      value-serializer: org.apache.kafka.common.serialization.StringSerializer
   datasource:
     type: com.zaxxer.hikari.HikariDataSource
     url: jdbc:postgresql://localhost:13001/documents
@@ -68,12 +57,16 @@ spring:
     properties:
       hibernate.id.new_generator_mappings: true
       hibernate.connection.provider_disables_autocommit: true
-      hibernate.cache.use_second_level_cache: false
+      hibernate.cache.use_second_level_cache: true
       hibernate.cache.use_query_cache: false
       hibernate.generate_statistics: false
+      hibernate.cache.region.factory_class: com.hazelcast.hibernate.HazelcastCacheRegionFactory
+      hibernate.cache.hazelcast.instance_name: documents
+      hibernate.cache.use_minimal_puts: true
+      hibernate.cache.hazelcast.use_lite_member: true
   liquibase:
     # Remove 'faker' if you do not want the sample data to be loaded automatically
-    contexts: dev #, faker
+    contexts: dev, faker
   mail:
     host: smtp.gmail.com
     port: 587
@@ -133,12 +126,12 @@ jhipster:
     authentication:
       jwt:
         # This token must be encoded using Base64 and be at least 256 bits long (you can type `openssl rand -base64 64` on your command line to generate a 512 bits one)
-        base64-secret: MTBlOGViZjkwODkzOTdiZDk4OTc3NWQ1Mzc4YWUyZDAzOTcyOGUzNTc3MmRlOTQ0NDFmZGYwMThhNjU2NmRjNDViODhhZDc5NjE5NGFmOGYyN2RiNjA2ZmUxMTE1NTQ1Zjc4ZjAzMDMyNDYxZWZiOGEwZDZjMjVhYmJhZWUzMjE=
+        base64-secret: wzJXplONpwaPsVRIu1t1Pk3a7T83BW1QM0t6pnkIsZkgXfl7wGcNnL55d6+By9dxUPmOMDdfI5D+tsgRJKuJnuPHMHCID3gVvO3Q7HY2w6Pp524Mh9+elR01E9+FSPShX2LfDRiyqcd6mWPt0EzPuh7x3N5TxmeGZz9kqHE1zVb5YU7nagQBRGrqmzBPBRvFVitHXHL6CJ8JikkPO/ASS18JgJORBh2PUQglmeG9FJUWQfNDrP5b2fnx1XXTXE2gpRtjJWiI+9VrO1e4Uj/hAvQM2Bgx6JQqEECorUEgEuYh3hI2V9P8Wa9cymmHReHgAZqKpakoKx+byeqWu4LGZpk+UI1puTHbqSPTvQzzLvWdaznz29d/a35Jf/ffO0sRiwhyUQfBqpxKqMJeUjtyBUMmhct/CJHhBVDp5+Dst0VbaBG5QHyF2p60sK8DH1iAAEXSY56cL0QOnDrWvA0H9fe35X77KnowXVOwradDNZoDM8RWQdLsxY9REJBIsv+J1nqBQFqUh6y7ozSisUJxh4AsV+Tn6E5B7G1+yZIvbYc7MGoGFyAaxw1ANTlJez9EhguXxAxMvZDIWt8WaaEC5SnODPb0nBxpFix03XkZknaTZgGWqmssw0gzUZ9PKXwXvZzWTDtDmXCkYwMQTuDqdS3Y10ye7ecA209IPqMgpN8=
         # Token is valid 24 hours
         token-validity-in-seconds: 86400
         token-validity-in-seconds-for-remember-me: 2592000
   mail: # specific JHipster mail property, for standard properties see MailProperties
-    base-url: http://localhost:13000
+    base-url: http://127.0.0.1:13000
   metrics:
     logs: # Reports metrics in the logs
       enabled: false

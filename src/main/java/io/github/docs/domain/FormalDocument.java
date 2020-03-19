@@ -1,14 +1,14 @@
 package io.github.docs.domain;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import org.hibernate.annotations.Cache;
+import org.hibernate.annotations.CacheConcurrencyStrategy;
 
 import javax.persistence.*;
 import javax.validation.constraints.*;
 
 import java.io.Serializable;
+import java.util.Objects;
 import java.time.LocalDate;
-import java.util.HashSet;
-import java.util.Set;
 
 import io.github.docs.domain.enumeration.DocumentType;
 
@@ -17,6 +17,7 @@ import io.github.docs.domain.enumeration.DocumentType;
  */
 @Entity
 @Table(name = "formal_document")
+@Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
 public class FormalDocument implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -53,10 +54,6 @@ public class FormalDocument implements Serializable {
 
     @Column(name = "document_attachment_content_type", nullable = false)
     private String documentAttachmentContentType;
-
-    @ManyToMany(mappedBy = "formalDocuments")
-    @JsonIgnore
-    private Set<UserProfile> documentOwners = new HashSet<>();
 
     // jhipster-needle-entity-add-field - JHipster will add fields here, do not remove
     public Long getId() {
@@ -169,31 +166,6 @@ public class FormalDocument implements Serializable {
 
     public void setDocumentAttachmentContentType(String documentAttachmentContentType) {
         this.documentAttachmentContentType = documentAttachmentContentType;
-    }
-
-    public Set<UserProfile> getDocumentOwners() {
-        return documentOwners;
-    }
-
-    public FormalDocument documentOwners(Set<UserProfile> userProfiles) {
-        this.documentOwners = userProfiles;
-        return this;
-    }
-
-    public FormalDocument addDocumentOwners(UserProfile userProfile) {
-        this.documentOwners.add(userProfile);
-        userProfile.getFormalDocuments().add(this);
-        return this;
-    }
-
-    public FormalDocument removeDocumentOwners(UserProfile userProfile) {
-        this.documentOwners.remove(userProfile);
-        userProfile.getFormalDocuments().remove(this);
-        return this;
-    }
-
-    public void setDocumentOwners(Set<UserProfile> userProfiles) {
-        this.documentOwners = userProfiles;
     }
     // jhipster-needle-entity-add-getters-setters - JHipster will add getters and setters here, do not remove
 

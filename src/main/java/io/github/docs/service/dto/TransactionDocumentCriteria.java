@@ -52,8 +52,6 @@ public class TransactionDocumentCriteria implements Serializable, Criteria {
 
     private StringFilter documentStandardNumber;
 
-    private LongFilter documentOwnersId;
-
     public TransactionDocumentCriteria() {
     }
 
@@ -71,7 +69,6 @@ public class TransactionDocumentCriteria implements Serializable, Criteria {
         this.logisticReferenceNumber = other.logisticReferenceNumber == null ? null : other.logisticReferenceNumber.copy();
         this.memoNumber = other.memoNumber == null ? null : other.memoNumber.copy();
         this.documentStandardNumber = other.documentStandardNumber == null ? null : other.documentStandardNumber.copy();
-        this.documentOwnersId = other.documentOwnersId == null ? null : other.documentOwnersId.copy();
     }
 
     @Override
@@ -183,14 +180,6 @@ public class TransactionDocumentCriteria implements Serializable, Criteria {
         this.documentStandardNumber = documentStandardNumber;
     }
 
-    public LongFilter getDocumentOwnersId() {
-        return documentOwnersId;
-    }
-
-    public void setDocumentOwnersId(LongFilter documentOwnersId) {
-        this.documentOwnersId = documentOwnersId;
-    }
-
 
     @Override
     public boolean equals(Object o) {
@@ -214,8 +203,7 @@ public class TransactionDocumentCriteria implements Serializable, Criteria {
             Objects.equals(debitNoteNumber, that.debitNoteNumber) &&
             Objects.equals(logisticReferenceNumber, that.logisticReferenceNumber) &&
             Objects.equals(memoNumber, that.memoNumber) &&
-            Objects.equals(documentStandardNumber, that.documentStandardNumber) &&
-            Objects.equals(documentOwnersId, that.documentOwnersId);
+            Objects.equals(documentStandardNumber, that.documentStandardNumber);
     }
 
     @Override
@@ -233,8 +221,7 @@ public class TransactionDocumentCriteria implements Serializable, Criteria {
         debitNoteNumber,
         logisticReferenceNumber,
         memoNumber,
-        documentStandardNumber,
-        documentOwnersId
+        documentStandardNumber
         );
     }
 
@@ -254,7 +241,6 @@ public class TransactionDocumentCriteria implements Serializable, Criteria {
                 (logisticReferenceNumber != null ? "logisticReferenceNumber=" + logisticReferenceNumber + ", " : "") +
                 (memoNumber != null ? "memoNumber=" + memoNumber + ", " : "") +
                 (documentStandardNumber != null ? "documentStandardNumber=" + documentStandardNumber + ", " : "") +
-                (documentOwnersId != null ? "documentOwnersId=" + documentOwnersId + ", " : "") +
             "}";
     }
 

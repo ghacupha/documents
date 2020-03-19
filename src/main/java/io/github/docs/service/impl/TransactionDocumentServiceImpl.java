@@ -62,15 +62,6 @@ public class TransactionDocumentServiceImpl implements TransactionDocumentServic
     }
 
     /**
-     * Get all the transactionDocuments with eager load of many-to-many relationships.
-     *
-     * @return the list of entities.
-     */
-    public Page<TransactionDocumentDTO> findAllWithEagerRelationships(Pageable pageable) {
-        return transactionDocumentRepository.findAllWithEagerRelationships(pageable).map(transactionDocumentMapper::toDto);
-    }
-
-    /**
      * Get one transactionDocument by id.
      *
      * @param id the id of the entity.
@@ -80,7 +71,7 @@ public class TransactionDocumentServiceImpl implements TransactionDocumentServic
     @Transactional(readOnly = true)
     public Optional<TransactionDocumentDTO> findOne(Long id) {
         log.debug("Request to get TransactionDocument : {}", id);
-        return transactionDocumentRepository.findOneWithEagerRelationships(id)
+        return transactionDocumentRepository.findById(id)
             .map(transactionDocumentMapper::toDto);
     }
 

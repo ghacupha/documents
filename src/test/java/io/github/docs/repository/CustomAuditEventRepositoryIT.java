@@ -1,6 +1,7 @@
 package io.github.docs.repository;
 
 import io.github.docs.DocumentsApp;
+
 import io.github.docs.config.Constants;
 import io.github.docs.config.audit.AuditEventConverter;
 import io.github.docs.domain.PersistentAuditEvent;

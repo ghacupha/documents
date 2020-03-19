@@ -4,8 +4,6 @@ import java.time.LocalDate;
 import javax.validation.constraints.*;
 import java.io.Serializable;
 import java.math.BigDecimal;
-import java.util.HashSet;
-import java.util.Set;
 import java.util.Objects;
 import javax.persistence.Lob;
 
@@ -13,7 +11,7 @@ import javax.persistence.Lob;
  * A DTO for the {@link io.github.docs.domain.TransactionDocument} entity.
  */
 public class TransactionDocumentDTO implements Serializable {
-
+    
     private Long id;
 
     @NotNull
@@ -47,9 +45,7 @@ public class TransactionDocumentDTO implements Serializable {
     private byte[] transactionAttachment;
 
     private String transactionAttachmentContentType;
-
-    private Set<UserProfileDTO> documentOwners = new HashSet<>();
-
+    
     public Long getId() {
         return id;
     }
@@ -168,14 +164,6 @@ public class TransactionDocumentDTO implements Serializable {
 
     public void setTransactionAttachmentContentType(String transactionAttachmentContentType) {
         this.transactionAttachmentContentType = transactionAttachmentContentType;
-    }
-
-    public Set<UserProfileDTO> getDocumentOwners() {
-        return documentOwners;
-    }
-
-    public void setDocumentOwners(Set<UserProfileDTO> userProfiles) {
-        this.documentOwners = userProfiles;
     }
 
     @Override

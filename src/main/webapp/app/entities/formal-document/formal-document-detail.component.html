@@ -35,7 +35,7 @@
                 <dt><span>Document Attachment</span></dt>
                 <dd>
                     <div *ngIf="formalDocument.documentAttachment">
-                        <a (click)="openFile(formalDocument.documentAttachmentContentType!, formalDocument.documentAttachment)">open</a>
+                        <a (click)="openFile(formalDocument?.documentAttachmentContentType!, formalDocument?.documentAttachment)">open</a>
                         {{ formalDocument.documentAttachmentContentType }}, {{ byteSize(formalDocument.documentAttachment) }}
                     </div>
                 </dd>

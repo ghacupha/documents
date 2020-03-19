@@ -5,14 +5,6 @@ import { RouterModule } from '@angular/router';
   imports: [
     RouterModule.forChild([
       {
-        path: 'department',
-        loadChildren: () => import('./department/department.module').then(m => m.DocumentsDepartmentModule)
-      },
-      {
-        path: 'user-profile',
-        loadChildren: () => import('./user-profile/user-profile.module').then(m => m.DocumentsUserProfileModule)
-      },
-      {
         path: 'transaction-document',
         loadChildren: () => import('./transaction-document/transaction-document.module').then(m => m.DocumentsTransactionDocumentModule)
       },

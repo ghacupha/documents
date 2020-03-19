@@ -11,7 +11,7 @@ import io.github.docs.domain.enumeration.DocumentType;
  * A DTO for the {@link io.github.docs.domain.FormalDocument} entity.
  */
 public class FormalDocumentDTO implements Serializable {
-
+    
     private Long id;
 
     @NotNull
@@ -32,7 +32,7 @@ public class FormalDocumentDTO implements Serializable {
     private byte[] documentAttachment;
 
     private String documentAttachmentContentType;
-
+    
     public Long getId() {
         return id;
     }

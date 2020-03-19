@@ -2,35 +2,28 @@ package io.github.docs.web.rest;
 
 import io.github.docs.DocumentsApp;
 import io.github.docs.domain.FormalDocument;
-import io.github.docs.domain.UserProfile;
 import io.github.docs.repository.FormalDocumentRepository;
 import io.github.docs.service.FormalDocumentService;
 import io.github.docs.service.dto.FormalDocumentDTO;
 import io.github.docs.service.mapper.FormalDocumentMapper;
-import io.github.docs.web.rest.errors.ExceptionTranslator;
 import io.github.docs.service.dto.FormalDocumentCriteria;
 import io.github.docs.service.FormalDocumentQueryService;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.mockito.MockitoAnnotations;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.data.web.PageableHandlerMethodArgumentResolver;
 import org.springframework.http.MediaType;
-import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
+import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.Base64Utils;
-import org.springframework.validation.Validator;
-
 import javax.persistence.EntityManager;
 import java.time.LocalDate;
 import java.time.ZoneId;
 import java.util.List;
 
-import static io.github.docs.web.rest.TestUtil.createFormattingConversionService;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.Matchers.hasItem;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
@@ -41,6 +34,9 @@ import io.github.docs.domain.enumeration.DocumentType;
  * Integration tests for the {@link FormalDocumentResource} REST controller.
  */
 @SpringBootTest(classes = DocumentsApp.class)
+
+@AutoConfigureMockMvc
+@WithMockUser
 public class FormalDocumentResourceIT {
 
     private static final String DEFAULT_DOCUMENT_TITLE = "AAAAAAAAAA";
@@ -80,35 +76,12 @@ public class FormalDocumentResourceIT {
     private FormalDocumentQueryService formalDocumentQueryService;
 
     @Autowired
-    private MappingJackson2HttpMessageConverter jacksonMessageConverter;
-
-    @Autowired
-    private PageableHandlerMethodArgumentResolver pageableArgumentResolver;
-
-    @Autowired
-    private ExceptionTranslator exceptionTranslator;
-
-    @Autowired
     private EntityManager em;
 
     @Autowired
-    private Validator validator;
-
     private MockMvc restFormalDocumentMockMvc;
 
     private FormalDocument formalDocument;
-
-    @BeforeEach
-    public void setup() {
-        MockitoAnnotations.initMocks(this);
-        final FormalDocumentResource formalDocumentResource = new FormalDocumentResource(formalDocumentService, formalDocumentQueryService);
-        this.restFormalDocumentMockMvc = MockMvcBuilders.standaloneSetup(formalDocumentResource)
-            .setCustomArgumentResolvers(pageableArgumentResolver)
-            .setControllerAdvice(exceptionTranslator)
-            .setConversionService(createFormattingConversionService())
-            .setMessageConverters(jacksonMessageConverter)
-            .setValidator(validator).build();
-    }
 
     /**
      * Create an entity for this test.
@@ -160,7 +133,7 @@ public class FormalDocumentResourceIT {
         // Create the FormalDocument
         FormalDocumentDTO formalDocumentDTO = formalDocumentMapper.toDto(formalDocument);
         restFormalDocumentMockMvc.perform(post("/api/formal-documents")
-            .contentType(TestUtil.APPLICATION_JSON)
+            .contentType(MediaType.APPLICATION_JSON)
             .content(TestUtil.convertObjectToJsonBytes(formalDocumentDTO)))
             .andExpect(status().isCreated());
 
@@ -189,7 +162,7 @@ public class FormalDocumentResourceIT {
 
         // An entity with an existing ID cannot be created, so this API call must fail
         restFormalDocumentMockMvc.perform(post("/api/formal-documents")
-            .contentType(TestUtil.APPLICATION_JSON)
+            .contentType(MediaType.APPLICATION_JSON)
             .content(TestUtil.convertObjectToJsonBytes(formalDocumentDTO)))
             .andExpect(status().isBadRequest());
 
@@ -210,7 +183,7 @@ public class FormalDocumentResourceIT {
         FormalDocumentDTO formalDocumentDTO = formalDocumentMapper.toDto(formalDocument);
 
         restFormalDocumentMockMvc.perform(post("/api/formal-documents")
-            .contentType(TestUtil.APPLICATION_JSON)
+            .contentType(MediaType.APPLICATION_JSON)
             .content(TestUtil.convertObjectToJsonBytes(formalDocumentDTO)))
             .andExpect(status().isBadRequest());
 
@@ -748,26 +721,6 @@ public class FormalDocumentResourceIT {
         defaultFormalDocumentShouldBeFound("documentStandardNumber.doesNotContain=" + UPDATED_DOCUMENT_STANDARD_NUMBER);
     }
 
-
-    @Test
-    @Transactional
-    public void getAllFormalDocumentsByDocumentOwnersIsEqualToSomething() throws Exception {
-        // Initialize the database
-        formalDocumentRepository.saveAndFlush(formalDocument);
-        UserProfile documentOwners = UserProfileResourceIT.createEntity(em);
-        em.persist(documentOwners);
-        em.flush();
-        formalDocument.addDocumentOwners(documentOwners);
-        formalDocumentRepository.saveAndFlush(formalDocument);
-        Long documentOwnersId = documentOwners.getId();
-
-        // Get all the formalDocumentList where documentOwners equals to documentOwnersId
-        defaultFormalDocumentShouldBeFound("documentOwnersId.equals=" + documentOwnersId);
-
-        // Get all the formalDocumentList where documentOwners equals to documentOwnersId + 1
-        defaultFormalDocumentShouldNotBeFound("documentOwnersId.equals=" + (documentOwnersId + 1));
-    }
-
     /**
      * Executes the search, and checks that the default entity is returned.
      */
@@ -842,7 +795,7 @@ public class FormalDocumentResourceIT {
         FormalDocumentDTO formalDocumentDTO = formalDocumentMapper.toDto(updatedFormalDocument);
 
         restFormalDocumentMockMvc.perform(put("/api/formal-documents")
-            .contentType(TestUtil.APPLICATION_JSON)
+            .contentType(MediaType.APPLICATION_JSON)
             .content(TestUtil.convertObjectToJsonBytes(formalDocumentDTO)))
             .andExpect(status().isOk());
 
@@ -870,7 +823,7 @@ public class FormalDocumentResourceIT {
 
         // If the entity doesn't have an ID, it will throw BadRequestAlertException
         restFormalDocumentMockMvc.perform(put("/api/formal-documents")
-            .contentType(TestUtil.APPLICATION_JSON)
+            .contentType(MediaType.APPLICATION_JSON)
             .content(TestUtil.convertObjectToJsonBytes(formalDocumentDTO)))
             .andExpect(status().isBadRequest());
 
@@ -889,7 +842,7 @@ public class FormalDocumentResourceIT {
 
         // Delete the formalDocument
         restFormalDocumentMockMvc.perform(delete("/api/formal-documents/{id}", formalDocument.getId())
-            .accept(TestUtil.APPLICATION_JSON))
+            .accept(MediaType.APPLICATION_JSON))
             .andExpect(status().isNoContent());
 
         // Validate the database contains one less item
