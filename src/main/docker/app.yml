@@ -13,6 +13,9 @@ services:
       - KAFKA_BOOTSTRAPSERVERS=kafka:9092
       - PG_DATABASE_DEV_USER=${PG_DATABASE_DEV_USER}
       - PG_DATABASE_DEV_PASSWORD=${PG_DATABASE_DEV_PASSWORD}
+      - MAIL_USERNAME=${MAIL_USERNAME}
+      - MAIL_PASSWORD=${MAIL_PASSWORD}
+      - APP_URL=http://10.0.75.1 # This is temporary and needs to to be configured on a case by case basis
     ports:
       - 13000:13000
   documents-postgresql:
