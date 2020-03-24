@@ -65,6 +65,7 @@ describe('TransactionDocument e2e test', () => {
       transactionDocumentUpdatePage.setMemoNumberInput('memoNumber'),
       transactionDocumentUpdatePage.setDocumentStandardNumberInput('documentStandardNumber'),
       transactionDocumentUpdatePage.setTransactionAttachmentInput(absolutePath)
+      // transactionDocumentUpdatePage.schemesSelectLastOption(),
     ]);
 
     expect(await transactionDocumentUpdatePage.getTransactionNumberInput()).to.eq(

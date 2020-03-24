@@ -3,6 +3,8 @@ package io.github.docs.service.dto;
 import java.time.LocalDate;
 import javax.validation.constraints.*;
 import java.io.Serializable;
+import java.util.HashSet;
+import java.util.Set;
 import java.util.Objects;
 import javax.persistence.Lob;
 import io.github.docs.domain.enumeration.DocumentType;
@@ -32,6 +34,7 @@ public class FormalDocumentDTO implements Serializable {
     private byte[] documentAttachment;
 
     private String documentAttachmentContentType;
+    private Set<SchemeDTO> schemes = new HashSet<>();
     
     public Long getId() {
         return id;
@@ -105,6 +108,14 @@ public class FormalDocumentDTO implements Serializable {
         this.documentAttachmentContentType = documentAttachmentContentType;
     }
 
+    public Set<SchemeDTO> getSchemes() {
+        return schemes;
+    }
+
+    public void setSchemes(Set<SchemeDTO> schemes) {
+        this.schemes = schemes;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) {
@@ -137,6 +148,7 @@ public class FormalDocumentDTO implements Serializable {
             ", documentType='" + getDocumentType() + "'" +
             ", documentStandardNumber='" + getDocumentStandardNumber() + "'" +
             ", documentAttachment='" + getDocumentAttachment() + "'" +
+            ", schemes='" + getSchemes() + "'" +
             "}";
     }
 }

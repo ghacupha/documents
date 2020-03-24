@@ -29,6 +29,13 @@ public interface TransactionDocumentService {
     Page<TransactionDocumentDTO> findAll(Pageable pageable);
 
     /**
+     * Get all the transactionDocuments with eager load of many-to-many relationships.
+     *
+     * @return the list of entities.
+     */
+    Page<TransactionDocumentDTO> findAllWithEagerRelationships(Pageable pageable);
+
+    /**
      * Get the "id" transactionDocument.
      *
      * @param id the id of the entity.

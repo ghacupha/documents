@@ -52,6 +52,8 @@ public class TransactionDocumentCriteria implements Serializable, Criteria {
 
     private StringFilter documentStandardNumber;
 
+    private LongFilter schemesId;
+
     public TransactionDocumentCriteria() {
     }
 
@@ -69,6 +71,7 @@ public class TransactionDocumentCriteria implements Serializable, Criteria {
         this.logisticReferenceNumber = other.logisticReferenceNumber == null ? null : other.logisticReferenceNumber.copy();
         this.memoNumber = other.memoNumber == null ? null : other.memoNumber.copy();
         this.documentStandardNumber = other.documentStandardNumber == null ? null : other.documentStandardNumber.copy();
+        this.schemesId = other.schemesId == null ? null : other.schemesId.copy();
     }
 
     @Override
@@ -180,6 +183,14 @@ public class TransactionDocumentCriteria implements Serializable, Criteria {
         this.documentStandardNumber = documentStandardNumber;
     }
 
+    public LongFilter getSchemesId() {
+        return schemesId;
+    }
+
+    public void setSchemesId(LongFilter schemesId) {
+        this.schemesId = schemesId;
+    }
+
 
     @Override
     public boolean equals(Object o) {
@@ -203,7 +214,8 @@ public class TransactionDocumentCriteria implements Serializable, Criteria {
             Objects.equals(debitNoteNumber, that.debitNoteNumber) &&
             Objects.equals(logisticReferenceNumber, that.logisticReferenceNumber) &&
             Objects.equals(memoNumber, that.memoNumber) &&
-            Objects.equals(documentStandardNumber, that.documentStandardNumber);
+            Objects.equals(documentStandardNumber, that.documentStandardNumber) &&
+            Objects.equals(schemesId, that.schemesId);
     }
 
     @Override
@@ -221,7 +233,8 @@ public class TransactionDocumentCriteria implements Serializable, Criteria {
         debitNoteNumber,
         logisticReferenceNumber,
         memoNumber,
-        documentStandardNumber
+        documentStandardNumber,
+        schemesId
         );
     }
 
@@ -241,6 +254,7 @@ public class TransactionDocumentCriteria implements Serializable, Criteria {
                 (logisticReferenceNumber != null ? "logisticReferenceNumber=" + logisticReferenceNumber + ", " : "") +
                 (memoNumber != null ? "memoNumber=" + memoNumber + ", " : "") +
                 (documentStandardNumber != null ? "documentStandardNumber=" + documentStandardNumber + ", " : "") +
+                (schemesId != null ? "schemesId=" + schemesId + ", " : "") +
             "}";
     }
 

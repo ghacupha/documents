@@ -55,6 +55,7 @@ describe('FormalDocument e2e test', () => {
       formalDocumentUpdatePage.documentTypeSelectLastOption(),
       formalDocumentUpdatePage.setDocumentStandardNumberInput('documentStandardNumber'),
       formalDocumentUpdatePage.setDocumentAttachmentInput(absolutePath)
+      // formalDocumentUpdatePage.schemesSelectLastOption(),
     ]);
 
     expect(await formalDocumentUpdatePage.getDocumentTitleInput()).to.eq(

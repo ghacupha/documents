@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<databaseChangeLog
+    xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.8.xsd">
+    <!--
+        Added the constraints for entity FormalDocument.
+    -->
+    <changeSet id="20200304162857-2" author="jhipster">
+        
+        <addForeignKeyConstraint baseColumnNames="formal_document_id"
+                                 baseTableName="formal_document_schemes"
+                                 constraintName="fk_formal_document_schemes_formal_document_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="formal_document"/>
+
+        <addForeignKeyConstraint baseColumnNames="schemes_id"
+                                 baseTableName="formal_document_schemes"
+                                 constraintName="fk_formal_document_schemes_schemes_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="scheme"/>
+        
+    </changeSet>
+</databaseChangeLog>

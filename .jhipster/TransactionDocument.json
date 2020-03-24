@@ -1,7 +1,16 @@
 {
     "fluentMethods": true,
     "clientRootFolder": "",
-    "relationships": [],
+    "relationships": [
+        {
+            "relationshipName": "schemes",
+            "otherEntityName": "scheme",
+            "relationshipType": "many-to-many",
+            "otherEntityField": "schemeCode",
+            "ownerSide": true,
+            "otherEntityRelationshipName": "transactionDocuments"
+        }
+    ],
     "fields": [
         {
             "fieldName": "transactionNumber",

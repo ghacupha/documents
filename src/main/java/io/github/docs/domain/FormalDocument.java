@@ -9,6 +9,8 @@ import javax.validation.constraints.*;
 import java.io.Serializable;
 import java.util.Objects;
 import java.time.LocalDate;
+import java.util.HashSet;
+import java.util.Set;
 
 import io.github.docs.domain.enumeration.DocumentType;
 
@@ -54,6 +56,13 @@ public class FormalDocument implements Serializable {
 
     @Column(name = "document_attachment_content_type", nullable = false)
     private String documentAttachmentContentType;
+
+    @ManyToMany
+    @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
+    @JoinTable(name = "formal_document_schemes",
+               joinColumns = @JoinColumn(name = "formal_document_id", referencedColumnName = "id"),
+               inverseJoinColumns = @JoinColumn(name = "schemes_id", referencedColumnName = "id"))
+    private Set<Scheme> schemes = new HashSet<>();
 
     // jhipster-needle-entity-add-field - JHipster will add fields here, do not remove
     public Long getId() {
@@ -166,6 +175,31 @@ public class FormalDocument implements Serializable {
 
     public void setDocumentAttachmentContentType(String documentAttachmentContentType) {
         this.documentAttachmentContentType = documentAttachmentContentType;
+    }
+
+    public Set<Scheme> getSchemes() {
+        return schemes;
+    }
+
+    public FormalDocument schemes(Set<Scheme> schemes) {
+        this.schemes = schemes;
+        return this;
+    }
+
+    public FormalDocument addSchemes(Scheme scheme) {
+        this.schemes.add(scheme);
+        scheme.getFormalDocuments().add(this);
+        return this;
+    }
+
+    public FormalDocument removeSchemes(Scheme scheme) {
+        this.schemes.remove(scheme);
+        scheme.getFormalDocuments().remove(this);
+        return this;
+    }
+
+    public void setSchemes(Set<Scheme> schemes) {
+        this.schemes = schemes;
     }
     // jhipster-needle-entity-add-getters-setters - JHipster will add getters and setters here, do not remove
 

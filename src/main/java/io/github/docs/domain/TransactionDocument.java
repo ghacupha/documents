@@ -10,6 +10,8 @@ import java.io.Serializable;
 import java.util.Objects;
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.util.HashSet;
+import java.util.Set;
 
 /**
  * A TransactionDocument.
@@ -71,6 +73,13 @@ public class TransactionDocument implements Serializable {
 
     @Column(name = "transaction_attachment_content_type", nullable = false)
     private String transactionAttachmentContentType;
+
+    @ManyToMany
+    @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
+    @JoinTable(name = "transaction_document_schemes",
+               joinColumns = @JoinColumn(name = "transaction_document_id", referencedColumnName = "id"),
+               inverseJoinColumns = @JoinColumn(name = "schemes_id", referencedColumnName = "id"))
+    private Set<Scheme> schemes = new HashSet<>();
 
     // jhipster-needle-entity-add-field - JHipster will add fields here, do not remove
     public Long getId() {
@@ -261,6 +270,31 @@ public class TransactionDocument implements Serializable {
 
     public void setTransactionAttachmentContentType(String transactionAttachmentContentType) {
         this.transactionAttachmentContentType = transactionAttachmentContentType;
+    }
+
+    public Set<Scheme> getSchemes() {
+        return schemes;
+    }
+
+    public TransactionDocument schemes(Set<Scheme> schemes) {
+        this.schemes = schemes;
+        return this;
+    }
+
+    public TransactionDocument addSchemes(Scheme scheme) {
+        this.schemes.add(scheme);
+        scheme.getTransactionDocuments().add(this);
+        return this;
+    }
+
+    public TransactionDocument removeSchemes(Scheme scheme) {
+        this.schemes.remove(scheme);
+        scheme.getTransactionDocuments().remove(this);
+        return this;
+    }
+
+    public void setSchemes(Set<Scheme> schemes) {
+        this.schemes = schemes;
     }
     // jhipster-needle-entity-add-getters-setters - JHipster will add getters and setters here, do not remove
 

@@ -2,6 +2,7 @@ package io.github.docs.web.rest;
 
 import io.github.docs.DocumentsApp;
 import io.github.docs.domain.FormalDocument;
+import io.github.docs.domain.Scheme;
 import io.github.docs.repository.FormalDocumentRepository;
 import io.github.docs.service.FormalDocumentService;
 import io.github.docs.service.dto.FormalDocumentDTO;
@@ -11,9 +12,14 @@ import io.github.docs.service.FormalDocumentQueryService;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.mockito.Mock;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.http.MediaType;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
@@ -22,10 +28,12 @@ import org.springframework.util.Base64Utils;
 import javax.persistence.EntityManager;
 import java.time.LocalDate;
 import java.time.ZoneId;
+import java.util.ArrayList;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.Matchers.hasItem;
+import static org.mockito.Mockito.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
@@ -34,7 +42,7 @@ import io.github.docs.domain.enumeration.DocumentType;
  * Integration tests for the {@link FormalDocumentResource} REST controller.
  */
 @SpringBootTest(classes = DocumentsApp.class)
-
+@ExtendWith(MockitoExtension.class)
 @AutoConfigureMockMvc
 @WithMockUser
 public class FormalDocumentResourceIT {
@@ -66,8 +74,14 @@ public class FormalDocumentResourceIT {
     @Autowired
     private FormalDocumentRepository formalDocumentRepository;
 
+    @Mock
+    private FormalDocumentRepository formalDocumentRepositoryMock;
+
     @Autowired
     private FormalDocumentMapper formalDocumentMapper;
+
+    @Mock
+    private FormalDocumentService formalDocumentServiceMock;
 
     @Autowired
     private FormalDocumentService formalDocumentService;
@@ -212,6 +226,26 @@ public class FormalDocumentResourceIT {
             .andExpect(jsonPath("$.[*].documentAttachment").value(hasItem(Base64Utils.encodeToString(DEFAULT_DOCUMENT_ATTACHMENT))));
     }
     
+    @SuppressWarnings({"unchecked"})
+    public void getAllFormalDocumentsWithEagerRelationshipsIsEnabled() throws Exception {
+        when(formalDocumentServiceMock.findAllWithEagerRelationships(any())).thenReturn(new PageImpl(new ArrayList<>()));
+
+        restFormalDocumentMockMvc.perform(get("/api/formal-documents?eagerload=true"))
+            .andExpect(status().isOk());
+
+        verify(formalDocumentServiceMock, times(1)).findAllWithEagerRelationships(any());
+    }
+
+    @SuppressWarnings({"unchecked"})
+    public void getAllFormalDocumentsWithEagerRelationshipsIsNotEnabled() throws Exception {
+        when(formalDocumentServiceMock.findAllWithEagerRelationships(any())).thenReturn(new PageImpl(new ArrayList<>()));
+
+        restFormalDocumentMockMvc.perform(get("/api/formal-documents?eagerload=true"))
+            .andExpect(status().isOk());
+
+        verify(formalDocumentServiceMock, times(1)).findAllWithEagerRelationships(any());
+    }
+
     @Test
     @Transactional
     public void getFormalDocument() throws Exception {
@@ -719,6 +753,26 @@ public class FormalDocumentResourceIT {
 
         // Get all the formalDocumentList where documentStandardNumber does not contain UPDATED_DOCUMENT_STANDARD_NUMBER
         defaultFormalDocumentShouldBeFound("documentStandardNumber.doesNotContain=" + UPDATED_DOCUMENT_STANDARD_NUMBER);
+    }
+
+
+    @Test
+    @Transactional
+    public void getAllFormalDocumentsBySchemesIsEqualToSomething() throws Exception {
+        // Initialize the database
+        formalDocumentRepository.saveAndFlush(formalDocument);
+        Scheme schemes = SchemeResourceIT.createEntity(em);
+        em.persist(schemes);
+        em.flush();
+        formalDocument.addSchemes(schemes);
+        formalDocumentRepository.saveAndFlush(formalDocument);
+        Long schemesId = schemes.getId();
+
+        // Get all the formalDocumentList where schemes equals to schemesId
+        defaultFormalDocumentShouldBeFound("schemesId.equals=" + schemesId);
+
+        // Get all the formalDocumentList where schemes equals to schemesId + 1
+        defaultFormalDocumentShouldNotBeFound("schemesId.equals=" + (schemesId + 1));
     }
 
     /**

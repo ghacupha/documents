@@ -1,0 +1,38 @@
+<div class="row justify-content-center">
+    <div class="col-8">
+        <div *ngIf="scheme">
+            <h2><span>Scheme</span> {{ scheme.id }}</h2>
+
+            <hr>
+
+            <gha-alert-error></gha-alert-error>
+
+            <dl class="row-md jh-entity-details">
+                <dt><span>Scheme Name</span></dt>
+                <dd>
+                    <span>{{ scheme.schemeName }}</span>
+                </dd>
+                <dt><span>Scheme Code</span></dt>
+                <dd>
+                    <span>{{ scheme.schemeCode }}</span>
+                </dd>
+                <dt><span>Scheme Description</span></dt>
+                <dd>
+                    <span>{{ scheme.schemeDescription }}</span>
+                </dd>
+            </dl>
+
+            <button type="submit"
+                    (click)="previousState()"
+                    class="btn btn-info">
+                <fa-icon icon="arrow-left"></fa-icon>&nbsp;<span>Back</span>
+            </button>
+
+            <button type="button"
+                    [routerLink]="['/scheme', scheme.id, 'edit']"
+                    class="btn btn-primary">
+                <fa-icon icon="pencil-alt"></fa-icon>&nbsp;<span>Edit</span>
+            </button>
+        </div>
+    </div>
+</div>

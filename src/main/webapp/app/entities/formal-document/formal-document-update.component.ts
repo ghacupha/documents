@@ -9,6 +9,8 @@ import { JhiDataUtils, JhiFileLoadError, JhiEventManager, JhiEventWithContent } 
 import { IFormalDocument, FormalDocument } from 'app/shared/model/formal-document.model';
 import { FormalDocumentService } from './formal-document.service';
 import { AlertError } from 'app/shared/alert/alert-error.model';
+import { IScheme } from 'app/shared/model/scheme.model';
+import { SchemeService } from 'app/entities/scheme/scheme.service';
 
 @Component({
   selector: 'gha-formal-document-update',
@@ -16,6 +18,7 @@ import { AlertError } from 'app/shared/alert/alert-error.model';
 })
 export class FormalDocumentUpdateComponent implements OnInit {
   isSaving = false;
+  schemes: IScheme[] = [];
   documentDateDp: any;
 
   editForm = this.fb.group({
@@ -27,13 +30,15 @@ export class FormalDocumentUpdateComponent implements OnInit {
     documentType: [],
     documentStandardNumber: [],
     documentAttachment: [null, [Validators.required]],
-    documentAttachmentContentType: []
+    documentAttachmentContentType: [],
+    schemes: []
   });
 
   constructor(
     protected dataUtils: JhiDataUtils,
     protected eventManager: JhiEventManager,
     protected formalDocumentService: FormalDocumentService,
+    protected schemeService: SchemeService,
     protected activatedRoute: ActivatedRoute,
     private fb: FormBuilder
   ) {}
@@ -41,6 +46,8 @@ export class FormalDocumentUpdateComponent implements OnInit {
   ngOnInit(): void {
     this.activatedRoute.data.subscribe(({ formalDocument }) => {
       this.updateForm(formalDocument);
+
+      this.schemeService.query().subscribe((res: HttpResponse<IScheme[]>) => (this.schemes = res.body || []));
     });
   }
 
@@ -54,7 +61,8 @@ export class FormalDocumentUpdateComponent implements OnInit {
       documentType: formalDocument.documentType,
       documentStandardNumber: formalDocument.documentStandardNumber,
       documentAttachment: formalDocument.documentAttachment,
-      documentAttachmentContentType: formalDocument.documentAttachmentContentType
+      documentAttachmentContentType: formalDocument.documentAttachmentContentType,
+      schemes: formalDocument.schemes
     });
   }
 
@@ -99,7 +107,8 @@ export class FormalDocumentUpdateComponent implements OnInit {
       documentType: this.editForm.get(['documentType'])!.value,
       documentStandardNumber: this.editForm.get(['documentStandardNumber'])!.value,
       documentAttachmentContentType: this.editForm.get(['documentAttachmentContentType'])!.value,
-      documentAttachment: this.editForm.get(['documentAttachment'])!.value
+      documentAttachment: this.editForm.get(['documentAttachment'])!.value,
+      schemes: this.editForm.get(['schemes'])!.value
     };
   }
 
@@ -117,5 +126,20 @@ export class FormalDocumentUpdateComponent implements OnInit {
 
   protected onSaveError(): void {
     this.isSaving = false;
+  }
+
+  trackById(index: number, item: IScheme): any {
+    return item.id;
+  }
+
+  getSelected(selectedVals: IScheme[], option: IScheme): IScheme {
+    if (selectedVals) {
+      for (let i = 0; i < selectedVals.length; i++) {
+        if (option.id === selectedVals[i].id) {
+          return selectedVals[i];
+        }
+      }
+    }
+    return option;
   }
 }

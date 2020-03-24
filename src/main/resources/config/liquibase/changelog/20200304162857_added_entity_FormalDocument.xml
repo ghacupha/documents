@@ -45,6 +45,17 @@
 
     <changeSet id="20200304162857-1-relations" author="jhipster">
 
+        <createTable tableName="formal_document_schemes">
+            <column name="schemes_id" type="bigint">
+                <constraints nullable="false"/>
+            </column>
+            <column name="formal_document_id" type="bigint">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+
+        <addPrimaryKey columnNames="formal_document_id, schemes_id" tableName="formal_document_schemes"/>
+        
     </changeSet>
     <!-- jhipster-needle-liquibase-add-changeset - JHipster will add changesets here, do not remove-->
 

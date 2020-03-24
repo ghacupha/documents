@@ -1,52 +1,61 @@
 {
-  "fluentMethods": true,
-  "clientRootFolder": "",
-  "relationships": [],
-  "fields": [
-    {
-      "fieldName": "documentTitle",
-      "fieldType": "String",
-      "fieldValidateRules": [
-        "required"
-      ]
-    },
-    {
-      "fieldName": "documentSubject",
-      "fieldType": "String"
-    },
-    {
-      "fieldName": "briefDescription",
-      "fieldType": "String"
-    },
-    {
-      "fieldName": "documentDate",
-      "fieldType": "LocalDate"
-    },
-    {
-      "fieldName": "documentType",
-      "fieldType": "DocumentType",
-      "fieldValues": "CONTRACT,LICENSE,INVOICE,NOTE,RECEIPT,MEMO,TITLE,IDENTITY,INSTRUCTION"
-    },
-    {
-      "fieldName": "documentStandardNumber",
-      "fieldType": "String"
-    },
-    {
-      "fieldName": "documentAttachment",
-      "fieldType": "byte[]",
-      "fieldTypeBlobContent": "any",
-      "fieldValidateRules": [
-        "required"
-      ]
-    }
-  ],
-  "changelogDate": "20200304162857",
-  "dto": "mapstruct",
-  "searchEngine": false,
-  "service": "serviceImpl",
-  "entityTableName": "formal_document",
-  "databaseType": "sql",
-  "readOnly": false,
-  "jpaMetamodelFiltering": true,
-  "pagination": "pagination"
+    "fluentMethods": true,
+    "clientRootFolder": "",
+    "relationships": [
+        {
+            "relationshipName": "schemes",
+            "otherEntityName": "scheme",
+            "relationshipType": "many-to-many",
+            "otherEntityField": "schemeCode",
+            "ownerSide": true,
+            "otherEntityRelationshipName": "formalDocuments"
+        }
+    ],
+    "fields": [
+        {
+            "fieldName": "documentTitle",
+            "fieldType": "String",
+            "fieldValidateRules": [
+                "required"
+            ]
+        },
+        {
+            "fieldName": "documentSubject",
+            "fieldType": "String"
+        },
+        {
+            "fieldName": "briefDescription",
+            "fieldType": "String"
+        },
+        {
+            "fieldName": "documentDate",
+            "fieldType": "LocalDate"
+        },
+        {
+            "fieldName": "documentType",
+            "fieldType": "DocumentType",
+            "fieldValues": "CONTRACT,LICENSE,INVOICE,NOTE,RECEIPT,MEMO,TITLE,IDENTITY,INSTRUCTION"
+        },
+        {
+            "fieldName": "documentStandardNumber",
+            "fieldType": "String"
+        },
+        {
+            "fieldName": "documentAttachment",
+            "fieldType": "byte[]",
+            "fieldTypeBlobContent": "any",
+            "fieldValidateRules": [
+                "required"
+            ]
+        }
+    ],
+    "changelogDate": "20200304162857",
+    "dto": "mapstruct",
+    "searchEngine": false,
+    "service": "serviceImpl",
+    "entityTableName": "formal_document",
+    "databaseType": "sql",
+    "readOnly": false,
+    "jpaMetamodelFiltering": true,
+    "pagination": "pagination"
 }

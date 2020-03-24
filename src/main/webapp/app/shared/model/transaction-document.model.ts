@@ -1,4 +1,5 @@
 import { Moment } from 'moment';
+import { IScheme } from 'app/shared/model/scheme.model';
 
 export interface ITransactionDocument {
   id?: number;
@@ -16,6 +17,7 @@ export interface ITransactionDocument {
   documentStandardNumber?: string;
   transactionAttachmentContentType?: string;
   transactionAttachment?: any;
+  schemes?: IScheme[];
 }
 
 export class TransactionDocument implements ITransactionDocument {
@@ -34,6 +36,7 @@ export class TransactionDocument implements ITransactionDocument {
     public memoNumber?: string,
     public documentStandardNumber?: string,
     public transactionAttachmentContentType?: string,
-    public transactionAttachment?: any
+    public transactionAttachment?: any,
+    public schemes?: IScheme[]
   ) {}
 }

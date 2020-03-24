@@ -90,6 +90,13 @@
                         </small>
                     </div>
                 </div>
+
+                <div class="form-group">
+                    <label for="field_schemes">Schemes</label>
+                    <select class="form-control" id="field_schemes" multiple name="schemes" formControlName="schemes">
+                        <option [ngValue]="getSelected(editForm.get('schemes')!.value, schemeOption)" *ngFor="let schemeOption of schemes; trackBy: trackById">{{ schemeOption.schemeCode }}</option>
+                    </select>
+                </div>
             </div>
 
             <div>

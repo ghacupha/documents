@@ -1,0 +1,56 @@
+<div class="row justify-content-center">
+    <div class="col-8">
+        <form name="editForm" role="form" novalidate (ngSubmit)="save()" [formGroup]="editForm">
+            <h2 id="gha-scheme-heading">Create or edit a Scheme</h2>
+
+            <div>
+                <gha-alert-error></gha-alert-error>
+
+                <div class="form-group" [hidden]="!editForm.get('id')!.value">
+                    <label for="id">ID</label>
+                    <input type="text" class="form-control" id="id" name="id" formControlName="id" readonly />
+                </div>
+
+                <div class="form-group">
+                    <label class="form-control-label" for="field_schemeName">Scheme Name</label>
+                    <input type="text" class="form-control" name="schemeName" id="field_schemeName"
+                           formControlName="schemeName"/>
+                    <div *ngIf="editForm.get('schemeName')!.invalid && (editForm.get('schemeName')!.dirty || editForm.get('schemeName')!.touched)">
+                        <small class="form-text text-danger"
+                               *ngIf="editForm.get('schemeName')?.errors?.required">
+                        This field is required.
+                        </small>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-control-label" for="field_schemeCode">Scheme Code</label>
+                    <input type="text" class="form-control" name="schemeCode" id="field_schemeCode"
+                           formControlName="schemeCode"/>
+                    <div *ngIf="editForm.get('schemeCode')!.invalid && (editForm.get('schemeCode')!.dirty || editForm.get('schemeCode')!.touched)">
+                        <small class="form-text text-danger"
+                               *ngIf="editForm.get('schemeCode')?.errors?.required">
+                        This field is required.
+                        </small>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-control-label" for="field_schemeDescription">Scheme Description</label>
+                    <input type="text" class="form-control" name="schemeDescription" id="field_schemeDescription"
+                           formControlName="schemeDescription"/>
+                </div>
+            </div>
+
+            <div>
+                <button type="button" id="cancel-save" class="btn btn-secondary" (click)="previousState()">
+                    <fa-icon icon="ban"></fa-icon>&nbsp;<span>Cancel</span>
+                </button>
+
+                <button type="submit" id="save-entity" [disabled]="editForm.invalid || isSaving" class="btn btn-primary">
+                    <fa-icon icon="save"></fa-icon>&nbsp;<span>Save</span>
+                </button>
+            </div>
+        </form>
+    </div>
+</div>

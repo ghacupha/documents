@@ -58,6 +58,8 @@ public class FormalDocumentCriteria implements Serializable, Criteria {
 
     private StringFilter documentStandardNumber;
 
+    private LongFilter schemesId;
+
     public FormalDocumentCriteria() {
     }
 
@@ -69,6 +71,7 @@ public class FormalDocumentCriteria implements Serializable, Criteria {
         this.documentDate = other.documentDate == null ? null : other.documentDate.copy();
         this.documentType = other.documentType == null ? null : other.documentType.copy();
         this.documentStandardNumber = other.documentStandardNumber == null ? null : other.documentStandardNumber.copy();
+        this.schemesId = other.schemesId == null ? null : other.schemesId.copy();
     }
 
     @Override
@@ -132,6 +135,14 @@ public class FormalDocumentCriteria implements Serializable, Criteria {
         this.documentStandardNumber = documentStandardNumber;
     }
 
+    public LongFilter getSchemesId() {
+        return schemesId;
+    }
+
+    public void setSchemesId(LongFilter schemesId) {
+        this.schemesId = schemesId;
+    }
+
 
     @Override
     public boolean equals(Object o) {
@@ -149,7 +160,8 @@ public class FormalDocumentCriteria implements Serializable, Criteria {
             Objects.equals(briefDescription, that.briefDescription) &&
             Objects.equals(documentDate, that.documentDate) &&
             Objects.equals(documentType, that.documentType) &&
-            Objects.equals(documentStandardNumber, that.documentStandardNumber);
+            Objects.equals(documentStandardNumber, that.documentStandardNumber) &&
+            Objects.equals(schemesId, that.schemesId);
     }
 
     @Override
@@ -161,7 +173,8 @@ public class FormalDocumentCriteria implements Serializable, Criteria {
         briefDescription,
         documentDate,
         documentType,
-        documentStandardNumber
+        documentStandardNumber,
+        schemesId
         );
     }
 
@@ -175,6 +188,7 @@ public class FormalDocumentCriteria implements Serializable, Criteria {
                 (documentDate != null ? "documentDate=" + documentDate + ", " : "") +
                 (documentType != null ? "documentType=" + documentType + ", " : "") +
                 (documentStandardNumber != null ? "documentStandardNumber=" + documentStandardNumber + ", " : "") +
+                (schemesId != null ? "schemesId=" + schemesId + ", " : "") +
             "}";
     }
 

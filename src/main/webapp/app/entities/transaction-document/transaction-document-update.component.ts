@@ -9,6 +9,8 @@ import { JhiDataUtils, JhiFileLoadError, JhiEventManager, JhiEventWithContent } 
 import { ITransactionDocument, TransactionDocument } from 'app/shared/model/transaction-document.model';
 import { TransactionDocumentService } from './transaction-document.service';
 import { AlertError } from 'app/shared/alert/alert-error.model';
+import { IScheme } from 'app/shared/model/scheme.model';
+import { SchemeService } from 'app/entities/scheme/scheme.service';
 
 @Component({
   selector: 'gha-transaction-document-update',
@@ -16,6 +18,7 @@ import { AlertError } from 'app/shared/alert/alert-error.model';
 })
 export class TransactionDocumentUpdateComponent implements OnInit {
   isSaving = false;
+  schemes: IScheme[] = [];
   transactionDateDp: any;
 
   editForm = this.fb.group({
@@ -33,13 +36,15 @@ export class TransactionDocumentUpdateComponent implements OnInit {
     memoNumber: [],
     documentStandardNumber: [],
     transactionAttachment: [null, [Validators.required]],
-    transactionAttachmentContentType: []
+    transactionAttachmentContentType: [],
+    schemes: []
   });
 
   constructor(
     protected dataUtils: JhiDataUtils,
     protected eventManager: JhiEventManager,
     protected transactionDocumentService: TransactionDocumentService,
+    protected schemeService: SchemeService,
     protected activatedRoute: ActivatedRoute,
     private fb: FormBuilder
   ) {}
@@ -47,6 +52,8 @@ export class TransactionDocumentUpdateComponent implements OnInit {
   ngOnInit(): void {
     this.activatedRoute.data.subscribe(({ transactionDocument }) => {
       this.updateForm(transactionDocument);
+
+      this.schemeService.query().subscribe((res: HttpResponse<IScheme[]>) => (this.schemes = res.body || []));
     });
   }
 
@@ -66,7 +73,8 @@ export class TransactionDocumentUpdateComponent implements OnInit {
       memoNumber: transactionDocument.memoNumber,
       documentStandardNumber: transactionDocument.documentStandardNumber,
       transactionAttachment: transactionDocument.transactionAttachment,
-      transactionAttachmentContentType: transactionDocument.transactionAttachmentContentType
+      transactionAttachmentContentType: transactionDocument.transactionAttachmentContentType,
+      schemes: transactionDocument.schemes
     });
   }
 
@@ -117,7 +125,8 @@ export class TransactionDocumentUpdateComponent implements OnInit {
       memoNumber: this.editForm.get(['memoNumber'])!.value,
       documentStandardNumber: this.editForm.get(['documentStandardNumber'])!.value,
       transactionAttachmentContentType: this.editForm.get(['transactionAttachmentContentType'])!.value,
-      transactionAttachment: this.editForm.get(['transactionAttachment'])!.value
+      transactionAttachment: this.editForm.get(['transactionAttachment'])!.value,
+      schemes: this.editForm.get(['schemes'])!.value
     };
   }
 
@@ -135,5 +144,20 @@ export class TransactionDocumentUpdateComponent implements OnInit {
 
   protected onSaveError(): void {
     this.isSaving = false;
+  }
+
+  trackById(index: number, item: IScheme): any {
+    return item.id;
+  }
+
+  getSelected(selectedVals: IScheme[], option: IScheme): IScheme {
+    if (selectedVals) {
+      for (let i = 0; i < selectedVals.length; i++) {
+        if (option.id === selectedVals[i].id) {
+          return selectedVals[i];
+        }
+      }
+    }
+    return option;
   }
 }

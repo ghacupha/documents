@@ -2,6 +2,7 @@ package io.github.docs.web.rest;
 
 import io.github.docs.DocumentsApp;
 import io.github.docs.domain.TransactionDocument;
+import io.github.docs.domain.Scheme;
 import io.github.docs.repository.TransactionDocumentRepository;
 import io.github.docs.service.TransactionDocumentService;
 import io.github.docs.service.dto.TransactionDocumentDTO;
@@ -11,9 +12,14 @@ import io.github.docs.service.TransactionDocumentQueryService;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.mockito.Mock;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.http.MediaType;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
@@ -23,10 +29,12 @@ import javax.persistence.EntityManager;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.ZoneId;
+import java.util.ArrayList;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.Matchers.hasItem;
+import static org.mockito.Mockito.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
@@ -34,7 +42,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
  * Integration tests for the {@link TransactionDocumentResource} REST controller.
  */
 @SpringBootTest(classes = DocumentsApp.class)
-
+@ExtendWith(MockitoExtension.class)
 @AutoConfigureMockMvc
 @WithMockUser
 public class TransactionDocumentResourceIT {
@@ -85,8 +93,14 @@ public class TransactionDocumentResourceIT {
     @Autowired
     private TransactionDocumentRepository transactionDocumentRepository;
 
+    @Mock
+    private TransactionDocumentRepository transactionDocumentRepositoryMock;
+
     @Autowired
     private TransactionDocumentMapper transactionDocumentMapper;
+
+    @Mock
+    private TransactionDocumentService transactionDocumentServiceMock;
 
     @Autowired
     private TransactionDocumentService transactionDocumentService;
@@ -274,6 +288,26 @@ public class TransactionDocumentResourceIT {
             .andExpect(jsonPath("$.[*].transactionAttachment").value(hasItem(Base64Utils.encodeToString(DEFAULT_TRANSACTION_ATTACHMENT))));
     }
     
+    @SuppressWarnings({"unchecked"})
+    public void getAllTransactionDocumentsWithEagerRelationshipsIsEnabled() throws Exception {
+        when(transactionDocumentServiceMock.findAllWithEagerRelationships(any())).thenReturn(new PageImpl(new ArrayList<>()));
+
+        restTransactionDocumentMockMvc.perform(get("/api/transaction-documents?eagerload=true"))
+            .andExpect(status().isOk());
+
+        verify(transactionDocumentServiceMock, times(1)).findAllWithEagerRelationships(any());
+    }
+
+    @SuppressWarnings({"unchecked"})
+    public void getAllTransactionDocumentsWithEagerRelationshipsIsNotEnabled() throws Exception {
+        when(transactionDocumentServiceMock.findAllWithEagerRelationships(any())).thenReturn(new PageImpl(new ArrayList<>()));
+
+        restTransactionDocumentMockMvc.perform(get("/api/transaction-documents?eagerload=true"))
+            .andExpect(status().isOk());
+
+        verify(transactionDocumentServiceMock, times(1)).findAllWithEagerRelationships(any());
+    }
+
     @Test
     @Transactional
     public void getTransactionDocument() throws Exception {
@@ -1308,6 +1342,26 @@ public class TransactionDocumentResourceIT {
 
         // Get all the transactionDocumentList where documentStandardNumber does not contain UPDATED_DOCUMENT_STANDARD_NUMBER
         defaultTransactionDocumentShouldBeFound("documentStandardNumber.doesNotContain=" + UPDATED_DOCUMENT_STANDARD_NUMBER);
+    }
+
+
+    @Test
+    @Transactional
+    public void getAllTransactionDocumentsBySchemesIsEqualToSomething() throws Exception {
+        // Initialize the database
+        transactionDocumentRepository.saveAndFlush(transactionDocument);
+        Scheme schemes = SchemeResourceIT.createEntity(em);
+        em.persist(schemes);
+        em.flush();
+        transactionDocument.addSchemes(schemes);
+        transactionDocumentRepository.saveAndFlush(transactionDocument);
+        Long schemesId = schemes.getId();
+
+        // Get all the transactionDocumentList where schemes equals to schemesId
+        defaultTransactionDocumentShouldBeFound("schemesId.equals=" + schemesId);
+
+        // Get all the transactionDocumentList where schemes equals to schemesId + 1
+        defaultTransactionDocumentShouldNotBeFound("schemesId.equals=" + (schemesId + 1));
     }
 
     /**

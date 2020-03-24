@@ -62,6 +62,15 @@ public class FormalDocumentServiceImpl implements FormalDocumentService {
     }
 
     /**
+     * Get all the formalDocuments with eager load of many-to-many relationships.
+     *
+     * @return the list of entities.
+     */
+    public Page<FormalDocumentDTO> findAllWithEagerRelationships(Pageable pageable) {
+        return formalDocumentRepository.findAllWithEagerRelationships(pageable).map(formalDocumentMapper::toDto);
+    }
+
+    /**
      * Get one formalDocument by id.
      *
      * @param id the id of the entity.
@@ -71,7 +80,7 @@ public class FormalDocumentServiceImpl implements FormalDocumentService {
     @Transactional(readOnly = true)
     public Optional<FormalDocumentDTO> findOne(Long id) {
         log.debug("Request to get FormalDocument : {}", id);
-        return formalDocumentRepository.findById(id)
+        return formalDocumentRepository.findOneWithEagerRelationships(id)
             .map(formalDocumentMapper::toDto);
     }
 

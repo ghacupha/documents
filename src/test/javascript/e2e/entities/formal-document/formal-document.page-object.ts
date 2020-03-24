@@ -37,6 +37,8 @@ export class FormalDocumentUpdatePage {
   documentStandardNumberInput = element(by.id('field_documentStandardNumber'));
   documentAttachmentInput = element(by.id('file_documentAttachment'));
 
+  schemesSelect = element(by.id('field_schemes'));
+
   async getPageTitle(): Promise<string> {
     return this.pageTitle.getText();
   }
@@ -102,6 +104,25 @@ export class FormalDocumentUpdatePage {
 
   async getDocumentAttachmentInput(): Promise<string> {
     return await this.documentAttachmentInput.getAttribute('value');
+  }
+
+  async schemesSelectLastOption(): Promise<void> {
+    await this.schemesSelect
+      .all(by.tagName('option'))
+      .last()
+      .click();
+  }
+
+  async schemesSelectOption(option: string): Promise<void> {
+    await this.schemesSelect.sendKeys(option);
+  }
+
+  getSchemesSelect(): ElementFinder {
+    return this.schemesSelect;
+  }
+
+  async getSchemesSelectedOption(): Promise<string> {
+    return await this.schemesSelect.element(by.css('option:checked')).getText();
   }
 
   async save(): Promise<void> {

@@ -4,6 +4,8 @@ import java.time.LocalDate;
 import javax.validation.constraints.*;
 import java.io.Serializable;
 import java.math.BigDecimal;
+import java.util.HashSet;
+import java.util.Set;
 import java.util.Objects;
 import javax.persistence.Lob;
 
@@ -45,6 +47,7 @@ public class TransactionDocumentDTO implements Serializable {
     private byte[] transactionAttachment;
 
     private String transactionAttachmentContentType;
+    private Set<SchemeDTO> schemes = new HashSet<>();
     
     public Long getId() {
         return id;
@@ -166,6 +169,14 @@ public class TransactionDocumentDTO implements Serializable {
         this.transactionAttachmentContentType = transactionAttachmentContentType;
     }
 
+    public Set<SchemeDTO> getSchemes() {
+        return schemes;
+    }
+
+    public void setSchemes(Set<SchemeDTO> schemes) {
+        this.schemes = schemes;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) {
@@ -204,6 +215,7 @@ public class TransactionDocumentDTO implements Serializable {
             ", memoNumber='" + getMemoNumber() + "'" +
             ", documentStandardNumber='" + getDocumentStandardNumber() + "'" +
             ", transactionAttachment='" + getTransactionAttachment() + "'" +
+            ", schemes='" + getSchemes() + "'" +
             "}";
     }
 }

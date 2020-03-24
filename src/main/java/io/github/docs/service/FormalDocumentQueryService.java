@@ -109,6 +109,10 @@ public class FormalDocumentQueryService extends QueryService<FormalDocument> {
             if (criteria.getDocumentStandardNumber() != null) {
                 specification = specification.and(buildStringSpecification(criteria.getDocumentStandardNumber(), FormalDocument_.documentStandardNumber));
             }
+            if (criteria.getSchemesId() != null) {
+                specification = specification.and(buildSpecification(criteria.getSchemesId(),
+                    root -> root.join(FormalDocument_.schemes, JoinType.LEFT).get(Scheme_.id)));
+            }
         }
         return specification;
     }

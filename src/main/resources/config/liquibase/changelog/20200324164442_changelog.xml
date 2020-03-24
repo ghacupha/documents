@@ -1,0 +1,58 @@
+<?xml version="1.1" encoding="UTF-8" standalone="no"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog" xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext" xmlns:pro="http://www.liquibase.org/xml/ns/pro" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd http://www.liquibase.org/xml/ns/pro http://www.liquibase.org/xml/ns/pro/liquibase-pro-3.8.xsd http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.8.xsd">
+    <changeSet author="edwin.njeru (generated)" id="1585068393759-2">
+        <createTable tableName="formal_document_schemes">
+            <column name="formal_document_id" type="BIGINT">
+                <constraints nullable="false" primaryKey="true"/>
+            </column>
+            <column name="schemes_id" type="BIGINT">
+                <constraints nullable="false" primaryKey="true"/>
+            </column>
+        </createTable>
+    </changeSet>
+    <changeSet author="edwin.njeru (generated)" id="1585068393759-3">
+        <createTable tableName="scheme">
+            <column autoIncrement="true" name="id" type="BIGINT">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="schemePK"/>
+            </column>
+            <column name="scheme_code" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="scheme_description" type="VARCHAR(255)"/>
+            <column name="scheme_name" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+    <changeSet author="edwin.njeru (generated)" id="1585068393759-4">
+        <createTable tableName="transaction_document_schemes">
+            <column name="transaction_document_id" type="BIGINT">
+                <constraints nullable="false" primaryKey="true"/>
+            </column>
+            <column name="schemes_id" type="BIGINT">
+                <constraints nullable="false" primaryKey="true"/>
+            </column>
+        </createTable>
+    </changeSet>
+    <changeSet author="edwin.njeru (generated)" id="1585068393759-5">
+        <addUniqueConstraint columnNames="scheme_code" constraintName="UC_SCHEMESCHEME_CODE_COL" tableName="scheme"/>
+    </changeSet>
+    <changeSet author="edwin.njeru (generated)" id="1585068393759-6">
+        <addUniqueConstraint columnNames="scheme_name" constraintName="UC_SCHEMESCHEME_NAME_COL" tableName="scheme"/>
+    </changeSet>
+    <changeSet author="edwin.njeru (generated)" id="1585068393759-7">
+        <addForeignKeyConstraint baseColumnNames="formal_document_id" baseTableName="formal_document_schemes" constraintName="FK36tpqcmqh5ql11pwai2fsb99x" deferrable="false" initiallyDeferred="false" referencedColumnNames="id" referencedTableName="formal_document" validate="true"/>
+    </changeSet>
+    <changeSet author="edwin.njeru (generated)" id="1585068393759-8">
+        <addForeignKeyConstraint baseColumnNames="transaction_document_id" baseTableName="transaction_document_schemes" constraintName="FK5418845tlik14wx5kvbodi8gf" deferrable="false" initiallyDeferred="false" referencedColumnNames="id" referencedTableName="transaction_document" validate="true"/>
+    </changeSet>
+    <changeSet author="edwin.njeru (generated)" id="1585068393759-9">
+        <addForeignKeyConstraint baseColumnNames="schemes_id" baseTableName="transaction_document_schemes" constraintName="FK5v4nwbfbqcx62le50y71957wb" deferrable="false" initiallyDeferred="false" referencedColumnNames="id" referencedTableName="scheme" validate="true"/>
+    </changeSet>
+    <changeSet author="edwin.njeru (generated)" id="1585068393759-10">
+        <addForeignKeyConstraint baseColumnNames="schemes_id" baseTableName="formal_document_schemes" constraintName="FKkkg1ggj8hp6yrbykfd41uwoyp" deferrable="false" initiallyDeferred="false" referencedColumnNames="id" referencedTableName="scheme" validate="true"/>
+    </changeSet>
+    <changeSet author="edwin.njeru (generated)" id="1585068393759-1">
+        <alterSequence sequenceName="sequence_generator"/>
+    </changeSet>
+</databaseChangeLog>

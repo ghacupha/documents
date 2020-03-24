@@ -29,6 +29,13 @@ public interface FormalDocumentService {
     Page<FormalDocumentDTO> findAll(Pageable pageable);
 
     /**
+     * Get all the formalDocuments with eager load of many-to-many relationships.
+     *
+     * @return the list of entities.
+     */
+    Page<FormalDocumentDTO> findAllWithEagerRelationships(Pageable pageable);
+
+    /**
      * Get the "id" formalDocument.
      *
      * @param id the id of the entity.

@@ -39,6 +39,12 @@
                         {{ formalDocument.documentAttachmentContentType }}, {{ byteSize(formalDocument.documentAttachment) }}
                     </div>
                 </dd>
+                <dt><span>Schemes</span></dt>
+                <dd>
+                    <span *ngFor="let schemes of formalDocument.schemes; let last = last">
+                        <a [routerLink]="['/scheme', schemes?.id, 'view']">{{ schemes.schemeCode }}</a>{{ last ? '' : ', ' }}
+                    </span>
+                </dd>
             </dl>
 
             <button type="submit"

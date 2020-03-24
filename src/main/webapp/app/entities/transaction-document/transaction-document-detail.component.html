@@ -63,6 +63,12 @@
                         {{ transactionDocument.transactionAttachmentContentType }}, {{ byteSize(transactionDocument.transactionAttachment) }}
                     </div>
                 </dd>
+                <dt><span>Schemes</span></dt>
+                <dd>
+                    <span *ngFor="let schemes of transactionDocument.schemes; let last = last">
+                        <a [routerLink]="['/scheme', schemes?.id, 'view']">{{ schemes.schemeCode }}</a>{{ last ? '' : ', ' }}
+                    </span>
+                </dd>
             </dl>
 
             <button type="submit"
