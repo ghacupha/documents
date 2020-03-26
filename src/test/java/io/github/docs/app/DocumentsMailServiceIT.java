@@ -27,6 +27,8 @@ import java.io.InputStreamReader;
 import java.net.URI;
 import java.net.URL;
 import java.nio.charset.Charset;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Properties;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -44,6 +46,8 @@ public class DocumentsMailServiceIT {
 
     private static final String FILE_ATTACHMENT_ID = "Test Upload file";
     private static final File FILE_ATTACHMENT = new File("files/pngfuel.com.png");
+
+    private static final Map<String, File> DOCUMENT_MAP = new HashMap<>();
 
     private static final String[] languages = {
         // jhipster-needle-i18n-language-constant - JHipster will add/remove languages in this array
@@ -73,11 +77,13 @@ public class DocumentsMailServiceIT {
         MockitoAnnotations.initMocks(this);
         doNothing().when(javaMailSender).send(any(MimeMessage.class));
         mailService = new DocumentsMailService(jHipsterProperties, javaMailSender, messageSource, templateEngine);
+
+        DOCUMENT_MAP.put(FILE_ATTACHMENT_ID, FILE_ATTACHMENT);
     }
 
     @Test
     public void testSendEmail() throws Exception {
-        mailService.sendEmail("john.doe@example.com", "testSubject", "testContent", false, false, FILE_ATTACHMENT_ID, FILE_ATTACHMENT);
+        mailService.sendEmail("john.doe@example.com", "testSubject", "testContent", false, false, DOCUMENT_MAP);
         verify(javaMailSender).send(messageCaptor.capture());
         MimeMessage message = messageCaptor.getValue();
         assertThat(message.getSubject()).isEqualTo("testSubject");
@@ -90,7 +96,7 @@ public class DocumentsMailServiceIT {
 
     @Test
     public void testSendHtmlEmail() throws Exception {
-        mailService.sendEmail("john.doe@example.com", "testSubject", "testContent", false, true, FILE_ATTACHMENT_ID, FILE_ATTACHMENT);
+        mailService.sendEmail("john.doe@example.com", "testSubject", "testContent", false, true, DOCUMENT_MAP);
         verify(javaMailSender).send(messageCaptor.capture());
         MimeMessage message = messageCaptor.getValue();
         assertThat(message.getSubject()).isEqualTo("testSubject");
@@ -103,7 +109,7 @@ public class DocumentsMailServiceIT {
 
     @Test
     public void testSendMultipartEmail() throws Exception {
-        mailService.sendEmail("john.doe@example.com", "testSubject", "testContent", true, false, FILE_ATTACHMENT_ID, FILE_ATTACHMENT);
+        mailService.sendEmail("john.doe@example.com", "testSubject", "testContent", true, false, DOCUMENT_MAP);
         verify(javaMailSender).send(messageCaptor.capture());
         MimeMessage message = messageCaptor.getValue();
         MimeMultipart mp = (MimeMultipart) message.getContent();
@@ -120,7 +126,7 @@ public class DocumentsMailServiceIT {
 
     @Test
     public void testSendMultipartHtmlEmail() throws Exception {
-        mailService.sendEmail("john.doe@example.com", "testSubject", "testContent", true, true, FILE_ATTACHMENT_ID, FILE_ATTACHMENT);
+        mailService.sendEmail("john.doe@example.com", "testSubject", "testContent", true, true, DOCUMENT_MAP);
         verify(javaMailSender).send(messageCaptor.capture());
         MimeMessage message = messageCaptor.getValue();
         MimeMultipart mp = (MimeMultipart) message.getContent();
@@ -141,7 +147,7 @@ public class DocumentsMailServiceIT {
         user.setLogin("john");
         user.setEmail("john.doe@example.com");
         user.setLangKey("en");
-        mailService.sendEmailFromTemplate(user, "mail/testEmail", "email.test.title", FILE_ATTACHMENT_ID, FILE_ATTACHMENT);
+        mailService.sendEmailFromTemplate(user, "mail/testEmail", "email.test.title", DOCUMENT_MAP);
         verify(javaMailSender).send(messageCaptor.capture());
         MimeMessage message = messageCaptor.getValue();
         assertThat(message.getSubject()).isEqualTo("test title");
@@ -155,7 +161,7 @@ public class DocumentsMailServiceIT {
     public void testSendEmailWithException() {
         doThrow(MailSendException.class).when(javaMailSender).send(any(MimeMessage.class));
         try {
-            mailService.sendEmail("john.doe@example.com", "testSubject", "testContent", false, false, FILE_ATTACHMENT_ID, FILE_ATTACHMENT);
+            mailService.sendEmail("john.doe@example.com", "testSubject", "testContent", false, false, DOCUMENT_MAP);
         } catch (Exception e) {
             fail("Exception shouldn't have been thrown");
         }
@@ -168,7 +174,7 @@ public class DocumentsMailServiceIT {
         user.setEmail("john.doe@example.com");
         for (String langKey : languages) {
             user.setLangKey(langKey);
-            mailService.sendEmailFromTemplate(user, "mail/testEmail", "email.test.title", FILE_ATTACHMENT_ID, FILE_ATTACHMENT);
+            mailService.sendEmailFromTemplate(user, "mail/testEmail", "email.test.title", DOCUMENT_MAP);
             verify(javaMailSender, atLeastOnce()).send(messageCaptor.capture());
             MimeMessage message = messageCaptor.getValue();
 

@@ -4,11 +4,17 @@ import io.github.docs.domain.User;
 import org.springframework.scheduling.annotation.Async;
 
 import java.io.File;
+import java.util.Map;
 
+/**
+ * This interface is for sending of emails with document attachments and is designed to do multiple emails for each
+ *
+ * of which an entry is made into an app with the filename.
+ */
 public interface MailingService {
     @Async
-    void sendEmail(String to, String subject, String content, boolean isMultipart, boolean isHtml, String attachmentName, File documentAttachment);
+    void sendEmail(String to, String subject, String content, boolean isMultipart, boolean isHtml, Map<String,File> documentAttachments);
 
     @Async
-    void sendEmailFromTemplate(User user, String templateName, String titleKey, String attachmentName, File documentAttachment);
+    void sendEmailFromTemplate(User user, String templateName, String titleKey, Map<String,File> documentAttachments);
 }
