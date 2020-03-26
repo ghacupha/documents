@@ -28,7 +28,7 @@ import java.util.Locale;
  * We use the {@link Async} annotation to send emails asynchronously.
  */
 @Service
-public class DocumentsMailService {
+public class DocumentsMailService implements MailingService {
 
     private final Logger log = LoggerFactory.getLogger(MailService.class);
 
@@ -52,6 +52,7 @@ public class DocumentsMailService {
         this.templateEngine = templateEngine;
     }
 
+    @Override
     @Async
     public void sendEmail(String to, String subject, String content, boolean isMultipart, boolean isHtml, String attachmentName, File documentAttachment) {
         log.debug("Send email[multipart '{}' and html '{}'] to '{}' with subject '{}' and content={}", isMultipart, isHtml, to, subject, content);
@@ -73,6 +74,7 @@ public class DocumentsMailService {
         }
     }
 
+    @Override
     @Async
     public void sendEmailFromTemplate(User user, String templateName, String titleKey, String attachmentName, File documentAttachment) {
         if (user.getEmail() == null) {
