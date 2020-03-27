@@ -80,7 +80,7 @@ public class DocumentsMailService implements MailingService {
 
     @Override
     @Async
-    public void sendEmailFromTemplate(User user, String templateName, String titleKey, Map<String,File> documentAttachments) {
+    public void sendAttachmentFromTemplate(User user, String templateName, String titleKey, Map<String,File> documentAttachments) {
         if (user.getEmail() == null) {
             log.debug("Email doesn't exist for user '{}'", user.getLogin());
             return;
@@ -92,6 +92,22 @@ public class DocumentsMailService implements MailingService {
         String content = templateEngine.process(templateName, context);
         String subject = messageSource.getMessage(titleKey, null, locale);
         sendEmail(user.getEmail(), subject, content, false, true,documentAttachments);
+    }
+
+    @Override
+    @Async
+    public void sendAttachmentFromTemplate(String email, String templateName, String titleKey, Map<String,File> documentAttachments) {
+//        if (user.getEmail() == null) {
+//            log.debug("Email doesn't exist for user '{}'", user.getLogin());
+//            return;
+//        }
+//        Locale locale = Locale.forLanguageTag(user.getLangKey());
+        Context context = new Context();
+        context.setVariable(USER, email);
+        context.setVariable(BASE_URL, jHipsterProperties.getMail().getBaseUrl());
+        String content = templateEngine.process(templateName, context);
+        String subject = messageSource.getMessage(titleKey, null, Locale.ENGLISH);
+        sendEmail(email, subject, content, true, true,documentAttachments);
     }
 
 }

@@ -147,7 +147,7 @@ public class DocumentsMailServiceIT {
         user.setLogin("john");
         user.setEmail("john.doe@example.com");
         user.setLangKey("en");
-        mailService.sendEmailFromTemplate(user, "mail/testEmail", "email.test.title", DOCUMENT_MAP);
+        mailService.sendAttachmentFromTemplate(user, "mail/testEmail", "email.test.title", DOCUMENT_MAP);
         verify(javaMailSender).send(messageCaptor.capture());
         MimeMessage message = messageCaptor.getValue();
         assertThat(message.getSubject()).isEqualTo("test title");
@@ -174,7 +174,7 @@ public class DocumentsMailServiceIT {
         user.setEmail("john.doe@example.com");
         for (String langKey : languages) {
             user.setLangKey(langKey);
-            mailService.sendEmailFromTemplate(user, "mail/testEmail", "email.test.title", DOCUMENT_MAP);
+            mailService.sendAttachmentFromTemplate(user, "mail/testEmail", "email.test.title", DOCUMENT_MAP);
             verify(javaMailSender, atLeastOnce()).send(messageCaptor.capture());
             MimeMessage message = messageCaptor.getValue();
 
