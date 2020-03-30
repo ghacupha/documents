@@ -17,6 +17,7 @@ export interface ITransactionDocument {
   documentStandardNumber?: string;
   transactionAttachmentContentType?: string;
   transactionAttachment?: any;
+  filename?: string;
   schemes?: IScheme[];
 }
 
@@ -37,6 +38,7 @@ export class TransactionDocument implements ITransactionDocument {
     public documentStandardNumber?: string,
     public transactionAttachmentContentType?: string,
     public transactionAttachment?: any,
+    public filename?: string,
     public schemes?: IScheme[]
   ) {}
 }

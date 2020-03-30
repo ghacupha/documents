@@ -36,6 +36,7 @@
                     <th scope="col"  jhiSortBy="memoNumber"><span>Memo Number</span> <fa-icon icon="sort"></fa-icon></th>
                     <th scope="col"  jhiSortBy="documentStandardNumber"><span>Document Standard Number</span> <fa-icon icon="sort"></fa-icon></th>
                     <th scope="col"  jhiSortBy="transactionAttachment"><span>Transaction Attachment</span> <fa-icon icon="sort"></fa-icon></th>
+                    <th scope="col"  jhiSortBy="filename"><span>Filename</span> <fa-icon icon="sort"></fa-icon></th>
                     <th scope="col"></th>
                 </tr>
             </thead>
@@ -58,6 +59,7 @@
                         <a *ngIf="transactionDocument.transactionAttachment" (click)="openFile(transactionDocument.transactionAttachmentContentType, transactionDocument.transactionAttachment)">open</a>
                         <span *ngIf="transactionDocument.transactionAttachment">{{ transactionDocument.transactionAttachmentContentType }}, {{ byteSize(transactionDocument.transactionAttachment) }}</span>
                     </td>
+                    <td>{{ transactionDocument.filename }}</td>
                     <td class="text-right">
                         <div class="btn-group">
                             <button type="submit"

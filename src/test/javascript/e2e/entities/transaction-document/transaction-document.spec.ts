@@ -64,7 +64,8 @@ describe('TransactionDocument e2e test', () => {
       transactionDocumentUpdatePage.setLogisticReferenceNumberInput('logisticReferenceNumber'),
       transactionDocumentUpdatePage.setMemoNumberInput('memoNumber'),
       transactionDocumentUpdatePage.setDocumentStandardNumberInput('documentStandardNumber'),
-      transactionDocumentUpdatePage.setTransactionAttachmentInput(absolutePath)
+      transactionDocumentUpdatePage.setTransactionAttachmentInput(absolutePath),
+      transactionDocumentUpdatePage.setFilenameInput('filename')
       // transactionDocumentUpdatePage.schemesSelectLastOption(),
     ]);
 
@@ -120,6 +121,7 @@ describe('TransactionDocument e2e test', () => {
       fileNameToUpload,
       'Expected TransactionAttachment value to be end with ' + fileNameToUpload
     );
+    expect(await transactionDocumentUpdatePage.getFilenameInput()).to.eq('filename', 'Expected Filename value to be equals to filename');
 
     await transactionDocumentUpdatePage.save();
     expect(await transactionDocumentUpdatePage.getSaveButton().isPresent(), 'Expected save button disappear').to.be.false;

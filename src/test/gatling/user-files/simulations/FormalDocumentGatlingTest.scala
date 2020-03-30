@@ -79,6 +79,7 @@ class FormalDocumentGatlingTest extends Simulation {
                 , "documentType":"CONTRACT"
                 , "documentStandardNumber":"SAMPLE_TEXT"
                 , "documentAttachment":null
+                , "filename":"SAMPLE_TEXT"
                 }""")).asJson
             .check(status.is(201))
             .check(headerRegex("Location", "(.*)").saveAs("new_formalDocument_url"))).exitHereIfFailed

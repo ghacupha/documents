@@ -58,6 +58,8 @@ public class FormalDocumentCriteria implements Serializable, Criteria {
 
     private StringFilter documentStandardNumber;
 
+    private StringFilter filename;
+
     private LongFilter schemesId;
 
     public FormalDocumentCriteria() {
@@ -71,6 +73,7 @@ public class FormalDocumentCriteria implements Serializable, Criteria {
         this.documentDate = other.documentDate == null ? null : other.documentDate.copy();
         this.documentType = other.documentType == null ? null : other.documentType.copy();
         this.documentStandardNumber = other.documentStandardNumber == null ? null : other.documentStandardNumber.copy();
+        this.filename = other.filename == null ? null : other.filename.copy();
         this.schemesId = other.schemesId == null ? null : other.schemesId.copy();
     }
 
@@ -135,6 +138,14 @@ public class FormalDocumentCriteria implements Serializable, Criteria {
         this.documentStandardNumber = documentStandardNumber;
     }
 
+    public StringFilter getFilename() {
+        return filename;
+    }
+
+    public void setFilename(StringFilter filename) {
+        this.filename = filename;
+    }
+
     public LongFilter getSchemesId() {
         return schemesId;
     }
@@ -161,6 +172,7 @@ public class FormalDocumentCriteria implements Serializable, Criteria {
             Objects.equals(documentDate, that.documentDate) &&
             Objects.equals(documentType, that.documentType) &&
             Objects.equals(documentStandardNumber, that.documentStandardNumber) &&
+            Objects.equals(filename, that.filename) &&
             Objects.equals(schemesId, that.schemesId);
     }
 
@@ -174,6 +186,7 @@ public class FormalDocumentCriteria implements Serializable, Criteria {
         documentDate,
         documentType,
         documentStandardNumber,
+        filename,
         schemesId
         );
     }
@@ -188,6 +201,7 @@ public class FormalDocumentCriteria implements Serializable, Criteria {
                 (documentDate != null ? "documentDate=" + documentDate + ", " : "") +
                 (documentType != null ? "documentType=" + documentType + ", " : "") +
                 (documentStandardNumber != null ? "documentStandardNumber=" + documentStandardNumber + ", " : "") +
+                (filename != null ? "filename=" + filename + ", " : "") +
                 (schemesId != null ? "schemesId=" + schemesId + ", " : "") +
             "}";
     }

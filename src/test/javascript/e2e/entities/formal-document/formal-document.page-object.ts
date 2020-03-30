@@ -36,6 +36,7 @@ export class FormalDocumentUpdatePage {
   documentTypeSelect = element(by.id('field_documentType'));
   documentStandardNumberInput = element(by.id('field_documentStandardNumber'));
   documentAttachmentInput = element(by.id('file_documentAttachment'));
+  filenameInput = element(by.id('field_filename'));
 
   schemesSelect = element(by.id('field_schemes'));
 
@@ -104,6 +105,14 @@ export class FormalDocumentUpdatePage {
 
   async getDocumentAttachmentInput(): Promise<string> {
     return await this.documentAttachmentInput.getAttribute('value');
+  }
+
+  async setFilenameInput(filename: string): Promise<void> {
+    await this.filenameInput.sendKeys(filename);
+  }
+
+  async getFilenameInput(): Promise<string> {
+    return await this.filenameInput.getAttribute('value');
   }
 
   async schemesSelectLastOption(): Promise<void> {

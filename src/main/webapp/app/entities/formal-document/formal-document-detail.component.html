@@ -39,6 +39,10 @@
                         {{ formalDocument.documentAttachmentContentType }}, {{ byteSize(formalDocument.documentAttachment) }}
                     </div>
                 </dd>
+                <dt><span>Filename</span></dt>
+                <dd>
+                    <span>{{ formalDocument.filename }}</span>
+                </dd>
                 <dt><span>Schemes</span></dt>
                 <dd>
                     <span *ngFor="let schemes of formalDocument.schemes; let last = last">

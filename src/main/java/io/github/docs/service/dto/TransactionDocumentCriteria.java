@@ -52,6 +52,8 @@ public class TransactionDocumentCriteria implements Serializable, Criteria {
 
     private StringFilter documentStandardNumber;
 
+    private StringFilter filename;
+
     private LongFilter schemesId;
 
     public TransactionDocumentCriteria() {
@@ -71,6 +73,7 @@ public class TransactionDocumentCriteria implements Serializable, Criteria {
         this.logisticReferenceNumber = other.logisticReferenceNumber == null ? null : other.logisticReferenceNumber.copy();
         this.memoNumber = other.memoNumber == null ? null : other.memoNumber.copy();
         this.documentStandardNumber = other.documentStandardNumber == null ? null : other.documentStandardNumber.copy();
+        this.filename = other.filename == null ? null : other.filename.copy();
         this.schemesId = other.schemesId == null ? null : other.schemesId.copy();
     }
 
@@ -183,6 +186,14 @@ public class TransactionDocumentCriteria implements Serializable, Criteria {
         this.documentStandardNumber = documentStandardNumber;
     }
 
+    public StringFilter getFilename() {
+        return filename;
+    }
+
+    public void setFilename(StringFilter filename) {
+        this.filename = filename;
+    }
+
     public LongFilter getSchemesId() {
         return schemesId;
     }
@@ -215,6 +226,7 @@ public class TransactionDocumentCriteria implements Serializable, Criteria {
             Objects.equals(logisticReferenceNumber, that.logisticReferenceNumber) &&
             Objects.equals(memoNumber, that.memoNumber) &&
             Objects.equals(documentStandardNumber, that.documentStandardNumber) &&
+            Objects.equals(filename, that.filename) &&
             Objects.equals(schemesId, that.schemesId);
     }
 
@@ -234,6 +246,7 @@ public class TransactionDocumentCriteria implements Serializable, Criteria {
         logisticReferenceNumber,
         memoNumber,
         documentStandardNumber,
+        filename,
         schemesId
         );
     }
@@ -254,6 +267,7 @@ public class TransactionDocumentCriteria implements Serializable, Criteria {
                 (logisticReferenceNumber != null ? "logisticReferenceNumber=" + logisticReferenceNumber + ", " : "") +
                 (memoNumber != null ? "memoNumber=" + memoNumber + ", " : "") +
                 (documentStandardNumber != null ? "documentStandardNumber=" + documentStandardNumber + ", " : "") +
+                (filename != null ? "filename=" + filename + ", " : "") +
                 (schemesId != null ? "schemesId=" + schemesId + ", " : "") +
             "}";
     }

@@ -71,6 +71,9 @@ public class FormalDocumentResourceIT {
     private static final String DEFAULT_DOCUMENT_ATTACHMENT_CONTENT_TYPE = "image/jpg";
     private static final String UPDATED_DOCUMENT_ATTACHMENT_CONTENT_TYPE = "image/png";
 
+    private static final String DEFAULT_FILENAME = "AAAAAAAAAA";
+    private static final String UPDATED_FILENAME = "BBBBBBBBBB";
+
     @Autowired
     private FormalDocumentRepository formalDocumentRepository;
 
@@ -112,7 +115,8 @@ public class FormalDocumentResourceIT {
             .documentType(DEFAULT_DOCUMENT_TYPE)
             .documentStandardNumber(DEFAULT_DOCUMENT_STANDARD_NUMBER)
             .documentAttachment(DEFAULT_DOCUMENT_ATTACHMENT)
-            .documentAttachmentContentType(DEFAULT_DOCUMENT_ATTACHMENT_CONTENT_TYPE);
+            .documentAttachmentContentType(DEFAULT_DOCUMENT_ATTACHMENT_CONTENT_TYPE)
+            .filename(DEFAULT_FILENAME);
         return formalDocument;
     }
     /**
@@ -130,7 +134,8 @@ public class FormalDocumentResourceIT {
             .documentType(UPDATED_DOCUMENT_TYPE)
             .documentStandardNumber(UPDATED_DOCUMENT_STANDARD_NUMBER)
             .documentAttachment(UPDATED_DOCUMENT_ATTACHMENT)
-            .documentAttachmentContentType(UPDATED_DOCUMENT_ATTACHMENT_CONTENT_TYPE);
+            .documentAttachmentContentType(UPDATED_DOCUMENT_ATTACHMENT_CONTENT_TYPE)
+            .filename(UPDATED_FILENAME);
         return formalDocument;
     }
 
@@ -163,6 +168,7 @@ public class FormalDocumentResourceIT {
         assertThat(testFormalDocument.getDocumentStandardNumber()).isEqualTo(DEFAULT_DOCUMENT_STANDARD_NUMBER);
         assertThat(testFormalDocument.getDocumentAttachment()).isEqualTo(DEFAULT_DOCUMENT_ATTACHMENT);
         assertThat(testFormalDocument.getDocumentAttachmentContentType()).isEqualTo(DEFAULT_DOCUMENT_ATTACHMENT_CONTENT_TYPE);
+        assertThat(testFormalDocument.getFilename()).isEqualTo(DEFAULT_FILENAME);
     }
 
     @Test
@@ -207,6 +213,25 @@ public class FormalDocumentResourceIT {
 
     @Test
     @Transactional
+    public void checkFilenameIsRequired() throws Exception {
+        int databaseSizeBeforeTest = formalDocumentRepository.findAll().size();
+        // set the field null
+        formalDocument.setFilename(null);
+
+        // Create the FormalDocument, which fails.
+        FormalDocumentDTO formalDocumentDTO = formalDocumentMapper.toDto(formalDocument);
+
+        restFormalDocumentMockMvc.perform(post("/api/formal-documents")
+            .contentType(MediaType.APPLICATION_JSON)
+            .content(TestUtil.convertObjectToJsonBytes(formalDocumentDTO)))
+            .andExpect(status().isBadRequest());
+
+        List<FormalDocument> formalDocumentList = formalDocumentRepository.findAll();
+        assertThat(formalDocumentList).hasSize(databaseSizeBeforeTest);
+    }
+
+    @Test
+    @Transactional
     public void getAllFormalDocuments() throws Exception {
         // Initialize the database
         formalDocumentRepository.saveAndFlush(formalDocument);
@@ -223,7 +248,8 @@ public class FormalDocumentResourceIT {
             .andExpect(jsonPath("$.[*].documentType").value(hasItem(DEFAULT_DOCUMENT_TYPE.toString())))
             .andExpect(jsonPath("$.[*].documentStandardNumber").value(hasItem(DEFAULT_DOCUMENT_STANDARD_NUMBER)))
             .andExpect(jsonPath("$.[*].documentAttachmentContentType").value(hasItem(DEFAULT_DOCUMENT_ATTACHMENT_CONTENT_TYPE)))
-            .andExpect(jsonPath("$.[*].documentAttachment").value(hasItem(Base64Utils.encodeToString(DEFAULT_DOCUMENT_ATTACHMENT))));
+            .andExpect(jsonPath("$.[*].documentAttachment").value(hasItem(Base64Utils.encodeToString(DEFAULT_DOCUMENT_ATTACHMENT))))
+            .andExpect(jsonPath("$.[*].filename").value(hasItem(DEFAULT_FILENAME)));
     }
     
     @SuppressWarnings({"unchecked"})
@@ -264,7 +290,8 @@ public class FormalDocumentResourceIT {
             .andExpect(jsonPath("$.documentType").value(DEFAULT_DOCUMENT_TYPE.toString()))
             .andExpect(jsonPath("$.documentStandardNumber").value(DEFAULT_DOCUMENT_STANDARD_NUMBER))
             .andExpect(jsonPath("$.documentAttachmentContentType").value(DEFAULT_DOCUMENT_ATTACHMENT_CONTENT_TYPE))
-            .andExpect(jsonPath("$.documentAttachment").value(Base64Utils.encodeToString(DEFAULT_DOCUMENT_ATTACHMENT)));
+            .andExpect(jsonPath("$.documentAttachment").value(Base64Utils.encodeToString(DEFAULT_DOCUMENT_ATTACHMENT)))
+            .andExpect(jsonPath("$.filename").value(DEFAULT_FILENAME));
     }
 
 
@@ -758,6 +785,84 @@ public class FormalDocumentResourceIT {
 
     @Test
     @Transactional
+    public void getAllFormalDocumentsByFilenameIsEqualToSomething() throws Exception {
+        // Initialize the database
+        formalDocumentRepository.saveAndFlush(formalDocument);
+
+        // Get all the formalDocumentList where filename equals to DEFAULT_FILENAME
+        defaultFormalDocumentShouldBeFound("filename.equals=" + DEFAULT_FILENAME);
+
+        // Get all the formalDocumentList where filename equals to UPDATED_FILENAME
+        defaultFormalDocumentShouldNotBeFound("filename.equals=" + UPDATED_FILENAME);
+    }
+
+    @Test
+    @Transactional
+    public void getAllFormalDocumentsByFilenameIsNotEqualToSomething() throws Exception {
+        // Initialize the database
+        formalDocumentRepository.saveAndFlush(formalDocument);
+
+        // Get all the formalDocumentList where filename not equals to DEFAULT_FILENAME
+        defaultFormalDocumentShouldNotBeFound("filename.notEquals=" + DEFAULT_FILENAME);
+
+        // Get all the formalDocumentList where filename not equals to UPDATED_FILENAME
+        defaultFormalDocumentShouldBeFound("filename.notEquals=" + UPDATED_FILENAME);
+    }
+
+    @Test
+    @Transactional
+    public void getAllFormalDocumentsByFilenameIsInShouldWork() throws Exception {
+        // Initialize the database
+        formalDocumentRepository.saveAndFlush(formalDocument);
+
+        // Get all the formalDocumentList where filename in DEFAULT_FILENAME or UPDATED_FILENAME
+        defaultFormalDocumentShouldBeFound("filename.in=" + DEFAULT_FILENAME + "," + UPDATED_FILENAME);
+
+        // Get all the formalDocumentList where filename equals to UPDATED_FILENAME
+        defaultFormalDocumentShouldNotBeFound("filename.in=" + UPDATED_FILENAME);
+    }
+
+    @Test
+    @Transactional
+    public void getAllFormalDocumentsByFilenameIsNullOrNotNull() throws Exception {
+        // Initialize the database
+        formalDocumentRepository.saveAndFlush(formalDocument);
+
+        // Get all the formalDocumentList where filename is not null
+        defaultFormalDocumentShouldBeFound("filename.specified=true");
+
+        // Get all the formalDocumentList where filename is null
+        defaultFormalDocumentShouldNotBeFound("filename.specified=false");
+    }
+                @Test
+    @Transactional
+    public void getAllFormalDocumentsByFilenameContainsSomething() throws Exception {
+        // Initialize the database
+        formalDocumentRepository.saveAndFlush(formalDocument);
+
+        // Get all the formalDocumentList where filename contains DEFAULT_FILENAME
+        defaultFormalDocumentShouldBeFound("filename.contains=" + DEFAULT_FILENAME);
+
+        // Get all the formalDocumentList where filename contains UPDATED_FILENAME
+        defaultFormalDocumentShouldNotBeFound("filename.contains=" + UPDATED_FILENAME);
+    }
+
+    @Test
+    @Transactional
+    public void getAllFormalDocumentsByFilenameNotContainsSomething() throws Exception {
+        // Initialize the database
+        formalDocumentRepository.saveAndFlush(formalDocument);
+
+        // Get all the formalDocumentList where filename does not contain DEFAULT_FILENAME
+        defaultFormalDocumentShouldNotBeFound("filename.doesNotContain=" + DEFAULT_FILENAME);
+
+        // Get all the formalDocumentList where filename does not contain UPDATED_FILENAME
+        defaultFormalDocumentShouldBeFound("filename.doesNotContain=" + UPDATED_FILENAME);
+    }
+
+
+    @Test
+    @Transactional
     public void getAllFormalDocumentsBySchemesIsEqualToSomething() throws Exception {
         // Initialize the database
         formalDocumentRepository.saveAndFlush(formalDocument);
@@ -790,7 +895,8 @@ public class FormalDocumentResourceIT {
             .andExpect(jsonPath("$.[*].documentType").value(hasItem(DEFAULT_DOCUMENT_TYPE.toString())))
             .andExpect(jsonPath("$.[*].documentStandardNumber").value(hasItem(DEFAULT_DOCUMENT_STANDARD_NUMBER)))
             .andExpect(jsonPath("$.[*].documentAttachmentContentType").value(hasItem(DEFAULT_DOCUMENT_ATTACHMENT_CONTENT_TYPE)))
-            .andExpect(jsonPath("$.[*].documentAttachment").value(hasItem(Base64Utils.encodeToString(DEFAULT_DOCUMENT_ATTACHMENT))));
+            .andExpect(jsonPath("$.[*].documentAttachment").value(hasItem(Base64Utils.encodeToString(DEFAULT_DOCUMENT_ATTACHMENT))))
+            .andExpect(jsonPath("$.[*].filename").value(hasItem(DEFAULT_FILENAME)));
 
         // Check, that the count call also returns 1
         restFormalDocumentMockMvc.perform(get("/api/formal-documents/count?sort=id,desc&" + filter))
@@ -845,7 +951,8 @@ public class FormalDocumentResourceIT {
             .documentType(UPDATED_DOCUMENT_TYPE)
             .documentStandardNumber(UPDATED_DOCUMENT_STANDARD_NUMBER)
             .documentAttachment(UPDATED_DOCUMENT_ATTACHMENT)
-            .documentAttachmentContentType(UPDATED_DOCUMENT_ATTACHMENT_CONTENT_TYPE);
+            .documentAttachmentContentType(UPDATED_DOCUMENT_ATTACHMENT_CONTENT_TYPE)
+            .filename(UPDATED_FILENAME);
         FormalDocumentDTO formalDocumentDTO = formalDocumentMapper.toDto(updatedFormalDocument);
 
         restFormalDocumentMockMvc.perform(put("/api/formal-documents")
@@ -865,6 +972,7 @@ public class FormalDocumentResourceIT {
         assertThat(testFormalDocument.getDocumentStandardNumber()).isEqualTo(UPDATED_DOCUMENT_STANDARD_NUMBER);
         assertThat(testFormalDocument.getDocumentAttachment()).isEqualTo(UPDATED_DOCUMENT_ATTACHMENT);
         assertThat(testFormalDocument.getDocumentAttachmentContentType()).isEqualTo(UPDATED_DOCUMENT_ATTACHMENT_CONTENT_TYPE);
+        assertThat(testFormalDocument.getFilename()).isEqualTo(UPDATED_FILENAME);
     }
 
     @Test

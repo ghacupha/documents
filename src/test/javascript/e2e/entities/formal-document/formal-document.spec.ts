@@ -54,7 +54,8 @@ describe('FormalDocument e2e test', () => {
       formalDocumentUpdatePage.setDocumentDateInput('2000-12-31'),
       formalDocumentUpdatePage.documentTypeSelectLastOption(),
       formalDocumentUpdatePage.setDocumentStandardNumberInput('documentStandardNumber'),
-      formalDocumentUpdatePage.setDocumentAttachmentInput(absolutePath)
+      formalDocumentUpdatePage.setDocumentAttachmentInput(absolutePath),
+      formalDocumentUpdatePage.setFilenameInput('filename')
       // formalDocumentUpdatePage.schemesSelectLastOption(),
     ]);
 
@@ -82,6 +83,7 @@ describe('FormalDocument e2e test', () => {
       fileNameToUpload,
       'Expected DocumentAttachment value to be end with ' + fileNameToUpload
     );
+    expect(await formalDocumentUpdatePage.getFilenameInput()).to.eq('filename', 'Expected Filename value to be equals to filename');
 
     await formalDocumentUpdatePage.save();
     expect(await formalDocumentUpdatePage.getSaveButton().isPresent(), 'Expected save button disappear').to.be.false;

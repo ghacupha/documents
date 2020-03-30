@@ -31,6 +31,7 @@ export class FormalDocumentUpdateComponent implements OnInit {
     documentStandardNumber: [],
     documentAttachment: [null, [Validators.required]],
     documentAttachmentContentType: [],
+    filename: [null, [Validators.required]],
     schemes: []
   });
 
@@ -62,6 +63,7 @@ export class FormalDocumentUpdateComponent implements OnInit {
       documentStandardNumber: formalDocument.documentStandardNumber,
       documentAttachment: formalDocument.documentAttachment,
       documentAttachmentContentType: formalDocument.documentAttachmentContentType,
+      filename: formalDocument.filename,
       schemes: formalDocument.schemes
     });
   }
@@ -108,6 +110,7 @@ export class FormalDocumentUpdateComponent implements OnInit {
       documentStandardNumber: this.editForm.get(['documentStandardNumber'])!.value,
       documentAttachmentContentType: this.editForm.get(['documentAttachmentContentType'])!.value,
       documentAttachment: this.editForm.get(['documentAttachment'])!.value,
+      filename: this.editForm.get(['filename'])!.value,
       schemes: this.editForm.get(['schemes'])!.value
     };
   }

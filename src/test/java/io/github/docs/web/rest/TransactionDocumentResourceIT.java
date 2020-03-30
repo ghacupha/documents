@@ -90,6 +90,9 @@ public class TransactionDocumentResourceIT {
     private static final String DEFAULT_TRANSACTION_ATTACHMENT_CONTENT_TYPE = "image/jpg";
     private static final String UPDATED_TRANSACTION_ATTACHMENT_CONTENT_TYPE = "image/png";
 
+    private static final String DEFAULT_FILENAME = "AAAAAAAAAA";
+    private static final String UPDATED_FILENAME = "BBBBBBBBBB";
+
     @Autowired
     private TransactionDocumentRepository transactionDocumentRepository;
 
@@ -137,7 +140,8 @@ public class TransactionDocumentResourceIT {
             .memoNumber(DEFAULT_MEMO_NUMBER)
             .documentStandardNumber(DEFAULT_DOCUMENT_STANDARD_NUMBER)
             .transactionAttachment(DEFAULT_TRANSACTION_ATTACHMENT)
-            .transactionAttachmentContentType(DEFAULT_TRANSACTION_ATTACHMENT_CONTENT_TYPE);
+            .transactionAttachmentContentType(DEFAULT_TRANSACTION_ATTACHMENT_CONTENT_TYPE)
+            .filename(DEFAULT_FILENAME);
         return transactionDocument;
     }
     /**
@@ -161,7 +165,8 @@ public class TransactionDocumentResourceIT {
             .memoNumber(UPDATED_MEMO_NUMBER)
             .documentStandardNumber(UPDATED_DOCUMENT_STANDARD_NUMBER)
             .transactionAttachment(UPDATED_TRANSACTION_ATTACHMENT)
-            .transactionAttachmentContentType(UPDATED_TRANSACTION_ATTACHMENT_CONTENT_TYPE);
+            .transactionAttachmentContentType(UPDATED_TRANSACTION_ATTACHMENT_CONTENT_TYPE)
+            .filename(UPDATED_FILENAME);
         return transactionDocument;
     }
 
@@ -200,6 +205,7 @@ public class TransactionDocumentResourceIT {
         assertThat(testTransactionDocument.getDocumentStandardNumber()).isEqualTo(DEFAULT_DOCUMENT_STANDARD_NUMBER);
         assertThat(testTransactionDocument.getTransactionAttachment()).isEqualTo(DEFAULT_TRANSACTION_ATTACHMENT);
         assertThat(testTransactionDocument.getTransactionAttachmentContentType()).isEqualTo(DEFAULT_TRANSACTION_ATTACHMENT_CONTENT_TYPE);
+        assertThat(testTransactionDocument.getFilename()).isEqualTo(DEFAULT_FILENAME);
     }
 
     @Test
@@ -263,6 +269,25 @@ public class TransactionDocumentResourceIT {
 
     @Test
     @Transactional
+    public void checkFilenameIsRequired() throws Exception {
+        int databaseSizeBeforeTest = transactionDocumentRepository.findAll().size();
+        // set the field null
+        transactionDocument.setFilename(null);
+
+        // Create the TransactionDocument, which fails.
+        TransactionDocumentDTO transactionDocumentDTO = transactionDocumentMapper.toDto(transactionDocument);
+
+        restTransactionDocumentMockMvc.perform(post("/api/transaction-documents")
+            .contentType(MediaType.APPLICATION_JSON)
+            .content(TestUtil.convertObjectToJsonBytes(transactionDocumentDTO)))
+            .andExpect(status().isBadRequest());
+
+        List<TransactionDocument> transactionDocumentList = transactionDocumentRepository.findAll();
+        assertThat(transactionDocumentList).hasSize(databaseSizeBeforeTest);
+    }
+
+    @Test
+    @Transactional
     public void getAllTransactionDocuments() throws Exception {
         // Initialize the database
         transactionDocumentRepository.saveAndFlush(transactionDocument);
@@ -285,7 +310,8 @@ public class TransactionDocumentResourceIT {
             .andExpect(jsonPath("$.[*].memoNumber").value(hasItem(DEFAULT_MEMO_NUMBER)))
             .andExpect(jsonPath("$.[*].documentStandardNumber").value(hasItem(DEFAULT_DOCUMENT_STANDARD_NUMBER)))
             .andExpect(jsonPath("$.[*].transactionAttachmentContentType").value(hasItem(DEFAULT_TRANSACTION_ATTACHMENT_CONTENT_TYPE)))
-            .andExpect(jsonPath("$.[*].transactionAttachment").value(hasItem(Base64Utils.encodeToString(DEFAULT_TRANSACTION_ATTACHMENT))));
+            .andExpect(jsonPath("$.[*].transactionAttachment").value(hasItem(Base64Utils.encodeToString(DEFAULT_TRANSACTION_ATTACHMENT))))
+            .andExpect(jsonPath("$.[*].filename").value(hasItem(DEFAULT_FILENAME)));
     }
     
     @SuppressWarnings({"unchecked"})
@@ -332,7 +358,8 @@ public class TransactionDocumentResourceIT {
             .andExpect(jsonPath("$.memoNumber").value(DEFAULT_MEMO_NUMBER))
             .andExpect(jsonPath("$.documentStandardNumber").value(DEFAULT_DOCUMENT_STANDARD_NUMBER))
             .andExpect(jsonPath("$.transactionAttachmentContentType").value(DEFAULT_TRANSACTION_ATTACHMENT_CONTENT_TYPE))
-            .andExpect(jsonPath("$.transactionAttachment").value(Base64Utils.encodeToString(DEFAULT_TRANSACTION_ATTACHMENT)));
+            .andExpect(jsonPath("$.transactionAttachment").value(Base64Utils.encodeToString(DEFAULT_TRANSACTION_ATTACHMENT)))
+            .andExpect(jsonPath("$.filename").value(DEFAULT_FILENAME));
     }
 
 
@@ -1347,6 +1374,84 @@ public class TransactionDocumentResourceIT {
 
     @Test
     @Transactional
+    public void getAllTransactionDocumentsByFilenameIsEqualToSomething() throws Exception {
+        // Initialize the database
+        transactionDocumentRepository.saveAndFlush(transactionDocument);
+
+        // Get all the transactionDocumentList where filename equals to DEFAULT_FILENAME
+        defaultTransactionDocumentShouldBeFound("filename.equals=" + DEFAULT_FILENAME);
+
+        // Get all the transactionDocumentList where filename equals to UPDATED_FILENAME
+        defaultTransactionDocumentShouldNotBeFound("filename.equals=" + UPDATED_FILENAME);
+    }
+
+    @Test
+    @Transactional
+    public void getAllTransactionDocumentsByFilenameIsNotEqualToSomething() throws Exception {
+        // Initialize the database
+        transactionDocumentRepository.saveAndFlush(transactionDocument);
+
+        // Get all the transactionDocumentList where filename not equals to DEFAULT_FILENAME
+        defaultTransactionDocumentShouldNotBeFound("filename.notEquals=" + DEFAULT_FILENAME);
+
+        // Get all the transactionDocumentList where filename not equals to UPDATED_FILENAME
+        defaultTransactionDocumentShouldBeFound("filename.notEquals=" + UPDATED_FILENAME);
+    }
+
+    @Test
+    @Transactional
+    public void getAllTransactionDocumentsByFilenameIsInShouldWork() throws Exception {
+        // Initialize the database
+        transactionDocumentRepository.saveAndFlush(transactionDocument);
+
+        // Get all the transactionDocumentList where filename in DEFAULT_FILENAME or UPDATED_FILENAME
+        defaultTransactionDocumentShouldBeFound("filename.in=" + DEFAULT_FILENAME + "," + UPDATED_FILENAME);
+
+        // Get all the transactionDocumentList where filename equals to UPDATED_FILENAME
+        defaultTransactionDocumentShouldNotBeFound("filename.in=" + UPDATED_FILENAME);
+    }
+
+    @Test
+    @Transactional
+    public void getAllTransactionDocumentsByFilenameIsNullOrNotNull() throws Exception {
+        // Initialize the database
+        transactionDocumentRepository.saveAndFlush(transactionDocument);
+
+        // Get all the transactionDocumentList where filename is not null
+        defaultTransactionDocumentShouldBeFound("filename.specified=true");
+
+        // Get all the transactionDocumentList where filename is null
+        defaultTransactionDocumentShouldNotBeFound("filename.specified=false");
+    }
+                @Test
+    @Transactional
+    public void getAllTransactionDocumentsByFilenameContainsSomething() throws Exception {
+        // Initialize the database
+        transactionDocumentRepository.saveAndFlush(transactionDocument);
+
+        // Get all the transactionDocumentList where filename contains DEFAULT_FILENAME
+        defaultTransactionDocumentShouldBeFound("filename.contains=" + DEFAULT_FILENAME);
+
+        // Get all the transactionDocumentList where filename contains UPDATED_FILENAME
+        defaultTransactionDocumentShouldNotBeFound("filename.contains=" + UPDATED_FILENAME);
+    }
+
+    @Test
+    @Transactional
+    public void getAllTransactionDocumentsByFilenameNotContainsSomething() throws Exception {
+        // Initialize the database
+        transactionDocumentRepository.saveAndFlush(transactionDocument);
+
+        // Get all the transactionDocumentList where filename does not contain DEFAULT_FILENAME
+        defaultTransactionDocumentShouldNotBeFound("filename.doesNotContain=" + DEFAULT_FILENAME);
+
+        // Get all the transactionDocumentList where filename does not contain UPDATED_FILENAME
+        defaultTransactionDocumentShouldBeFound("filename.doesNotContain=" + UPDATED_FILENAME);
+    }
+
+
+    @Test
+    @Transactional
     public void getAllTransactionDocumentsBySchemesIsEqualToSomething() throws Exception {
         // Initialize the database
         transactionDocumentRepository.saveAndFlush(transactionDocument);
@@ -1385,7 +1490,8 @@ public class TransactionDocumentResourceIT {
             .andExpect(jsonPath("$.[*].memoNumber").value(hasItem(DEFAULT_MEMO_NUMBER)))
             .andExpect(jsonPath("$.[*].documentStandardNumber").value(hasItem(DEFAULT_DOCUMENT_STANDARD_NUMBER)))
             .andExpect(jsonPath("$.[*].transactionAttachmentContentType").value(hasItem(DEFAULT_TRANSACTION_ATTACHMENT_CONTENT_TYPE)))
-            .andExpect(jsonPath("$.[*].transactionAttachment").value(hasItem(Base64Utils.encodeToString(DEFAULT_TRANSACTION_ATTACHMENT))));
+            .andExpect(jsonPath("$.[*].transactionAttachment").value(hasItem(Base64Utils.encodeToString(DEFAULT_TRANSACTION_ATTACHMENT))))
+            .andExpect(jsonPath("$.[*].filename").value(hasItem(DEFAULT_FILENAME)));
 
         // Check, that the count call also returns 1
         restTransactionDocumentMockMvc.perform(get("/api/transaction-documents/count?sort=id,desc&" + filter))
@@ -1446,7 +1552,8 @@ public class TransactionDocumentResourceIT {
             .memoNumber(UPDATED_MEMO_NUMBER)
             .documentStandardNumber(UPDATED_DOCUMENT_STANDARD_NUMBER)
             .transactionAttachment(UPDATED_TRANSACTION_ATTACHMENT)
-            .transactionAttachmentContentType(UPDATED_TRANSACTION_ATTACHMENT_CONTENT_TYPE);
+            .transactionAttachmentContentType(UPDATED_TRANSACTION_ATTACHMENT_CONTENT_TYPE)
+            .filename(UPDATED_FILENAME);
         TransactionDocumentDTO transactionDocumentDTO = transactionDocumentMapper.toDto(updatedTransactionDocument);
 
         restTransactionDocumentMockMvc.perform(put("/api/transaction-documents")
@@ -1472,6 +1579,7 @@ public class TransactionDocumentResourceIT {
         assertThat(testTransactionDocument.getDocumentStandardNumber()).isEqualTo(UPDATED_DOCUMENT_STANDARD_NUMBER);
         assertThat(testTransactionDocument.getTransactionAttachment()).isEqualTo(UPDATED_TRANSACTION_ATTACHMENT);
         assertThat(testTransactionDocument.getTransactionAttachmentContentType()).isEqualTo(UPDATED_TRANSACTION_ATTACHMENT_CONTENT_TYPE);
+        assertThat(testTransactionDocument.getFilename()).isEqualTo(UPDATED_FILENAME);
     }
 
     @Test

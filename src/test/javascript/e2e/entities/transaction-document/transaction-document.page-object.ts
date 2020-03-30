@@ -42,6 +42,7 @@ export class TransactionDocumentUpdatePage {
   memoNumberInput = element(by.id('field_memoNumber'));
   documentStandardNumberInput = element(by.id('field_documentStandardNumber'));
   transactionAttachmentInput = element(by.id('file_transactionAttachment'));
+  filenameInput = element(by.id('field_filename'));
 
   schemesSelect = element(by.id('field_schemes'));
 
@@ -151,6 +152,14 @@ export class TransactionDocumentUpdatePage {
 
   async getTransactionAttachmentInput(): Promise<string> {
     return await this.transactionAttachmentInput.getAttribute('value');
+  }
+
+  async setFilenameInput(filename: string): Promise<void> {
+    await this.filenameInput.sendKeys(filename);
+  }
+
+  async getFilenameInput(): Promise<string> {
+    return await this.filenameInput.getAttribute('value');
   }
 
   async schemesSelectLastOption(): Promise<void> {

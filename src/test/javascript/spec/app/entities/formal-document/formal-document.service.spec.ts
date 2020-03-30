@@ -34,6 +34,7 @@ describe('Service Tests', () => {
         DocumentType.CONTRACT,
         'AAAAAAA',
         'image/png',
+        'AAAAAAA',
         'AAAAAAA'
       );
     });
@@ -86,7 +87,8 @@ describe('Service Tests', () => {
             documentDate: currentDate.format(DATE_FORMAT),
             documentType: 'BBBBBB',
             documentStandardNumber: 'BBBBBB',
-            documentAttachment: 'BBBBBB'
+            documentAttachment: 'BBBBBB',
+            filename: 'BBBBBB'
           },
           elemDefault
         );
@@ -114,7 +116,8 @@ describe('Service Tests', () => {
             documentDate: currentDate.format(DATE_FORMAT),
             documentType: 'BBBBBB',
             documentStandardNumber: 'BBBBBB',
-            documentAttachment: 'BBBBBB'
+            documentAttachment: 'BBBBBB',
+            filename: 'BBBBBB'
           },
           elemDefault
         );

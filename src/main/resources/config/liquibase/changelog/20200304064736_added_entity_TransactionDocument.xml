@@ -57,6 +57,9 @@
             <column name="transaction_attachment_content_type" type="varchar(255)">
                 <constraints nullable="false" />
             </column>
+            <column name="filename" type="varchar(255)">
+                <constraints nullable="false" />
+            </column>
             <!-- jhipster-needle-liquibase-add-column - JHipster will add columns here, do not remove-->
         </createTable>
     </changeSet>
@@ -105,6 +108,7 @@
             <column name="document_standard_number" type="string"/>
             <column name="transaction_attachment" type="blob"/>
             <column name="transaction_attachment_content_type" type="string"/>
+            <column name="filename" type="string"/>
             <!-- jhipster-needle-liquibase-add-loadcolumn - JHipster (and/or extensions) can add load columns here, do not remove-->
         </loadData>
     </changeSet>

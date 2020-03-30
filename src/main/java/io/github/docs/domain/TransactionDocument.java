@@ -74,6 +74,10 @@ public class TransactionDocument implements Serializable {
     @Column(name = "transaction_attachment_content_type", nullable = false)
     private String transactionAttachmentContentType;
 
+    @NotNull
+    @Column(name = "filename", nullable = false)
+    private String filename;
+
     @ManyToMany
     @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
     @JoinTable(name = "transaction_document_schemes",
@@ -272,6 +276,19 @@ public class TransactionDocument implements Serializable {
         this.transactionAttachmentContentType = transactionAttachmentContentType;
     }
 
+    public String getFilename() {
+        return filename;
+    }
+
+    public TransactionDocument filename(String filename) {
+        this.filename = filename;
+        return this;
+    }
+
+    public void setFilename(String filename) {
+        this.filename = filename;
+    }
+
     public Set<Scheme> getSchemes() {
         return schemes;
     }
@@ -332,6 +349,7 @@ public class TransactionDocument implements Serializable {
             ", documentStandardNumber='" + getDocumentStandardNumber() + "'" +
             ", transactionAttachment='" + getTransactionAttachment() + "'" +
             ", transactionAttachmentContentType='" + getTransactionAttachmentContentType() + "'" +
+            ", filename='" + getFilename() + "'" +
             "}";
     }
 }

@@ -85,6 +85,7 @@ class TransactionDocumentGatlingTest extends Simulation {
                 , "memoNumber":"SAMPLE_TEXT"
                 , "documentStandardNumber":"SAMPLE_TEXT"
                 , "transactionAttachment":null
+                , "filename":"SAMPLE_TEXT"
                 }""")).asJson
             .check(status.is(201))
             .check(headerRegex("Location", "(.*)").saveAs("new_transactionDocument_url"))).exitHereIfFailed

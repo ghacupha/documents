@@ -30,6 +30,7 @@
                     <th scope="col"  jhiSortBy="documentType"><span>Document Type</span> <fa-icon icon="sort"></fa-icon></th>
                     <th scope="col"  jhiSortBy="documentStandardNumber"><span>Document Standard Number</span> <fa-icon icon="sort"></fa-icon></th>
                     <th scope="col"  jhiSortBy="documentAttachment"><span>Document Attachment</span> <fa-icon icon="sort"></fa-icon></th>
+                    <th scope="col"  jhiSortBy="filename"><span>Filename</span> <fa-icon icon="sort"></fa-icon></th>
                     <th scope="col"></th>
                 </tr>
             </thead>
@@ -46,6 +47,7 @@
                         <a *ngIf="formalDocument.documentAttachment" (click)="openFile(formalDocument.documentAttachmentContentType, formalDocument.documentAttachment)">open</a>
                         <span *ngIf="formalDocument.documentAttachment">{{ formalDocument.documentAttachmentContentType }}, {{ byteSize(formalDocument.documentAttachment) }}</span>
                     </td>
+                    <td>{{ formalDocument.filename }}</td>
                     <td class="text-right">
                         <div class="btn-group">
                             <button type="submit"

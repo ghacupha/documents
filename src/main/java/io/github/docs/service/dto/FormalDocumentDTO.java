@@ -34,6 +34,9 @@ public class FormalDocumentDTO implements Serializable {
     private byte[] documentAttachment;
 
     private String documentAttachmentContentType;
+    @NotNull
+    private String filename;
+
     private Set<SchemeDTO> schemes = new HashSet<>();
     
     public Long getId() {
@@ -108,6 +111,14 @@ public class FormalDocumentDTO implements Serializable {
         this.documentAttachmentContentType = documentAttachmentContentType;
     }
 
+    public String getFilename() {
+        return filename;
+    }
+
+    public void setFilename(String filename) {
+        this.filename = filename;
+    }
+
     public Set<SchemeDTO> getSchemes() {
         return schemes;
     }
@@ -148,6 +159,7 @@ public class FormalDocumentDTO implements Serializable {
             ", documentType='" + getDocumentType() + "'" +
             ", documentStandardNumber='" + getDocumentStandardNumber() + "'" +
             ", documentAttachment='" + getDocumentAttachment() + "'" +
+            ", filename='" + getFilename() + "'" +
             ", schemes='" + getSchemes() + "'" +
             "}";
     }

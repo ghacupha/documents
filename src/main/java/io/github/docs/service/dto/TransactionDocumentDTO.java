@@ -47,6 +47,9 @@ public class TransactionDocumentDTO implements Serializable {
     private byte[] transactionAttachment;
 
     private String transactionAttachmentContentType;
+    @NotNull
+    private String filename;
+
     private Set<SchemeDTO> schemes = new HashSet<>();
     
     public Long getId() {
@@ -169,6 +172,14 @@ public class TransactionDocumentDTO implements Serializable {
         this.transactionAttachmentContentType = transactionAttachmentContentType;
     }
 
+    public String getFilename() {
+        return filename;
+    }
+
+    public void setFilename(String filename) {
+        this.filename = filename;
+    }
+
     public Set<SchemeDTO> getSchemes() {
         return schemes;
     }
@@ -215,6 +226,7 @@ public class TransactionDocumentDTO implements Serializable {
             ", memoNumber='" + getMemoNumber() + "'" +
             ", documentStandardNumber='" + getDocumentStandardNumber() + "'" +
             ", transactionAttachment='" + getTransactionAttachment() + "'" +
+            ", filename='" + getFilename() + "'" +
             ", schemes='" + getSchemes() + "'" +
             "}";
     }

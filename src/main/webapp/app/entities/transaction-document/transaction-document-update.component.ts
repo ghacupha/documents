@@ -37,6 +37,7 @@ export class TransactionDocumentUpdateComponent implements OnInit {
     documentStandardNumber: [],
     transactionAttachment: [null, [Validators.required]],
     transactionAttachmentContentType: [],
+    filename: [null, [Validators.required]],
     schemes: []
   });
 
@@ -74,6 +75,7 @@ export class TransactionDocumentUpdateComponent implements OnInit {
       documentStandardNumber: transactionDocument.documentStandardNumber,
       transactionAttachment: transactionDocument.transactionAttachment,
       transactionAttachmentContentType: transactionDocument.transactionAttachmentContentType,
+      filename: transactionDocument.filename,
       schemes: transactionDocument.schemes
     });
   }
@@ -126,6 +128,7 @@ export class TransactionDocumentUpdateComponent implements OnInit {
       documentStandardNumber: this.editForm.get(['documentStandardNumber'])!.value,
       transactionAttachmentContentType: this.editForm.get(['transactionAttachmentContentType'])!.value,
       transactionAttachment: this.editForm.get(['transactionAttachment'])!.value,
+      filename: this.editForm.get(['filename'])!.value,
       schemes: this.editForm.get(['schemes'])!.value
     };
   }

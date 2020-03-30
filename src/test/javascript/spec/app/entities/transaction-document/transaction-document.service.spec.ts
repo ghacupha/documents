@@ -39,6 +39,7 @@ describe('Service Tests', () => {
         'AAAAAAA',
         'AAAAAAA',
         'image/png',
+        'AAAAAAA',
         'AAAAAAA'
       );
     });
@@ -97,7 +98,8 @@ describe('Service Tests', () => {
             logisticReferenceNumber: 'BBBBBB',
             memoNumber: 'BBBBBB',
             documentStandardNumber: 'BBBBBB',
-            transactionAttachment: 'BBBBBB'
+            transactionAttachment: 'BBBBBB',
+            filename: 'BBBBBB'
           },
           elemDefault
         );
@@ -131,7 +133,8 @@ describe('Service Tests', () => {
             logisticReferenceNumber: 'BBBBBB',
             memoNumber: 'BBBBBB',
             documentStandardNumber: 'BBBBBB',
-            transactionAttachment: 'BBBBBB'
+            transactionAttachment: 'BBBBBB',
+            filename: 'BBBBBB'
           },
           elemDefault
         );

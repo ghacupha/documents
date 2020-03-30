@@ -12,6 +12,7 @@ export interface IFormalDocument {
   documentStandardNumber?: string;
   documentAttachmentContentType?: string;
   documentAttachment?: any;
+  filename?: string;
   schemes?: IScheme[];
 }
 
@@ -26,6 +27,7 @@ export class FormalDocument implements IFormalDocument {
     public documentStandardNumber?: string,
     public documentAttachmentContentType?: string,
     public documentAttachment?: any,
+    public filename?: string,
     public schemes?: IScheme[]
   ) {}
 }

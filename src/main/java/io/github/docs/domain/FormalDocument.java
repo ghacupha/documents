@@ -57,6 +57,10 @@ public class FormalDocument implements Serializable {
     @Column(name = "document_attachment_content_type", nullable = false)
     private String documentAttachmentContentType;
 
+    @NotNull
+    @Column(name = "filename", nullable = false)
+    private String filename;
+
     @ManyToMany
     @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
     @JoinTable(name = "formal_document_schemes",
@@ -177,6 +181,19 @@ public class FormalDocument implements Serializable {
         this.documentAttachmentContentType = documentAttachmentContentType;
     }
 
+    public String getFilename() {
+        return filename;
+    }
+
+    public FormalDocument filename(String filename) {
+        this.filename = filename;
+        return this;
+    }
+
+    public void setFilename(String filename) {
+        this.filename = filename;
+    }
+
     public Set<Scheme> getSchemes() {
         return schemes;
     }
@@ -231,6 +248,7 @@ public class FormalDocument implements Serializable {
             ", documentStandardNumber='" + getDocumentStandardNumber() + "'" +
             ", documentAttachment='" + getDocumentAttachment() + "'" +
             ", documentAttachmentContentType='" + getDocumentAttachmentContentType() + "'" +
+            ", filename='" + getFilename() + "'" +
             "}";
     }
 }

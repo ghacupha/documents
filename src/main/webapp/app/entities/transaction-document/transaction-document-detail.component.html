@@ -63,6 +63,10 @@
                         {{ transactionDocument.transactionAttachmentContentType }}, {{ byteSize(transactionDocument.transactionAttachment) }}
                     </div>
                 </dd>
+                <dt><span>Filename</span></dt>
+                <dd>
+                    <span>{{ transactionDocument.filename }}</span>
+                </dd>
                 <dt><span>Schemes</span></dt>
                 <dd>
                     <span *ngFor="let schemes of transactionDocument.schemes; let last = last">
