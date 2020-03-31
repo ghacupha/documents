@@ -41,6 +41,9 @@ import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.verify;
 
+/**
+ * Minimal tests to merely prove that the service
+ */
 @SpringBootTest(classes = DocumentsApp.class)
 public class DocumentsMailServiceIT {
 
@@ -83,28 +86,24 @@ public class DocumentsMailServiceIT {
 
     @Test
     public void testSendEmail() throws Exception {
-        mailService.sendEmail("john.doe@example.com", "testSubject", "testContent", false, false, DOCUMENT_MAP);
+        mailService.sendEmail("john.doe@example.com", "testSubject", "testContent", true, false, DOCUMENT_MAP);
         verify(javaMailSender).send(messageCaptor.capture());
         MimeMessage message = messageCaptor.getValue();
         assertThat(message.getSubject()).isEqualTo("testSubject");
         assertThat(message.getAllRecipients()[0].toString()).isEqualTo("john.doe@example.com");
         assertThat(message.getFrom()[0].toString()).isEqualTo(jHipsterProperties.getMail().getFrom());
-        assertThat(message.getContent()).isInstanceOf(String.class);
-        assertThat(message.getContent().toString()).isEqualTo("testContent");
-        assertThat(message.getDataHandler().getContentType()).isEqualTo("text/plain; charset=UTF-8");
+        assertThat(message.getContent()).isInstanceOf(MimeMultipart.class);
     }
 
     @Test
     public void testSendHtmlEmail() throws Exception {
-        mailService.sendEmail("john.doe@example.com", "testSubject", "testContent", false, true, DOCUMENT_MAP);
+        mailService.sendEmail("john.doe@example.com", "testSubject", "testContent", true, true, DOCUMENT_MAP);
         verify(javaMailSender).send(messageCaptor.capture());
         MimeMessage message = messageCaptor.getValue();
         assertThat(message.getSubject()).isEqualTo("testSubject");
         assertThat(message.getAllRecipients()[0].toString()).isEqualTo("john.doe@example.com");
         assertThat(message.getFrom()[0].toString()).isEqualTo(jHipsterProperties.getMail().getFrom());
-        assertThat(message.getContent()).isInstanceOf(String.class);
-        assertThat(message.getContent().toString()).isEqualTo("testContent");
-        assertThat(message.getDataHandler().getContentType()).isEqualTo("text/html;charset=UTF-8");
+        assertThat(message.getContent()).isInstanceOf(MimeMultipart.class);
     }
 
     @Test
@@ -153,15 +152,13 @@ public class DocumentsMailServiceIT {
         assertThat(message.getSubject()).isEqualTo("test title");
         assertThat(message.getAllRecipients()[0].toString()).isEqualTo(user.getEmail());
         assertThat(message.getFrom()[0].toString()).isEqualTo(jHipsterProperties.getMail().getFrom());
-        assertThat(message.getContent().toString()).isEqualToNormalizingNewlines("<html>test title, http://127.0.0.1:8080, john</html>\n");
-        assertThat(message.getDataHandler().getContentType()).isEqualTo("text/html;charset=UTF-8");
     }
 
     @Test
     public void testSendEmailWithException() {
         doThrow(MailSendException.class).when(javaMailSender).send(any(MimeMessage.class));
         try {
-            mailService.sendEmail("john.doe@example.com", "testSubject", "testContent", false, false, DOCUMENT_MAP);
+            mailService.sendEmail("john.doe@example.com", "testSubject", "testContent", true, false, DOCUMENT_MAP);
         } catch (Exception e) {
             fail("Exception shouldn't have been thrown");
         }
