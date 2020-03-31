@@ -2,9 +2,11 @@ package io.github.docs.app;
 
 import io.github.docs.service.TransactionDocumentService;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.validation.Valid;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.util.HashMap;
@@ -26,7 +28,7 @@ public class MailingResource {
     }
 
     @PostMapping("/transaction-documents")
-    public void shareTransactionDocuments(){
+    public void shareTransactionDocuments(@Valid @RequestBody MailAttachmentRequest attachmentRequest){
 
         byte[] fileBytes = transactionDocumentService.findOne(10l).get().getTransactionAttachment();
 //        String fileName = transactionDocumentService.findOne(10l).get()
@@ -55,6 +57,6 @@ public class MailingResource {
 
         DOCUMENT_MAP.put(FILE_ATTACHMENT_ID, attachment);
 
-        mailingService.sendAttachmentFromTemplate("edwin.njeru@abcthebank.com", "mail/attachmentEmail", "email.activation.title", DOCUMENT_MAP);
+        mailingService.sendAttachmentFromTemplate(attachmentRequest.getRecipientEmail(), "mail/attachmentEmail", "email.activation.title", DOCUMENT_MAP);
     }
 }
