@@ -16,6 +16,8 @@ import javax.validation.constraints.NotNull;
 @NoArgsConstructor
 public class MailAttachmentRequest {
 
+    private String recipientUsername;
+
     @NotNull
     private String recipientEmail;
 }

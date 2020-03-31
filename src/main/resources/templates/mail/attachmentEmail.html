@@ -6,8 +6,8 @@
     <link rel="shortcut icon" th:href="@{|${baseUrl}/favicon.ico|}" />
 </head>
 <body>
-<p>
-    Dear User
+<p th:text="#{email.attachment.greeting(${addressee})}">
+    Dear
 </p>
 <p>
   Edwin has shared some documents with you, please find attached:

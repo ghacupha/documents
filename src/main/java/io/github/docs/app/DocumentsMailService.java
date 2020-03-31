@@ -33,7 +33,7 @@ public class DocumentsMailService implements MailingService {
 
     private final Logger log = LoggerFactory.getLogger(MailService.class);
 
-    private static final String USER = "user";
+    private static final String USER = "addressee";
 
     private static final String BASE_URL = "baseUrl";
 
@@ -96,14 +96,14 @@ public class DocumentsMailService implements MailingService {
 
     @Override
     @Async
-    public void sendAttachmentFromTemplate(String email, String templateName, String titleKey, Map<String,File> documentAttachments) {
+    public void sendAttachmentFromTemplate(String username, String email, String templateName, String titleKey, Map<String,File> documentAttachments) {
 //        if (user.getEmail() == null) {
 //            log.debug("Email doesn't exist for user '{}'", user.getLogin());
 //            return;
 //        }
 //        Locale locale = Locale.forLanguageTag(user.getLangKey());
         Context context = new Context();
-        context.setVariable(USER, email);
+        context.setVariable(USER, username);
         context.setVariable(BASE_URL, jHipsterProperties.getMail().getBaseUrl());
         String content = templateEngine.process(templateName, context);
         String subject = messageSource.getMessage(titleKey, null, Locale.ENGLISH);

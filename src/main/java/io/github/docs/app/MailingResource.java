@@ -31,9 +31,9 @@ public class MailingResource {
     public void shareTransactionDocuments(@Valid @RequestBody MailAttachmentRequest attachmentRequest){
 
         byte[] fileBytes = transactionDocumentService.findOne(10l).get().getTransactionAttachment();
-//        String fileName = transactionDocumentService.findOne(10l).get()
 
-        final String FILE_ATTACHMENT_ID = "test_upload_file.png";
+        // get filename from service
+        final String FILE_ATTACHMENT_ID = transactionDocumentService.findOne(10l).get().getFilename();
 
 
         File attachment = new File(FILE_ATTACHMENT_ID);
@@ -57,6 +57,6 @@ public class MailingResource {
 
         DOCUMENT_MAP.put(FILE_ATTACHMENT_ID, attachment);
 
-        mailingService.sendAttachmentFromTemplate(attachmentRequest.getRecipientEmail(), "mail/attachmentEmail", "email.activation.title", DOCUMENT_MAP);
+        mailingService.sendAttachmentFromTemplate(attachmentRequest.getRecipientUsername(), attachmentRequest.getRecipientEmail(), "mail/attachmentEmail", "email.activation.title", DOCUMENT_MAP);
     }
 }
