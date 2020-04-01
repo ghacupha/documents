@@ -7,14 +7,13 @@ import { HTTP_INTERCEPTORS } from '@angular/common/http';
 import { AuthExpiredInterceptor } from 'app/blocks/interceptor/auth-expired.interceptor';
 import { ErrorHandlerInterceptor } from 'app/blocks/interceptor/errorhandler.interceptor';
 import { NotificationInterceptor } from 'app/blocks/interceptor/notification.interceptor';
-import { SummaryTablesComponent } from './summary-tables/summary-tables.component';
 import { DocumentsSharedModule } from 'app/shared/shared.module';
 
 @NgModule({
-  declarations: [DataTableComponent, SummaryTablesComponent],
+  declarations: [DataTableComponent],
   imports: [CommonModule, DocumentsSharedModule, BespokeNavigationRoutingModule],
-  exports: [DataTableComponent, SummaryTablesComponent],
-  entryComponents: [DataTableComponent, SummaryTablesComponent],
+  exports: [DataTableComponent],
+  entryComponents: [DataTableComponent],
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
   providers: [
     {

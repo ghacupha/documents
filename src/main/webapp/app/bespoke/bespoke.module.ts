@@ -7,7 +7,6 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { BespokeMaterialModule } from 'app/bespoke/bespoke-material.module';
 import { DataDisplayModule } from './data-display/data-display.module';
 import { BespokeNavigationModule } from './bespoke-navigation/bespoke-navigation.module';
-import { QuestionnaireModule } from './questionnaire/questionnaire.module';
 
 @NgModule({
   declarations: [],
@@ -19,8 +18,7 @@ import { QuestionnaireModule } from './questionnaire/questionnaire.module';
     FormsModule,
     BespokeRoutingModule,
     DataDisplayModule,
-    BespokeNavigationModule,
-    QuestionnaireModule
+    BespokeNavigationModule
   ],
   exports: [AboutModule, DataDisplayModule]
 })
