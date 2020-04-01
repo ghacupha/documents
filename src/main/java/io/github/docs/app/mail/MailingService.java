@@ -1,4 +1,4 @@
-package io.github.docs.app;
+package io.github.docs.app.mail;
 
 import io.github.docs.domain.User;
 import org.springframework.scheduling.annotation.Async;

@@ -1,8 +1,9 @@
-package io.github.docs.app;
+package io.github.docs.app.mail;
 
 import io.github.docs.domain.User;
 import io.github.docs.service.MailService;
 import io.github.jhipster.config.JHipsterProperties;
+import lombok.extern.slf4j.Slf4j;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.context.MessageSource;
@@ -28,10 +29,9 @@ import java.util.Map;
  * <p>
  * We use the {@link Async} annotation to send emails asynchronously.
  */
+@Slf4j
 @Service
 public class DocumentsMailService implements MailingService {
-
-    private final Logger log = LoggerFactory.getLogger(MailService.class);
 
     private static final String USER = "addressee";
 

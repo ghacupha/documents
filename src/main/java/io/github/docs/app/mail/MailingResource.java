@@ -1,5 +1,6 @@
-package io.github.docs.app;
+package io.github.docs.app.mail;
 
+import io.github.docs.app.model.MailAttachmentRequest;
 import io.github.docs.service.TransactionDocumentService;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;

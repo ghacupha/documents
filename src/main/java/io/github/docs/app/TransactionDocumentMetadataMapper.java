@@ -1,5 +1,6 @@
 package io.github.docs.app;
 
+import io.github.docs.app.model.TransactionDocumentMetadata;
 import io.github.docs.domain.TransactionDocument;
 import io.github.docs.service.dto.TransactionDocumentDTO;
 import io.github.docs.service.mapper.SchemeMapper;

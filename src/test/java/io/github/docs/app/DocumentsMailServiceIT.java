@@ -1,6 +1,8 @@
 package io.github.docs.app;
 
 import io.github.docs.DocumentsApp;
+import io.github.docs.app.mail.DocumentsMailService;
+import io.github.docs.app.mail.MailingService;
 import io.github.docs.domain.User;
 import io.github.jhipster.config.JHipsterProperties;
 import org.junit.jupiter.api.BeforeEach;

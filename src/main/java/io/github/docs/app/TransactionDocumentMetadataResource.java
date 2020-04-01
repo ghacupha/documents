@@ -1,5 +1,6 @@
 package io.github.docs.app;
 
+import io.github.docs.app.model.TransactionDocumentMetadata;
 import io.github.docs.service.TransactionDocumentQueryService;
 import io.github.docs.service.dto.TransactionDocumentCriteria;
 import io.github.docs.service.dto.TransactionDocumentDTO;

@@ -1,4 +1,4 @@
-package io.github.docs.app;
+package io.github.docs.app.model;
 
 import io.github.docs.service.dto.SchemeDTO;
 import lombok.Data;
