@@ -1,28 +1,28 @@
 import { Component, OnInit } from '@angular/core';
-import { NGXLogger } from 'ngx-logger';
-import { JhiAlertService } from 'ng-jhipster';
 import { Subject } from 'rxjs/internal/Subject';
+import { JhiAlertService } from 'ng-jhipster';
+import { NGXLogger } from 'ngx-logger';
 import { ActivatedRoute, Router } from '@angular/router';
-import { IDepositAccount } from 'app/shared/model/depositAnalysisMain/deposit-account.model';
-import { DepositListService } from 'app/bespoke/data-display/display-tables/deposit-list/deposit-list.service';
+import { ITransactionDocument } from 'app/shared/model/transaction-document.model';
+import { TransactionDocMetadataService } from 'app/bespoke/data-display/display-tables/transaction-doc-metadata/transaction-doc-metadata.service';
 
 @Component({
-  selector: 'gha-deposit-list',
-  templateUrl: './deposit-list.component.html',
-  styleUrls: ['./deposit-list.component.scss']
+  selector: 'gha-transaction-doc-metadata',
+  templateUrl: './transaction-doc-metadata.component.html',
+  styleUrls: ['./transaction-doc-metadata.component.scss']
 })
-export class DepositListComponent implements OnInit {
+export class TransactionDocMetadataComponent implements OnInit {
   dtOptions!: DataTables.Settings;
   dtTrigger: Subject<any> = new Subject<any>();
 
-  deposits!: IDepositAccount[];
+  deposits!: ITransactionDocument[];
 
   constructor(
     protected activatedRoute: ActivatedRoute,
     protected router: Router,
     protected jhiAlertService: JhiAlertService,
     private log: NGXLogger,
-    private depositListService: DepositListService
+    private depositListService: TransactionDocMetadataService
   ) {
     this.firstPassDataUpdate();
   }
@@ -45,7 +45,7 @@ export class DepositListComponent implements OnInit {
   }
 
   private secondPassDataUpdate(): void {
-    this.depositListService.getDeposits().subscribe(
+    this.depositListService.getTransactionMetadata().subscribe(
       res => {
         this.deposits = res.body || [];
         // TODO test whether data-tables are created once and only once
@@ -57,7 +57,7 @@ export class DepositListComponent implements OnInit {
   }
 
   private firstPassDataUpdate(): void {
-    this.depositListService.getDeposits().subscribe(
+    this.depositListService.getTransactionMetadata().subscribe(
       res => {
         this.deposits = res.body || [];
         // TODO test whether data-tables are created once and only once

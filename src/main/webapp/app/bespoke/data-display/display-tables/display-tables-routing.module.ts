@@ -1,13 +1,13 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
-import { DepositListComponent } from './deposit-list/deposit-list.component';
+import { TransactionDocMetadataComponent } from 'app/bespoke/data-display/display-tables/transaction-doc-metadata/transaction-doc-metadata.component';
 
 const routes: Routes = [
   {
-    path: 'deposit-list',
-    component: DepositListComponent,
+    path: 'transactions-list',
+    component: TransactionDocMetadataComponent,
     data: {
-      pageTitle: 'Data | Deposit List'
+      pageTitle: 'Metadata | Transaction List'
     }
   }
 ];
