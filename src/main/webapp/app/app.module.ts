@@ -13,6 +13,9 @@ import { NavbarComponent } from './layouts/navbar/navbar.component';
 import { FooterComponent } from './layouts/footer/footer.component';
 import { PageRibbonComponent } from './layouts/profiles/page-ribbon.component';
 import { ErrorComponent } from './layouts/error/error.component';
+import { LoggerModule, NgxLoggerLevel } from 'ngx-logger';
+import { DataDisplayModule } from 'app/bespoke/data-display/data-display.module';
+import { BespokeNavigationModule } from 'app/bespoke/bespoke-navigation/bespoke-navigation.module';
 
 @NgModule({
   imports: [
@@ -20,6 +23,9 @@ import { ErrorComponent } from './layouts/error/error.component';
     DocumentsSharedModule,
     DocumentsCoreModule,
     DocumentsHomeModule,
+    DataDisplayModule,
+    BespokeNavigationModule,
+    LoggerModule.forRoot({ serverLoggingUrl: '/api/logs', level: NgxLoggerLevel.DEBUG, serverLogLevel: NgxLoggerLevel.ERROR }),
     // jhipster-needle-angular-add-module JHipster will add new module here
     DocumentsEntityModule,
     DocumentsAppRoutingModule
