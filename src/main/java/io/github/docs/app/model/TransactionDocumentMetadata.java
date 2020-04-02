@@ -50,8 +50,6 @@ public class TransactionDocumentMetadata {
 
     private String documentStandardNumber;
 
-    private String transactionAttachmentContentType;
-
     @NotNull
     private String filename;
 

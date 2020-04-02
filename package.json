@@ -72,6 +72,8 @@
     "@openapitools/openapi-generator-cli": "1.0.10-4.2.3",
     "@types/chai": "4.2.7",
     "@types/chai-string": "1.4.2",
+    "@types/datatables.net": "^1.10.17",
+    "@types/datatables.net-buttons": "^1.4.1",
     "@types/jest": "24.0.23",
     "@types/jquery": "^3.3.29",
     "@types/mocha": "5.2.7",

@@ -5,6 +5,8 @@ import { NGXLogger } from 'ngx-logger';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ITransactionDocument } from 'app/shared/model/transaction-document.model';
 import { TransactionDocMetadataService } from 'app/bespoke/data-display/display-tables/transaction-doc-metadata/transaction-doc-metadata.service';
+import { TransactionDocumentDeleteDialogComponent } from 'app/entities/transaction-document/transaction-document-delete-dialog.component';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
   selector: 'gha-transaction-doc-metadata',
@@ -15,14 +17,15 @@ export class TransactionDocMetadataComponent implements OnInit {
   dtOptions!: DataTables.Settings;
   dtTrigger: Subject<any> = new Subject<any>();
 
-  deposits!: ITransactionDocument[];
+  transactionDocMetaDataArray!: ITransactionDocument[];
 
   constructor(
     protected activatedRoute: ActivatedRoute,
     protected router: Router,
     protected jhiAlertService: JhiAlertService,
     private log: NGXLogger,
-    private depositListService: TransactionDocMetadataService
+    private depositListService: TransactionDocMetadataService,
+    protected modalService: NgbModal
   ) {
     this.firstPassDataUpdate();
   }
@@ -45,26 +48,26 @@ export class TransactionDocMetadataComponent implements OnInit {
   }
 
   private secondPassDataUpdate(): void {
-    this.depositListService.getTransactionMetadata().subscribe(
+    this.depositListService.query().subscribe(
       res => {
-        this.deposits = res.body || [];
+        this.transactionDocMetaDataArray = res.body || [];
         // TODO test whether data-tables are created once and only once
         this.dtTrigger.next();
       },
       err => this.onError(err.toString()),
-      () => this.log.info(`Extracted ${this.deposits.length}deposit items from API`)
+      () => this.log.info(`Extracted ${this.transactionDocMetaDataArray.length}transaction metadata items from API`)
     );
   }
 
   private firstPassDataUpdate(): void {
-    this.depositListService.getTransactionMetadata().subscribe(
+    this.depositListService.query().subscribe(
       res => {
-        this.deposits = res.body || [];
+        this.transactionDocMetaDataArray = res.body || [];
         // TODO test whether data-tables are created once and only once
         // this.dtTrigger.next()
       },
       err => this.onError(err.toString()),
-      () => this.log.info(`Extracted ${this.deposits.length} deposit items from API`)
+      () => this.log.info(`Extracted ${this.transactionDocMetaDataArray.length}transaction metadata items from API`)
     );
   }
 
@@ -76,9 +79,14 @@ export class TransactionDocMetadataComponent implements OnInit {
   }
 
   private previousView(): void {
-    const navigation = this.router.navigate(['deposit-account']);
+    const navigation = this.router.navigate(['transaction-document']);
     navigation.then(() => {
       this.log.debug(`Well! This was not supposed to happen. Review request parameters and reiterate`);
     });
+  }
+
+  delete(transactionDocument: ITransactionDocument): void {
+    const modalRef = this.modalService.open(TransactionDocumentDeleteDialogComponent, { size: 'lg', backdrop: 'static' });
+    modalRef.componentInstance.transactionDocument = transactionDocument;
   }
 }

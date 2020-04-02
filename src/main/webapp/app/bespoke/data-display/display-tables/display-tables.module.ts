@@ -1,4 +1,4 @@
-import { NgModule } from '@angular/core';
+import { CUSTOM_ELEMENTS_SCHEMA, NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { DataTablesModule as DTModule } from 'angular-datatables';
 import { DisplayTablesRoutingModule } from './display-tables-routing.module';
@@ -8,6 +8,7 @@ import { TransactionDocMetadataComponent } from './transaction-doc-metadata/tran
   declarations: [TransactionDocMetadataComponent],
   imports: [CommonModule, DTModule, DisplayTablesRoutingModule],
   exports: [TransactionDocMetadataComponent],
-  entryComponents: [TransactionDocMetadataComponent]
+  entryComponents: [TransactionDocMetadataComponent],
+  schemas: [CUSTOM_ELEMENTS_SCHEMA]
 })
 export class DisplayTablesModule {}

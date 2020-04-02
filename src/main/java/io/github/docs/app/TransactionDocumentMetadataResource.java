@@ -42,7 +42,7 @@ public class TransactionDocumentMetadataResource {
      * @param criteria the criteria which the requested entities should match.
      * @return the {@link ResponseEntity} with status {@code 200 (OK)} and the list of transactionDocuments in body.
      */
-    @GetMapping("/transaction-documents")
+    @GetMapping("/transaction-document/metadata")
     public ResponseEntity<List<TransactionDocumentMetadata>> getAllTransactionDocuments(TransactionDocumentCriteria criteria, Pageable pageable) {
         log.debug("REST request to get TransactionDocuments by criteria: {}", criteria);
         Page<TransactionDocumentDTO> page = transactionDocumentQueryService.findByCriteria(criteria, pageable);
