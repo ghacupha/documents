@@ -3,12 +3,13 @@ import { CommonModule } from '@angular/common';
 import { DataTablesModule as DTModule } from 'angular-datatables';
 import { DisplayTablesRoutingModule } from './display-tables-routing.module';
 import { TransactionDocMetadataComponent } from './transaction-doc-metadata/transaction-doc-metadata.component';
+import { FormalDocMetadataComponent } from './formal-doc-metadata/formal-doc-metadata.component';
 
 @NgModule({
-  declarations: [TransactionDocMetadataComponent],
+  declarations: [TransactionDocMetadataComponent, FormalDocMetadataComponent],
   imports: [CommonModule, DTModule, DisplayTablesRoutingModule],
-  exports: [TransactionDocMetadataComponent],
-  entryComponents: [TransactionDocMetadataComponent],
+  exports: [TransactionDocMetadataComponent, FormalDocMetadataComponent],
+  entryComponents: [TransactionDocMetadataComponent, FormalDocMetadataComponent],
   schemas: [CUSTOM_ELEMENTS_SCHEMA]
 })
 export class DisplayTablesModule {}
