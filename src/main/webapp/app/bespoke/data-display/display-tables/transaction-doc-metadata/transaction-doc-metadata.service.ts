@@ -7,8 +7,8 @@ import { Observable } from 'rxjs/internal/Observable';
 import { HttpClient, HttpResponse } from '@angular/common/http';
 import * as moment from 'moment';
 import { createRequestOption } from 'app/shared/util/request-util';
-import { ITransactionDocument } from 'app/shared/model/transaction-document.model';
 import { ITransactionDocumentMetadata } from 'app/bespoke/model/transaction-document-metadata';
+import { ITransactionDocument } from 'app/shared/model/transaction-document.model';
 
 type EntityArrayResponseType = HttpResponse<ITransactionDocumentMetadata[]>;
 
@@ -26,20 +26,9 @@ type EntityArrayResponseType = HttpResponse<ITransactionDocumentMetadata[]>;
 })
 export class TransactionDocMetadataService {
   // TODO Create custom api for pulling all data
-  public resourceUrl = SERVER_API_URL + 'api/app/transaction-document/metadata';
+  public resourceUrl = SERVER_API_URL + '/api/app/formal-document/metadata';
 
   constructor(protected http: HttpClient, private jhiAlertService: JhiAlertService, private log: NGXLogger) {}
-
-  // getTransactionMetadata(): Observable<EntityArrayResponseType> {
-  //   return (
-  //     this.http
-  //       .get<ITransactionDocumentMetadata[]>(this.resourceUrl, { observe: 'response' })
-  //       // .pipe(
-  //       //   tap((res: EntityArrayResponseType) => this.log.info(`fetched : ${res.body.length} deposit-account items`)),
-  //       // )
-  //       .pipe(map((res: EntityArrayResponseType) => this.convertDateArrayFromServer(res)))
-  //   );
-  // }
 
   query(req?: any): Observable<EntityArrayResponseType> {
     const options = createRequestOption(req);

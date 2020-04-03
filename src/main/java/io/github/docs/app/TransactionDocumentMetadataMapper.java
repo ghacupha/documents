@@ -13,8 +13,6 @@ import org.mapstruct.Mapping;
 @Mapper(componentModel = "spring", uses = {SchemeMapper.class})
 public interface TransactionDocumentMetadataMapper extends io.github.docs.app.Mapping<TransactionDocumentDTO, TransactionDocumentMetadata> {
 
-
-
     @Mapping(target = "removeSchemes", ignore = true)
 
     default TransactionDocument fromId(Long id) {
