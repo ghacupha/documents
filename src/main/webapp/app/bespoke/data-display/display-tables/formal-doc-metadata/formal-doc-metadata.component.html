@@ -1,1 +1,66 @@
-<p>formal-doc-metadata works!</p>
+<div class="table-responsive">
+    <h5>Formal Document Metadata</h5>
+    <!--<table class="table table-striped table-bordered table-sm row-border hover"
+           datatable [dtOptions]="dtOptions" [dtTrigger]="dtTrigger">
+        <thead>
+        <tr>
+            <th>ID</th>
+            <th>Tran #</th>
+            <th>Tran Date</th>
+            <th>Brief</th>
+            <th>Justification</th>
+            <th>Amount</th>
+            <th>Payee</th>
+            <th>Invoice</th>
+            <th>LPO #</th>
+            <th>Debit #</th>
+            <th>Logistics Dept #</th>
+            <th>Memo #</th>
+            <th>Doc #</th>
+            <th>Filename</th>
+            <th></th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr *ngFor="let transactionDocument of transactionDocMetaDataArray">
+            <td>{{ transactionDocument.id }}/td>
+            <td>{{ transactionDocument.transactionNumber }}</td>
+            <td>{{ transactionDocument.transactionDate | date:'mediumDate' }}</td>
+            <td>{{ transactionDocument.briefDescription }}</td>
+            <td>{{ transactionDocument.justification }}</td>
+            <td>{{ transactionDocument.transactionAmount }}</td>
+            <td>{{ transactionDocument.payeeName }}</td>
+            <td>{{ transactionDocument.invoiceNumber }}</td>
+            <td>{{ transactionDocument.lpoNumber }}</td>
+            <td>{{ transactionDocument.debitNoteNumber }}</td>
+            <td>{{ transactionDocument.logisticReferenceNumber }}</td>
+            <td>{{ transactionDocument.memoNumber }}</td>
+            <td>{{ transactionDocument.documentStandardNumber }}</td>
+            <td>{{ transactionDocument.filename }}</td>
+            <td class="text-right">
+                <div class="btn-group">
+                    <button type="submit"
+                            [routerLink]="['/transaction-document', transactionDocument.id, 'view']"
+                            class="btn btn-info btn-sm">
+                        <fa-icon icon="eye"></fa-icon>
+                        <span class="d-none d-md-inline">View</span>
+                    </button>
+
+                    <button type="submit"
+                            [routerLink]="['/transaction-document', transactionDocument.id, 'edit']"
+                            class="btn btn-primary btn-sm">
+                        <fa-icon icon="pencil-alt"></fa-icon>
+                        <span class="d-none d-md-inline">Edit</span>
+                    </button>
+
+                    <button type="submit" (click)="delete(transactionDocument)"
+                            class="btn btn-danger btn-sm">
+                        <fa-icon icon="times"></fa-icon>
+                        <span class="d-none d-md-inline">Delete</span>
+                    </button>
+                </div>
+            </td>
+        </tr>
+        </tbody>
+    </table>-->
+</div>

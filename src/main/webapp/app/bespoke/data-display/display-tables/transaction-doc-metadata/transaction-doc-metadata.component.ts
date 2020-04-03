@@ -3,10 +3,10 @@ import { Subject } from 'rxjs/internal/Subject';
 import { JhiAlertService } from 'ng-jhipster';
 import { NGXLogger } from 'ngx-logger';
 import { ActivatedRoute, Router } from '@angular/router';
-import { ITransactionDocument } from 'app/shared/model/transaction-document.model';
 import { TransactionDocMetadataService } from 'app/bespoke/data-display/display-tables/transaction-doc-metadata/transaction-doc-metadata.service';
 import { TransactionDocumentDeleteDialogComponent } from 'app/entities/transaction-document/transaction-document-delete-dialog.component';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { ITransactionDocumentMetadata } from 'app/bespoke/model/transaction-document-metadata';
 
 @Component({
   selector: 'gha-transaction-doc-metadata',
@@ -17,14 +17,14 @@ export class TransactionDocMetadataComponent implements OnInit {
   dtOptions!: DataTables.Settings;
   dtTrigger: Subject<any> = new Subject<any>();
 
-  transactionDocMetaDataArray!: ITransactionDocument[];
+  transactionDocMetaDataArray!: ITransactionDocumentMetadata[];
 
   constructor(
     protected activatedRoute: ActivatedRoute,
     protected router: Router,
     protected jhiAlertService: JhiAlertService,
     private log: NGXLogger,
-    private depositListService: TransactionDocMetadataService,
+    private transactionListService: TransactionDocMetadataService,
     protected modalService: NgbModal
   ) {
     this.firstPassDataUpdate();
@@ -48,7 +48,7 @@ export class TransactionDocMetadataComponent implements OnInit {
   }
 
   private secondPassDataUpdate(): void {
-    this.depositListService.query().subscribe(
+    this.transactionListService.query().subscribe(
       res => {
         this.transactionDocMetaDataArray = res.body || [];
         // TODO test whether data-tables are created once and only once
@@ -60,7 +60,7 @@ export class TransactionDocMetadataComponent implements OnInit {
   }
 
   private firstPassDataUpdate(): void {
-    this.depositListService.query().subscribe(
+    this.transactionListService.query().subscribe(
       res => {
         this.transactionDocMetaDataArray = res.body || [];
         // TODO test whether data-tables are created once and only once
@@ -85,7 +85,7 @@ export class TransactionDocMetadataComponent implements OnInit {
     });
   }
 
-  delete(transactionDocument: ITransactionDocument): void {
+  delete(transactionDocument: ITransactionDocumentMetadata): void {
     const modalRef = this.modalService.open(TransactionDocumentDeleteDialogComponent, { size: 'lg', backdrop: 'static' });
     modalRef.componentInstance.transactionDocument = transactionDocument;
   }

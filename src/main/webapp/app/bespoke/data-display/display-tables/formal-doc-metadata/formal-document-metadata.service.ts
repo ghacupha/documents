@@ -1,45 +1,25 @@
 import { Injectable } from '@angular/core';
+import { HttpClient, HttpResponse } from '@angular/common/http';
+import { IFormalDocumentMetadata } from 'app/bespoke/model/formal-document-metadata';
 import { SERVER_API_URL } from 'app/app.constants';
+import { createRequestOption } from 'app/shared/util/request-util';
 import { map } from 'rxjs/operators';
 import { JhiAlertService } from 'ng-jhipster';
 import { NGXLogger } from 'ngx-logger';
-import { Observable } from 'rxjs/internal/Observable';
-import { HttpClient, HttpResponse } from '@angular/common/http';
-import * as moment from 'moment';
-import { createRequestOption } from 'app/shared/util/request-util';
 import { ITransactionDocument } from 'app/shared/model/transaction-document.model';
+import { Observable } from 'rxjs/internal/Observable';
 import { ITransactionDocumentMetadata } from 'app/bespoke/model/transaction-document-metadata';
+import * as moment from 'moment';
 
-type EntityArrayResponseType = HttpResponse<ITransactionDocumentMetadata[]>;
-
-/**
- * This service pulls data from the transaction-document-metadata resource with null filtering arguments,
- *
- * for now allowing for the data-tables library to have access to all the data at the same time.
- *
- * For further development depending on business demands we might need to develop typical html listings
- *
- * with full blown paging requests. The idea is to be able to share documents selected by the user
- */
+type EntityArrayResponseType = HttpResponse<IFormalDocumentMetadata[]>;
 @Injectable({
   providedIn: 'root'
 })
-export class TransactionDocMetadataService {
+export class FormalDocumentMetadataService {
   // TODO Create custom api for pulling all data
   public resourceUrl = SERVER_API_URL + 'api/app/transaction-document/metadata';
 
   constructor(protected http: HttpClient, private jhiAlertService: JhiAlertService, private log: NGXLogger) {}
-
-  // getTransactionMetadata(): Observable<EntityArrayResponseType> {
-  //   return (
-  //     this.http
-  //       .get<ITransactionDocumentMetadata[]>(this.resourceUrl, { observe: 'response' })
-  //       // .pipe(
-  //       //   tap((res: EntityArrayResponseType) => this.log.info(`fetched : ${res.body.length} deposit-account items`)),
-  //       // )
-  //       .pipe(map((res: EntityArrayResponseType) => this.convertDateArrayFromServer(res)))
-  //   );
-  // }
 
   query(req?: any): Observable<EntityArrayResponseType> {
     const options = createRequestOption(req);
