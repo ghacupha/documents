@@ -21,7 +21,6 @@ import java.util.Set;
 @NoArgsConstructor
 public class TransactionDocumentMetadata {
 
-
     private Long id;
 
     @NotNull

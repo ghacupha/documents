@@ -36,7 +36,7 @@ public class TransactionDocumentMetadataResource {
     }
 
     /**
-     * {@code GET  /transaction-documents} : get all the transactionDocuments.
+     * {@code GET  /transaction-document/metadata} : get all the transactionDocuments metadata.
      *
      * @param pageable the pagination information.
      * @param criteria the criteria which the requested entities should match.

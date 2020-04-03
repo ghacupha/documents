@@ -23,7 +23,7 @@
         </thead>
         <tbody>
         <tr *ngFor="let transactionDocument of transactionDocMetaDataArray">
-            <td>{{ transactionDocument.id }}/td>
+            <td>{{ transactionDocument.id }}</td>
             <td>{{ transactionDocument.transactionNumber }}</td>
             <td>{{ transactionDocument.transactionDate | date:'mediumDate' }}</td>
             <td>{{ transactionDocument.briefDescription }}</td>

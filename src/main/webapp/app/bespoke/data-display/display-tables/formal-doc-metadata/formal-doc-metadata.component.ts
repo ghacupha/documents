@@ -85,8 +85,8 @@ export class FormalDocMetadataComponent implements OnInit {
     });
   }
 
-  delete(transactionDocument: IFormalDocumentMetadata): void {
+  delete(formalDocument: IFormalDocumentMetadata): void {
     const modalRef = this.modalService.open(TransactionDocumentDeleteDialogComponent, { size: 'lg', backdrop: 'static' });
-    modalRef.componentInstance.transactionDocument = transactionDocument;
+    modalRef.componentInstance.transactionDocument = formalDocument;
   }
 }
