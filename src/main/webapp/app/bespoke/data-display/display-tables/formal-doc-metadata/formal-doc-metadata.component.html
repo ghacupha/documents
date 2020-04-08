@@ -1,5 +1,18 @@
 <div class="table-responsive">
     <h5>Formal Document Metadata</h5>
+
+    <div class="btn-group">
+        <button type="submit"
+                class="btn btn-info btn-sm">
+            <fa-icon icon="eye"></fa-icon>
+            <span class="d-none d-md-inline">Share</span>
+        </button>
+
+        <td><input type="email"></td>
+    </div>
+
+    <br></br>
+
     <table class="table table-striped table-bordered table-sm row-border hover"
            datatable [dtOptions]="dtOptions" [dtTrigger]="dtTrigger">
         <thead>
@@ -17,7 +30,8 @@
         </thead>
         <tbody>
         <tr *ngFor="let formalDocument of formalDocMetaDataArray">
-            <td><a [routerLink]="['/formal-document', formalDocument.id, 'view']">{{ formalDocument.id }}</a></td>
+            <!--<td><a [routerLink]="['/formal-document', formalDocument.id, 'view']">{{ formalDocument.id }}</a></td>-->
+            <td><input type="checkbox"></td>
             <td>{{ formalDocument.documentTitle }}</td>
             <td>{{ formalDocument.briefDescription }}</td>
             <td>{{ formalDocument.documentSubject }}</td>

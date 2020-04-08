@@ -17,6 +17,7 @@ export interface ITransactionDocumentMetadata {
   documentStandardNumber?: string;
   filename?: string;
   schemes?: IScheme[];
+  checked?: boolean;
 }
 
 export class TransactionDocumentMetadata implements ITransactionDocumentMetadata {
@@ -35,6 +36,7 @@ export class TransactionDocumentMetadata implements ITransactionDocumentMetadata
     public memoNumber?: string,
     public documentStandardNumber?: string,
     public filename?: string,
-    public schemes?: IScheme[]
+    public schemes?: IScheme[],
+    public checked?: boolean
   ) {}
 }

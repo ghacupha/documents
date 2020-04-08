@@ -35,12 +35,36 @@ export class TransactionDocMetadataComponent implements OnInit {
     this.secondPassDataUpdate();
   }
 
+  /**
+   * Used for marking a document for sharing purposes
+   *
+   * @param {ITransactionDocumentMetadata} transactionDocument
+   */
+  public onChecked(transactionDocument: ITransactionDocumentMetadata): void {
+    transactionDocument.checked = !transactionDocument.checked;
+  }
+
+  /**
+   * This method is used to triger document-sharing events to the email recipients
+   * in the argument, from the component's template
+   *
+   * @param {string} emailRecipients
+   */
+  public share(emailRecipients: string): void {
+    const sharedDocuments: ITransactionDocumentMetadata[] = this.transactionDocMetaDataArray.filter(x => x.checked);
+    const recipients: string[] = emailRecipients.trim().split(';');
+
+    recipients.forEach(recipient => {
+      this.log.debug(`${sharedDocuments.length} documents have been shared, with ${recipient}`);
+    });
+  }
+
   private getDataTableOptions(): DataTables.Settings {
     return (this.dtOptions = {
       searching: true,
       paging: true,
       pagingType: 'full_numbers',
-      pageLength: 5,
+      pageLength: 3,
       processing: true,
       dom: 'Bfrtip',
       buttons: ['copy', 'csv', 'excel', 'pdf', 'print', 'colvis']
