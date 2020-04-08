@@ -40,7 +40,7 @@ export class TransactionDocMetadataComponent implements OnInit {
    *
    * @param {ITransactionDocumentMetadata} transactionDocument
    */
-  public onChecked(transactionDocument: ITransactionDocumentMetadata): void {
+  onChecked(transactionDocument: ITransactionDocumentMetadata): void {
     transactionDocument.checked = !transactionDocument.checked;
   }
 
@@ -55,6 +55,7 @@ export class TransactionDocMetadataComponent implements OnInit {
     const recipients: string[] = emailRecipients.trim().split(';');
 
     recipients.forEach(recipient => {
+      this.transactionListService.send(recipient, sharedDocuments);
       this.log.debug(`${sharedDocuments.length} documents have been shared, with ${recipient}`);
     });
   }

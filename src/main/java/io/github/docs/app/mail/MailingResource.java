@@ -1,7 +1,10 @@
 package io.github.docs.app.mail;
 
 import io.github.docs.app.model.MailAttachmentRequest;
+import io.github.docs.app.model.TransactionDocumentMetadata;
 import io.github.docs.service.TransactionDocumentService;
+import io.github.docs.service.dto.TransactionDocumentDTO;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -11,6 +14,7 @@ import javax.validation.Valid;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -29,35 +33,40 @@ public class MailingResource {
     }
 
     @PostMapping("/transaction-documents")
-    public void shareTransactionDocuments(@Valid @RequestBody MailAttachmentRequest attachmentRequest){
+    public void shareTransactionDocuments(@Valid @RequestBody MailAttachmentRequest attachmentRequest) {
 
-        byte[] fileBytes = transactionDocumentService.findOne(10l).get().getTransactionAttachment();
+        final Map<String, File> DOCUMENT_MAP = getAttachmentsMap(attachmentRequest.getTransactionDocumentMetadata());
 
-        // get filename from service
-        final String FILE_ATTACHMENT_ID = transactionDocumentService.findOne(10l).get().getFilename();
+        mailingService.sendAttachmentFromTemplate(attachmentRequest.getRecipientEmail(), "mail/attachmentEmail", "email.activation.title", DOCUMENT_MAP);
+    }
 
-
-        File attachment = new File(FILE_ATTACHMENT_ID);
-
-
-        FileOutputStream fos = null;
-
-        try {
-
-            fos = new FileOutputStream(attachment);
-
-            // Writes bytes from the specified byte array to this file output stream
-            fos.write(fileBytes);
-
-        }
-        catch (Exception e) {
-            System.out.println("File not found" + e);
-        }
+    @Async
+    public Map<String, File> getAttachmentsMap(List<TransactionDocumentMetadata> transactionDocuments) {
 
         final Map<String, File> DOCUMENT_MAP = new HashMap<>();
 
-        DOCUMENT_MAP.put(FILE_ATTACHMENT_ID, attachment);
+        transactionDocuments.forEach(metadata -> {
 
-        mailingService.sendAttachmentFromTemplate(attachmentRequest.getRecipientUsername(), attachmentRequest.getRecipientEmail(), "mail/attachmentEmail", "email.activation.title", DOCUMENT_MAP);
+            long documentId = metadata.getId();
+
+            TransactionDocumentDTO documentDTO = transactionDocumentService.findOne(documentId).orElseThrow(() -> new IllegalArgumentException("Transaction document id : " + documentId + " not " +
+                                                                                                                                                 "found!!!"));
+
+                File attachment = new File(documentDTO.getFilename());
+            FileOutputStream fos = null;
+            try {
+                fos = new FileOutputStream(attachment);
+
+                // Writes bytes from the specified byte array to this file output stream
+                fos.write(documentDTO.getTransactionAttachment());
+            } catch (Exception e) {
+                System.out.println("File not found" + e);
+            }
+
+            DOCUMENT_MAP.put(documentDTO.getFilename(), attachment);
+
+        });
+
+        return DOCUMENT_MAP;
     }
 }
