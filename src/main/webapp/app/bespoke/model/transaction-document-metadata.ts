@@ -1,4 +1,5 @@
 import { Moment } from 'moment';
+import { IScheme } from 'app/shared/model/scheme.model';
 
 export interface ITransactionDocumentMetadata {
   id?: number;
@@ -15,6 +16,7 @@ export interface ITransactionDocumentMetadata {
   memoNumber?: string;
   documentStandardNumber?: string;
   filename?: string;
+  schemes?: IScheme[];
 }
 
 export class TransactionDocumentMetadata implements ITransactionDocumentMetadata {
@@ -32,6 +34,7 @@ export class TransactionDocumentMetadata implements ITransactionDocumentMetadata
     public logisticReferenceNumber?: string,
     public memoNumber?: string,
     public documentStandardNumber?: string,
-    public filename?: string
+    public filename?: string,
+    public schemes?: IScheme[]
   ) {}
 }

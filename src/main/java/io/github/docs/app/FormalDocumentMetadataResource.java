@@ -1,6 +1,7 @@
 package io.github.docs.app;
 
 import io.github.docs.app.model.FormalDocumentMetadata;
+import io.github.docs.app.model.FormalDocumentMetadataMapper;
 import io.github.docs.service.FormalDocumentQueryService;
 import io.github.docs.service.dto.FormalDocumentCriteria;
 import io.github.docs.service.dto.FormalDocumentDTO;

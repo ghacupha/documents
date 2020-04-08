@@ -1,4 +1,4 @@
-package io.github.docs.app;
+package io.github.docs.app.model;
 
 import com.google.common.collect.ImmutableList;
 

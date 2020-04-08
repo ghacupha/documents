@@ -26,7 +26,7 @@ type EntityArrayResponseType = HttpResponse<ITransactionDocumentMetadata[]>;
 })
 export class TransactionDocMetadataService {
   // TODO Create custom api for pulling all data
-  public resourceUrl = SERVER_API_URL + '/api/app/formal-document/metadata';
+  public resourceUrl = SERVER_API_URL + '/api/app/transaction-document/metadata';
 
   constructor(protected http: HttpClient, private jhiAlertService: JhiAlertService, private log: NGXLogger) {}
 
