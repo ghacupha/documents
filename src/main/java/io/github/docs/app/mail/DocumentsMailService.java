@@ -33,8 +33,6 @@ import java.util.Map;
 @Service
 public class DocumentsMailService implements MailingService {
 
-    private static final String TITLE = "attachmentMessageTitle";
-
     private static final String USER = "addressee";
 
     private static final String SENDER = "documentsUser";
@@ -95,7 +93,8 @@ public class DocumentsMailService implements MailingService {
         context.setVariable(BASE_URL, jHipsterProperties.getMail().getBaseUrl());
         String content = templateEngine.process(templateName, context);
 
-        String[] titleParts = {"Documents Automation Project"};
+        // Specify title part 1 & 2
+        String[] titleParts = {"Documents Shared", "Documents Automation Project"};
 
         // set title
         String subject = messageSource.getMessage(titleKey, titleParts, Locale.ENGLISH);
