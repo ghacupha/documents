@@ -142,19 +142,19 @@ public class DocumentsMailServiceIT {
         assertThat(part.getDataHandler().getContentType()).isEqualTo("text/html;charset=UTF-8");
     }
 
-    @Test
-    public void testSendEmailFromTemplate() throws Exception {
-        User user = new User();
-        user.setLogin("john");
-        user.setEmail("john.doe@example.com");
-        user.setLangKey("en");
-        mailService.sendAttachmentFromTemplate(user, "mail/testAttachEmail", "email.test.title", DOCUMENT_MAP);
-        verify(javaMailSender).send(messageCaptor.capture());
-        MimeMessage message = messageCaptor.getValue();
-        assertThat(message.getSubject()).isEqualTo("test title");
-        assertThat(message.getAllRecipients()[0].toString()).isEqualTo(user.getEmail());
-        assertThat(message.getFrom()[0].toString()).isEqualTo(jHipsterProperties.getMail().getFrom());
-    }
+//    @Test
+//    public void testSendEmailFromTemplate() throws Exception {
+//        User user = new User();
+//        user.setLogin("john");
+//        user.setEmail("john.doe@example.com");
+//        user.setLangKey("en");
+//        mailService.sendAttachmentFromTemplate(user, "mail/testAttachEmail", "email.test.title", DOCUMENT_MAP);
+//        verify(javaMailSender).send(messageCaptor.capture());
+//        MimeMessage message = messageCaptor.getValue();
+//        assertThat(message.getSubject()).isEqualTo("test title");
+//        assertThat(message.getAllRecipients()[0].toString()).isEqualTo(user.getEmail());
+//        assertThat(message.getFrom()[0].toString()).isEqualTo(jHipsterProperties.getMail().getFrom());
+//    }
 
     @Test
     public void testSendEmailWithException() {
@@ -166,28 +166,28 @@ public class DocumentsMailServiceIT {
         }
     }
 
-    @Test
-    public void testSendLocalizedEmailForAllSupportedLanguages() throws Exception {
-        User user = new User();
-        user.setLogin("john");
-        user.setEmail("john.doe@example.com");
-        for (String langKey : languages) {
-            user.setLangKey(langKey);
-            mailService.sendAttachmentFromTemplate(user, "mail/testAttachEmail", "email.test.title", DOCUMENT_MAP);
-            verify(javaMailSender, atLeastOnce()).send(messageCaptor.capture());
-            MimeMessage message = messageCaptor.getValue();
-
-            String propertyFilePath = "i18n/messages_" + getJavaLocale(langKey) + ".properties";
-            URL resource = this.getClass().getClassLoader().getResource(propertyFilePath);
-            File file = new File(new URI(resource.getFile()).getPath());
-            Properties properties = new Properties();
-            properties.load(new InputStreamReader(new FileInputStream(file), Charset.forName("UTF-8")));
-
-            String emailTitle = (String) properties.get("email.test.title");
-            assertThat(message.getSubject()).isEqualTo(emailTitle);
-            assertThat(message.getContent().toString()).isEqualToNormalizingNewlines("<html>" + emailTitle + ", http://127.0.0.1:8080, john</html>\n");
-        }
-    }
+//    @Test
+//    public void testSendLocalizedEmailForAllSupportedLanguages() throws Exception {
+//        User user = new User();
+//        user.setLogin("john");
+//        user.setEmail("john.doe@example.com");
+//        for (String langKey : languages) {
+//            user.setLangKey(langKey);
+//            mailService.sendAttachmentFromTemplate(user, "mail/testAttachEmail", "email.test.title", DOCUMENT_MAP);
+//            verify(javaMailSender, atLeastOnce()).send(messageCaptor.capture());
+//            MimeMessage message = messageCaptor.getValue();
+//
+//            String propertyFilePath = "i18n/messages_" + getJavaLocale(langKey) + ".properties";
+//            URL resource = this.getClass().getClassLoader().getResource(propertyFilePath);
+//            File file = new File(new URI(resource.getFile()).getPath());
+//            Properties properties = new Properties();
+//            properties.load(new InputStreamReader(new FileInputStream(file), Charset.forName("UTF-8")));
+//
+//            String emailTitle = (String) properties.get("email.test.title");
+//            assertThat(message.getSubject()).isEqualTo(emailTitle);
+//            assertThat(message.getContent().toString()).isEqualToNormalizingNewlines("<html>" + emailTitle + ", http://127.0.0.1:8080, john</html>\n");
+//        }
+//    }
 
     /**
      * Convert a lang key to the Java locale.

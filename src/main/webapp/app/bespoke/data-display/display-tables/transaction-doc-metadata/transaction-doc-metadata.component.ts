@@ -7,6 +7,9 @@ import { TransactionDocMetadataService } from 'app/bespoke/data-display/display-
 import { TransactionDocumentDeleteDialogComponent } from 'app/entities/transaction-document/transaction-document-delete-dialog.component';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { ITransactionDocumentMetadata } from 'app/bespoke/model/transaction-document-metadata';
+import {ITransactionDocument} from "app/shared/model/transaction-document.model";
+import {Observable} from "rxjs/index";
+import {HttpResponse} from "@angular/common/http";
 
 @Component({
   selector: 'gha-transaction-doc-metadata',
@@ -14,6 +17,7 @@ import { ITransactionDocumentMetadata } from 'app/bespoke/model/transaction-docu
   styleUrls: ['./transaction-doc-metadata.component.scss']
 })
 export class TransactionDocMetadataComponent implements OnInit {
+  isSharing = false;
   dtOptions!: DataTables.Settings;
   dtTrigger: Subject<any> = new Subject<any>();
 
@@ -55,7 +59,7 @@ export class TransactionDocMetadataComponent implements OnInit {
     const recipients: string[] = emailRecipients.trim().split(';');
 
     recipients.forEach(recipient => {
-      this.transactionListService.send(recipient, sharedDocuments);
+      this.subscribeToShareResponse(this.transactionListService.send(recipient, sharedDocuments));
       this.log.debug(`${sharedDocuments.length} documents have been shared, with ${recipient}`);
     });
   }
@@ -94,6 +98,36 @@ export class TransactionDocMetadataComponent implements OnInit {
       err => this.onError(err.toString()),
       () => this.log.info(`Extracted ${this.transactionDocMetaDataArray.length}transaction metadata items from API`)
     );
+  }
+
+  /**
+   * Am having problems with triggering the HTTP client. I hope this will trigger the service to call the
+   *
+   * httpClient and otherwise we will additional features mapped such as the ability to flag when the service is
+   *
+   * busy sharing, or even notify the user when there was an error
+   *
+   * @param {Observable<HttpResponse<ITransactionDocumentMetadata[]>>} result
+   */
+  protected subscribeToShareResponse(result: Observable<HttpResponse<ITransactionDocumentMetadata[]>>): void {
+    result.subscribe(
+      () => this.onSaveSuccess(),
+      () => this.onSaveError("The service was unable to share the documents, So sorry!")
+    );
+  }
+
+  protected onSaveSuccess(): void {
+    this.isSharing = false;
+    this.previousView();
+  }
+
+  protected onSaveError(errorMessage: string): void {
+    this.isSharing = false;
+
+    this.jhiAlertService.error(errorMessage, null, '');
+    this.log.error(`Error while extracting data from API ${errorMessage}`);
+
+    this.previousView();
   }
 
   protected onError(errorMessage: string): void {

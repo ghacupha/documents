@@ -45,13 +45,32 @@ export class TransactionDocMetadataService {
    * @param {string} emailRecipient
    * @param {ITransactionDocumentMetadata[]} sharedDocuments
    */
-  public send(emailRecipient?: string, sharedDocuments?: ITransactionDocumentMetadata[]): void {
+  public send(emailRecipient?: string, sharedDocuments?: ITransactionDocumentMetadata[]): Observable<EntityArrayResponseType>  {
     const mailAttachment: IMailAttachmentRequest = {
       recipientEmail: emailRecipient,
       transactionDocumentMetadata: sharedDocuments
     };
-    this.log.debug(`Sharing ${mailAttachment.transactionDocumentMetadata?.length} with recipient ${mailAttachment.recipientEmail}`);
-    this.http.post(this.resourceSharingUrl, mailAttachment, { observe: 'response' });
+
+    const copy: IMailAttachmentRequest = this.convertAttachmentDateFromClient(mailAttachment);
+
+    this.log.debug(`Sharing ${mailAttachment.transactionDocumentMetadata?.length} attachments with recipient ${mailAttachment.recipientEmail}`);
+
+    return this.http.post<ITransactionDocumentMetadata[]>(this.resourceSharingUrl, copy, { observe: 'response' });
+      // .pipe(map((res: ITransactionDocumentMetadata) => this.convertDateFromServer(res)));
+  }
+
+  protected convertAttachmentDateFromClient(mailAttachment: IMailAttachmentRequest): IMailAttachmentRequest {
+    if (mailAttachment.transactionDocumentMetadata) {
+      mailAttachment.transactionDocumentMetadata.forEach((metadata: ITransactionDocumentMetadata) => {
+        metadata.transactionDate = metadata.transactionDate != null ? moment(metadata.transactionDate) : moment();
+      });
+    }
+    return mailAttachment;
+  }
+
+  protected convertDateFromServer(res: ITransactionDocumentMetadata): ITransactionDocumentMetadata {
+      res.transactionDate = res.transactionDate ? moment(res.transactionDate) : undefined;
+    return res;
   }
 
   protected convertDateArrayFromServer(res: EntityArrayResponseType): EntityArrayResponseType {

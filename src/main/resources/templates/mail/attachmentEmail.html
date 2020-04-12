@@ -1,7 +1,8 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org" lang="en">
 <head>
-    <title>Email Attachment</title>
+    <title th:text="#{email.attachment.title}">Email Attachment</title>
+    <!--<title>Email Attachment</title>-->
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
     <link rel="shortcut icon" th:href="@{|${baseUrl}/favicon.ico|}" />
 </head>
@@ -9,8 +10,14 @@
 <p th:text="#{email.attachment.greeting(${addressee})}">
     Dear
 </p>
+<p th:text= "#{email.attachment.text1(${documentsUser})}">
+  Documents_app has shared some documents with you, please find attached.
+
+</p>
 <p>
-  Edwin has shared some documents with you, please find attached:
+    <span th:text="#{email.attachment.text2}">Regards, </span>
+    <br/>
+    <em th:text="#{email.attachment.signature}">Documents App.</em>
 </p>
 </body>
 </html>
