@@ -3,13 +3,14 @@
 
 <form>
     <div class="btn-group">
-        <button type="submit" (click)="share(emailRecipients.value)"
+        <button type="submit" (click)="share(emailRecipients.value, recipientUsernames.value)"
                 class="btn btn-info btn-sm">
             <fa-icon icon="eye"></fa-icon>
             <span class="d-none d-md-inline">Share With: </span>
         </button>
         <div>
-            <td><input type="email" id="recipient" name="recipient" #emailRecipients></td>
+            <td><label for="recipient">Email(s) : </label><input type="email" id="recipient" name="recipient" #emailRecipients></td>
+            <td><label for="username">Username(s) : </label><input type="text" id="username" name="username" #recipientUsernames></td>
         </div>
     </div>
 </form>

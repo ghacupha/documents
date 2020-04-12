@@ -88,12 +88,11 @@ public class DocumentsMailService implements MailingService {
 
     @Override
     @Async
-    public void sendAttachmentFromTemplate(String email, String templateName, String titleKey, Map<String,File> documentAttachments) {
+    public void sendAttachmentFromTemplate(String username, String email, String templateName, String titleKey, Map<String,File> documentAttachments) {
 
         Context context = new Context();
 
-        // todo obtain recipient username from client request
-        context.setVariable(USER, "Recipient");
+        context.setVariable(USER, username == null? "Recipient" : username);
 
         // todo obtain login id from the server
         context.setVariable(SENDER, "Sky Walker");

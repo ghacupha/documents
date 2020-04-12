@@ -26,7 +26,6 @@ type EntityArrayResponseType = HttpResponse<ITransactionDocumentMetadata[]>;
   providedIn: 'root'
 })
 export class TransactionDocMetadataService {
-  // TODO Create custom api for pulling all data
   public resourceUrl = SERVER_API_URL + '/api/app/transaction-document/metadata';
   public resourceSharingUrl = SERVER_API_URL + '/api/share/transaction-documents';
 
@@ -42,11 +41,14 @@ export class TransactionDocMetadataService {
   /**
    * This method will send an email to the recipient with the attachments
    *
+   * @param {string} recipientUsername
    * @param {string} emailRecipient
    * @param {ITransactionDocumentMetadata[]} sharedDocuments
+   * @returns {Observable<EntityArrayResponseType>}
    */
-  public send(emailRecipient?: string, sharedDocuments?: ITransactionDocumentMetadata[]): Observable<EntityArrayResponseType>  {
+  public send(recipientUsername?: string, emailRecipient?: string, sharedDocuments?: ITransactionDocumentMetadata[]): Observable<EntityArrayResponseType>  {
     const mailAttachment: IMailAttachmentRequest = {
+      recipientUsername,
       recipientEmail: emailRecipient,
       transactionDocumentMetadata: sharedDocuments
     };

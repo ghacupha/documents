@@ -15,6 +15,6 @@ public interface MailingService {
     void sendEmail(String to, String subject, String content, boolean isMultipart, boolean isHtml, Map<String,File> documentAttachments);
 
     @Async
-    void sendAttachmentFromTemplate(String email, String templateName, String titleKey, Map<String,File> documentAttachments);
+    void sendAttachmentFromTemplate(String username, String email, String templateName, String titleKey, Map<String,File> documentAttachments);
 
 }

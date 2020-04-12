@@ -7,7 +7,6 @@ import { TransactionDocMetadataService } from 'app/bespoke/data-display/display-
 import { TransactionDocumentDeleteDialogComponent } from 'app/entities/transaction-document/transaction-document-delete-dialog.component';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { ITransactionDocumentMetadata } from 'app/bespoke/model/transaction-document-metadata';
-import {ITransactionDocument} from "app/shared/model/transaction-document.model";
 import {Observable} from "rxjs/index";
 import {HttpResponse} from "@angular/common/http";
 
@@ -49,19 +48,26 @@ export class TransactionDocMetadataComponent implements OnInit {
   }
 
   /**
-   * This method is used to triger document-sharing events to the email recipients
+   * This method is used to trigger document-sharing events to the email recipients
    * in the argument, from the component's template
    *
    * @param {string} emailRecipients
+   * @param {string} recipientUsernames
    */
-  public share(emailRecipients: string): void {
+  public share(emailRecipients: string, recipientUsernames: string): void {
     const sharedDocuments: ITransactionDocumentMetadata[] = this.transactionDocMetaDataArray.filter(x => x.checked);
+    const usernames: string[] = recipientUsernames.trim().split(';');
     const recipients: string[] = emailRecipients.trim().split(';');
 
-    recipients.forEach(recipient => {
-      this.subscribeToShareResponse(this.transactionListService.send(recipient, sharedDocuments));
-      this.log.debug(`${sharedDocuments.length} documents have been shared, with ${recipient}`);
-    });
+    for (let i = 0; i < recipients.length; i++) {
+      this.subscribeToShareResponse(this.transactionListService.send(usernames[i], recipients[i], sharedDocuments));
+      this.log.debug(`${sharedDocuments.length} documents have been shared, with ${recipients[i]}`);
+    }
+
+    // recipients.forEach(recipient => {
+    //   this.subscribeToShareResponse(this.transactionListService.send(username, recipient, sharedDocuments));
+    //   this.log.debug(`${sharedDocuments.length} documents have been shared, with ${recipient}`);
+    // });
   }
 
   private getDataTableOptions(): DataTables.Settings {
