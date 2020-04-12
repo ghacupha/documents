@@ -76,6 +76,8 @@ public class DocumentsMailService implements MailingService {
                 }
             });
 
+            // todo messageHelper.addAttachment(fileZipper(subject + ".zip", documentAttachments));
+
             javaMailSender.send(mimeMessage);
             log.debug("Sent email to User '{}'", to);
         } catch (MailException | MessagingException e) {
