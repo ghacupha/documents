@@ -46,9 +46,11 @@ export class TransactionDocMetadataService {
    * @param {ITransactionDocumentMetadata[]} sharedDocuments
    * @returns {Observable<EntityArrayResponseType>}
    */
-  public send(recipientUsername?: string, emailRecipient?: string, sharedDocuments?: ITransactionDocumentMetadata[]): Observable<EntityArrayResponseType>  {
+  public send(recipientUsername?: string, emailRecipient?: string, titlePart1?: string, titlePart2?: string, sharedDocuments?: ITransactionDocumentMetadata[]): Observable<EntityArrayResponseType>  {
     const mailAttachment: IMailAttachmentRequest = {
       recipientUsername,
+      titlePart1,
+      titlePart2,
       recipientEmail: emailRecipient,
       transactionDocumentMetadata: sharedDocuments
     };

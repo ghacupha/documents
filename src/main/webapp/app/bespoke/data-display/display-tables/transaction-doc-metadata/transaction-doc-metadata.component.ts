@@ -54,20 +54,16 @@ export class TransactionDocMetadataComponent implements OnInit {
    * @param {string} emailRecipients
    * @param {string} recipientUsernames
    */
-  public share(emailRecipients: string, recipientUsernames: string): void {
+  public share(emailRecipients: string, recipientUsernames: string, title1: string, title2: string): void {
     const sharedDocuments: ITransactionDocumentMetadata[] = this.transactionDocMetaDataArray.filter(x => x.checked);
     const usernames: string[] = recipientUsernames.trim().split(';');
     const recipients: string[] = emailRecipients.trim().split(';');
 
     for (let i = 0; i < recipients.length; i++) {
-      this.subscribeToShareResponse(this.transactionListService.send(usernames[i], recipients[i], sharedDocuments));
+      this.subscribeToShareResponse(this.transactionListService.send(usernames[i], recipients[i], title1, title2, sharedDocuments));
       this.log.debug(`${sharedDocuments.length} documents have been shared, with ${recipients[i]}`);
     }
 
-    // recipients.forEach(recipient => {
-    //   this.subscribeToShareResponse(this.transactionListService.send(username, recipient, sharedDocuments));
-    //   this.log.debug(`${sharedDocuments.length} documents have been shared, with ${recipient}`);
-    // });
   }
 
   private getDataTableOptions(): DataTables.Settings {

@@ -1,5 +1,6 @@
 package io.github.docs.app.mail;
 
+import io.github.docs.security.SecurityUtils;
 import io.github.jhipster.config.JHipsterProperties;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.MessageSource;
@@ -88,20 +89,20 @@ public class DocumentsMailService implements MailingService {
 
     @Override
     @Async
-    public void sendAttachmentFromTemplate(String username, String email, String templateName, String titleKey, Map<String,File> documentAttachments) {
+    public void sendAttachmentFromTemplate(String username, String titlePart1, String titlePart2, String email, String templateName, String titleKey, Map<String,File> documentAttachments) {
 
         Context context = new Context();
 
         context.setVariable(USER, username == null? "Recipient" : username);
 
+        String currentLogin = SecurityUtils.getCurrentUserLogin().orElse("Our documents CRM");
         // todo obtain login id from the server
-        context.setVariable(SENDER, "Sky Walker");
+        context.setVariable(SENDER, currentLogin);
         context.setVariable(BASE_URL, jHipsterProperties.getMail().getBaseUrl());
         String content = templateEngine.process(templateName, context);
 
-        // todo obtain title parts from client request
         // Specify title part 1 & 2
-        String[] titleParts = {"Documents Shared", "Documents Automation Project"};
+        String[] titleParts = {titlePart1 == null ? "Documents Shared" : titlePart1, titlePart2 == null ?"Documents Automation Project": titlePart2};
 
         String subject = messageSource.getMessage(titleKey, titleParts, Locale.ENGLISH);
         sendEmail(email, subject, content, true, true,documentAttachments);
