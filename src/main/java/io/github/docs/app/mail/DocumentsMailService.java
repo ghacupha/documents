@@ -55,25 +55,32 @@ public class DocumentsMailService implements MailingService {
     @Async
     public void sendEmail(String to, String subject, String content, boolean isMultipart, boolean isHtml,  Map<String,File> documentAttachments) {
 
-        documentAttachments.forEach((filename, file) -> {
-            log.debug("Send email[multipart '{}' and html '{}'] to '{}' with subject '{}' and content={}", isMultipart, isHtml, to, subject, content);
+        log.debug("Send email[multipart '{}' and html '{}'] to '{}' with subject '{}' and content={}", isMultipart, isHtml, to, subject, content);
 
-            // Prepare message using a Spring helper
-            MimeMessage mimeMessage = javaMailSender.createMimeMessage();
-            try {
-                MimeMessageHelper messageHelper = new MimeMessageHelper(mimeMessage, isMultipart, StandardCharsets.UTF_8.name());
-                messageHelper.setTo(to);
-                messageHelper.setFrom(jHipsterProperties.getMail().getFrom());
-                messageHelper.setSubject(subject);
-                messageHelper.setText(content, isHtml);
-                // Add attachment here
-                messageHelper.addAttachment(filename, file);
-                javaMailSender.send(mimeMessage);
-                log.debug("Sent email to User '{}'", to);
-            } catch (MailException | MessagingException e) {
-                log.warn("Email could not be sent to user '{}'", to, e);
-            }
-        });
+        // Prepare message using a Spring helper
+        MimeMessage mimeMessage = javaMailSender.createMimeMessage();
+        try {
+            MimeMessageHelper messageHelper = new MimeMessageHelper(mimeMessage, isMultipart, StandardCharsets.UTF_8.name());
+            messageHelper.setTo(to);
+            messageHelper.setFrom(jHipsterProperties.getMail().getFrom());
+            messageHelper.setSubject(subject);
+            messageHelper.setText(content, isHtml);
+
+            // Add attachments here
+            documentAttachments.forEach((filename, file) -> {
+                // todo add attachments to zip and add attachments
+                try {
+                    messageHelper.addAttachment(filename, file);
+                } catch (MessagingException e) {
+                    e.printStackTrace();
+                }
+            });
+
+            javaMailSender.send(mimeMessage);
+            log.debug("Sent email to User '{}'", to);
+        } catch (MailException | MessagingException e) {
+            log.warn("Email could not be sent to user '{}'", to, e);
+        }
     }
 
 
@@ -82,6 +89,8 @@ public class DocumentsMailService implements MailingService {
     public void sendAttachmentFromTemplate(String email, String templateName, String titleKey, Map<String,File> documentAttachments) {
 
         Context context = new Context();
+
+        // todo obtain recipient username from client request
         context.setVariable(USER, "Recipient");
 
         // todo obtain login id from the server
@@ -89,10 +98,10 @@ public class DocumentsMailService implements MailingService {
         context.setVariable(BASE_URL, jHipsterProperties.getMail().getBaseUrl());
         String content = templateEngine.process(templateName, context);
 
+        // todo obtain title parts from client request
         // Specify title part 1 & 2
         String[] titleParts = {"Documents Shared", "Documents Automation Project"};
 
-        // set title
         String subject = messageSource.getMessage(titleKey, titleParts, Locale.ENGLISH);
         sendEmail(email, subject, content, true, true,documentAttachments);
     }
