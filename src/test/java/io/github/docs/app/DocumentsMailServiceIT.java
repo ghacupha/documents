@@ -3,7 +3,6 @@ package io.github.docs.app;
 import io.github.docs.DocumentsApp;
 import io.github.docs.app.mail.DocumentsMailService;
 import io.github.docs.app.mail.MailingService;
-import io.github.docs.domain.User;
 import io.github.jhipster.config.JHipsterProperties;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -53,12 +52,6 @@ public class DocumentsMailServiceIT {
     private static final File FILE_ATTACHMENT = new File("files/pngfuel.com.png");
 
     private static final Map<String, File> DOCUMENT_MAP = new HashMap<>();
-
-    private static final String[] languages = {
-        // jhipster-needle-i18n-language-constant - JHipster will add/remove languages in this array
-    };
-    private static final Pattern PATTERN_LOCALE_3 = Pattern.compile("([a-z]{2})-([a-zA-Z]{4})-([a-z]{2})");
-    private static final Pattern PATTERN_LOCALE_2 = Pattern.compile("([a-z]{2})-([a-z]{2})");
 
     @Autowired
     private JHipsterProperties jHipsterProperties;
@@ -142,20 +135,6 @@ public class DocumentsMailServiceIT {
         assertThat(part.getDataHandler().getContentType()).isEqualTo("text/html;charset=UTF-8");
     }
 
-//    @Test
-//    public void testSendEmailFromTemplate() throws Exception {
-//        User user = new User();
-//        user.setLogin("john");
-//        user.setEmail("john.doe@example.com");
-//        user.setLangKey("en");
-//        mailService.sendAttachmentFromTemplate(user, "mail/testAttachEmail", "email.test.title", DOCUMENT_MAP);
-//        verify(javaMailSender).send(messageCaptor.capture());
-//        MimeMessage message = messageCaptor.getValue();
-//        assertThat(message.getSubject()).isEqualTo("test title");
-//        assertThat(message.getAllRecipients()[0].toString()).isEqualTo(user.getEmail());
-//        assertThat(message.getFrom()[0].toString()).isEqualTo(jHipsterProperties.getMail().getFrom());
-//    }
-
     @Test
     public void testSendEmailWithException() {
         doThrow(MailSendException.class).when(javaMailSender).send(any(MimeMessage.class));
@@ -164,45 +143,6 @@ public class DocumentsMailServiceIT {
         } catch (Exception e) {
             fail("Exception shouldn't have been thrown");
         }
-    }
-
-//    @Test
-//    public void testSendLocalizedEmailForAllSupportedLanguages() throws Exception {
-//        User user = new User();
-//        user.setLogin("john");
-//        user.setEmail("john.doe@example.com");
-//        for (String langKey : languages) {
-//            user.setLangKey(langKey);
-//            mailService.sendAttachmentFromTemplate(user, "mail/testAttachEmail", "email.test.title", DOCUMENT_MAP);
-//            verify(javaMailSender, atLeastOnce()).send(messageCaptor.capture());
-//            MimeMessage message = messageCaptor.getValue();
-//
-//            String propertyFilePath = "i18n/messages_" + getJavaLocale(langKey) + ".properties";
-//            URL resource = this.getClass().getClassLoader().getResource(propertyFilePath);
-//            File file = new File(new URI(resource.getFile()).getPath());
-//            Properties properties = new Properties();
-//            properties.load(new InputStreamReader(new FileInputStream(file), Charset.forName("UTF-8")));
-//
-//            String emailTitle = (String) properties.get("email.test.title");
-//            assertThat(message.getSubject()).isEqualTo(emailTitle);
-//            assertThat(message.getContent().toString()).isEqualToNormalizingNewlines("<html>" + emailTitle + ", http://127.0.0.1:8080, john</html>\n");
-//        }
-//    }
-
-    /**
-     * Convert a lang key to the Java locale.
-     */
-    private String getJavaLocale(String langKey) {
-        String javaLangKey = langKey;
-        Matcher matcher2 = PATTERN_LOCALE_2.matcher(langKey);
-        if (matcher2.matches()) {
-            javaLangKey = matcher2.group(1) + "_" + matcher2.group(2).toUpperCase();
-        }
-        Matcher matcher3 = PATTERN_LOCALE_3.matcher(langKey);
-        if (matcher3.matches()) {
-            javaLangKey = matcher3.group(1) + "_" + matcher3.group(2) + "_" + matcher3.group(3).toUpperCase();
-        }
-        return javaLangKey;
     }
 
 }

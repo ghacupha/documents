@@ -82,34 +82,13 @@ public class DocumentsMailService implements MailingService {
         });
     }
 
-//    @Override
-//    @Async
-//    public void sendAttachmentFromTemplate(User user, String templateName, String titleKey, Map<String,File> documentAttachments) {
-//        if (user.getEmail() == null) {
-//            log.debug("Email doesn't exist for user '{}'", user.getLogin());
-//            return;
-//        }
-//        Locale locale = Locale.forLanguageTag(user.getLangKey());
-//        Context context = new Context(locale);
-//        context.setVariable(USER, user);
-//        context.setVariable(BASE_URL, jHipsterProperties.getMail().getBaseUrl());
-//        String content = templateEngine.process(templateName, context);
-//        String subject = messageSource.getMessage(titleKey, null, locale);
-//        sendEmail(user.getEmail(), subject, content, true, true,documentAttachments);
-//    }
 
     @Override
     @Async
     public void sendAttachmentFromTemplate(String email, String templateName, String titleKey, Map<String,File> documentAttachments) {
-//        if (user.getEmail() == null) {
-//            log.debug("Email doesn't exist for user '{}'", user.getLogin());
-//            return;
-//        }
-//        Locale locale = Locale.forLanguageTag(user.getLangKey());
 
         Context context = new Context();
         context.setVariable(USER, "Recipient");
-//        context.setVariable(TITLE, "Documents Automation Project");
 
         // todo obtain login id from the server
         context.setVariable(SENDER, "Sky Walker");

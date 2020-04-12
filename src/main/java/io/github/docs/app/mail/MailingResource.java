@@ -53,6 +53,7 @@ public class MailingResource {
 
         final Map<String, File> DOCUMENT_MAP = getAttachmentsMap(attachmentRequest.getTransactionDocumentMetadata());
 
+        // pick template and title-key for messages
         mailingService.sendAttachmentFromTemplate(attachmentRequest.getRecipientEmail(), "mail/attachmentEmail", "email.attachment.title", DOCUMENT_MAP);
 
         String noOfDocumentsShared = String.valueOf(attachmentRequest.getTransactionDocumentMetadata().size());
