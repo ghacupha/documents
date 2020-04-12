@@ -3,6 +3,7 @@ package io.github.docs.app.model;
 import lombok.*;
 
 import javax.validation.constraints.NotNull;
+import java.io.Serializable;
 import java.util.List;
 
 /**
@@ -15,9 +16,13 @@ import java.util.List;
 @ToString
 @AllArgsConstructor
 @NoArgsConstructor
-public class MailAttachmentRequest {
+public class MailAttachmentRequest implements Serializable {
 
-//    private String recipientUsername;
+    private String recipientUsername;
+
+    private String titlePart1;
+
+    private String titlePart2;
 
     @NotNull
     private String recipientEmail;
