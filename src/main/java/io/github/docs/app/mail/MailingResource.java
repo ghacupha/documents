@@ -23,11 +23,11 @@ import java.util.Map;
 
 /**
  * Resource works but we now need to ensure we can send multiple attachments in a single email
- *
+ * <p>
  * otherwise the service has been sending emails to a user with a single attachment, so when sending
- *
+ * <p>
  * multiple attachments we can flood the user's email. This is preferably to be achieved by isolating
- *
+ * <p>
  * the mailing process and finding ways to zip up the attachments
  */
 @Slf4j
@@ -54,13 +54,14 @@ public class MailingResource {
         final Map<String, File> DOCUMENT_MAP = getAttachmentsMap(attachmentRequest.getTransactionDocumentMetadata());
 
         // pick template and title-key for messages
-        mailingService.sendAttachmentFromTemplate(attachmentRequest.getRecipientUsername(), attachmentRequest.getTitlePart1(), attachmentRequest.getTitlePart2(), attachmentRequest.getRecipientEmail(), "mail/attachmentEmail", "email.attachment.title", DOCUMENT_MAP);
+        mailingService.sendAttachmentFromTemplate(attachmentRequest.getRecipientUsername(), attachmentRequest.getTitlePart1(), attachmentRequest.getTitlePart2(), attachmentRequest.getRecipientEmail(),
+                                                  "mail/attachmentEmail", "email.attachment.title", DOCUMENT_MAP);
 
         String noOfDocumentsShared = String.valueOf(attachmentRequest.getTransactionDocumentMetadata().size());
 
         return ResponseEntity.accepted()
-            .headers(HeaderUtil.createAlert(applicationName, noOfDocumentsShared + " documents have been mailed, successfully", noOfDocumentsShared))
-            .body(attachmentRequest.getTransactionDocumentMetadata());
+                             .headers(HeaderUtil.createAlert(applicationName, noOfDocumentsShared + " documents have been mailed, successfully", noOfDocumentsShared))
+                             .body(attachmentRequest.getTransactionDocumentMetadata());
     }
 
     @Async
@@ -72,10 +73,10 @@ public class MailingResource {
 
             long documentId = metadata.getId();
 
-            TransactionDocumentDTO documentDTO = transactionDocumentService.findOne(documentId).orElseThrow(() -> new IllegalArgumentException("Transaction document id : " + documentId + " not " +
-                                                                                                                                                 "found!!!"));
+            TransactionDocumentDTO documentDTO =
+                transactionDocumentService.findOne(documentId).orElseThrow(() -> new IllegalArgumentException("Transaction document id : " + documentId + " not " + "found!!!"));
 
-                File attachment = new File(documentDTO.getFilename());
+            File attachment = new File(documentDTO.getFilename());
             FileOutputStream fos = null;
             try {
                 fos = new FileOutputStream(attachment);

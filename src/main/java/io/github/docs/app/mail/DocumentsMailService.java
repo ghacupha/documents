@@ -54,7 +54,7 @@ public class DocumentsMailService implements MailingService {
 
     @Override
     @Async
-    public void sendEmail(String to, String subject, String content, boolean isMultipart, boolean isHtml,  Map<String,File> documentAttachments) {
+    public void sendEmail(String to, String subject, String content, boolean isMultipart, boolean isHtml, Map<String, File> documentAttachments) {
 
         log.debug("Send email[multipart '{}' and html '{}'] to '{}' with subject '{}' and content={}", isMultipart, isHtml, to, subject, content);
 
@@ -89,11 +89,11 @@ public class DocumentsMailService implements MailingService {
 
     @Override
     @Async
-    public void sendAttachmentFromTemplate(String username, String titlePart1, String titlePart2, String email, String templateName, String titleKey, Map<String,File> documentAttachments) {
+    public void sendAttachmentFromTemplate(String username, String titlePart1, String titlePart2, String email, String templateName, String titleKey, Map<String, File> documentAttachments) {
 
         Context context = new Context();
 
-        context.setVariable(USER, username == null? "Recipient" : username);
+        context.setVariable(USER, username == null ? "Recipient" : username);
 
         String currentLogin = SecurityUtils.getCurrentUserLogin().orElse("Our documents CRM");
         // todo obtain login id from the server
@@ -102,10 +102,10 @@ public class DocumentsMailService implements MailingService {
         String content = templateEngine.process(templateName, context);
 
         // Specify title part 1 & 2
-        String[] titleParts = {titlePart1 == null ? "Documents Shared" : titlePart1, titlePart2 == null ?"Documents Automation Project": titlePart2};
+        String[] titleParts = {titlePart1 == null ? "Documents Shared" : titlePart1, titlePart2 == null ? "Documents Automation Project" : titlePart2};
 
         String subject = messageSource.getMessage(titleKey, titleParts, Locale.ENGLISH);
-        sendEmail(email, subject, content, true, true,documentAttachments);
+        sendEmail(email, subject, content, true, true, documentAttachments);
     }
 
 }
