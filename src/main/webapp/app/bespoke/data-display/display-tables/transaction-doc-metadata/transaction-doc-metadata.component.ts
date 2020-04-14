@@ -7,8 +7,8 @@ import { TransactionDocMetadataService } from 'app/bespoke/data-display/display-
 import { TransactionDocumentDeleteDialogComponent } from 'app/entities/transaction-document/transaction-document-delete-dialog.component';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { ITransactionDocumentMetadata } from 'app/bespoke/model/transaction-document-metadata';
-import {Observable} from "rxjs/index";
-import {HttpResponse} from "@angular/common/http";
+import { Observable } from 'rxjs/index';
+import { HttpResponse } from '@angular/common/http';
 
 @Component({
   selector: 'gha-transaction-doc-metadata',
@@ -63,7 +63,6 @@ export class TransactionDocMetadataComponent implements OnInit {
       this.subscribeToShareResponse(this.transactionListService.send(usernames[i], recipients[i], title1, title2, sharedDocuments));
       this.log.debug(`${sharedDocuments.length} documents have been shared, with ${recipients[i]}`);
     }
-
   }
 
   private getDataTableOptions(): DataTables.Settings {
@@ -114,7 +113,7 @@ export class TransactionDocMetadataComponent implements OnInit {
   protected subscribeToShareResponse(result: Observable<HttpResponse<ITransactionDocumentMetadata[]>>): void {
     result.subscribe(
       () => this.onSaveSuccess(),
-      () => this.onSaveError("The service was unable to share the documents, So sorry!")
+      () => this.onSaveError('The service was unable to share the documents, So sorry!')
     );
   }
 
