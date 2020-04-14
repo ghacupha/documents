@@ -10,6 +10,10 @@
             <div class="alert alert-success" *ngSwitchCase="true">
                 <span id="home-logged-message" *ngIf="account"
                 > You are logged in as user "{{account.login}}". </span>
+
+                <div *ghaHasAnyAuthority="'ROLE_ADMIN'">
+                    <a class="alert-link" routerLink="/account/register">Create a new account</a>
+                </div>
             </div>
 
             <div class="alert alert-warning" *ngSwitchCase="false">
@@ -18,7 +22,8 @@
             </div>
             <div class="alert alert-warning" *ngSwitchCase="false">
                 <span>You don't have an account yet?</span>&nbsp;
-                <a class="alert-link" routerLink="register">Register a new account</a>
+
+                <a class="alert-link">Request for account registration</a>
             </div>
         </div>
 
@@ -63,7 +68,7 @@
                 <a class="dropdown-item">
                     <fa-icon icon="clock" fixedWidth="true"></fa-icon>
                     <span>Home and About Icons downloaded from <a href="https://www.pngfuel.com/" title="PNG fuel">PNG Fuel</a> from <a href="https://www.flaticon.com/"
-                                                                                                                                                      title="Flaticon">
+                                                                                                                                        title="Flaticon">
                         www.flaticon.com</a></a></span>
                 </a>
             </li>

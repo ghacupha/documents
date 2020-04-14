@@ -155,7 +155,8 @@
                             <span>Sign in</span>
                         </a>
                     </li>
-                    <li *ngSwitchCase="false">
+                    <!--<li *ngSwitchCase="false">-->
+                    <li *ghaHasAnyAuthority="'ROLE_ADMIN'">
                         <a class="dropdown-item" routerLink="account/register" routerLinkActive="active" (click)="collapseNavbar()">
                             <fa-icon icon="user-plus" fixedWidth="true"></fa-icon>
                             <span>Register</span>
