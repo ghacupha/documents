@@ -1,5 +1,6 @@
 package io.github.docs.web.rest;
 
+import io.github.docs.security.AuthoritiesConstants;
 import io.github.docs.service.SchemeService;
 import io.github.docs.web.rest.errors.BadRequestAlertException;
 import io.github.docs.service.dto.SchemeDTO;
@@ -16,6 +17,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -28,6 +30,8 @@ import java.util.Optional;
 
 /**
  * REST controller for managing {@link io.github.docs.domain.Scheme}.
+ *
+ * Pre- Authorize directives have been installed to prevent users from managing schemes
  */
 @RestController
 @RequestMapping("/api")
@@ -57,6 +61,7 @@ public class SchemeResource {
      * @throws URISyntaxException if the Location URI syntax is incorrect.
      */
     @PostMapping("/schemes")
+    @PreAuthorize("hasAuthority(\"" + AuthoritiesConstants.ADMIN + "\")")
     public ResponseEntity<SchemeDTO> createScheme(@Valid @RequestBody SchemeDTO schemeDTO) throws URISyntaxException {
         log.debug("REST request to save Scheme : {}", schemeDTO);
         if (schemeDTO.getId() != null) {
@@ -78,6 +83,7 @@ public class SchemeResource {
      * @throws URISyntaxException if the Location URI syntax is incorrect.
      */
     @PutMapping("/schemes")
+    @PreAuthorize("hasAuthority(\"" + AuthoritiesConstants.ADMIN + "\")")
     public ResponseEntity<SchemeDTO> updateScheme(@Valid @RequestBody SchemeDTO schemeDTO) throws URISyntaxException {
         log.debug("REST request to update Scheme : {}", schemeDTO);
         if (schemeDTO.getId() == null) {
@@ -136,6 +142,7 @@ public class SchemeResource {
      * @return the {@link ResponseEntity} with status {@code 204 (NO_CONTENT)}.
      */
     @DeleteMapping("/schemes/{id}")
+    @PreAuthorize("hasAuthority(\"" + AuthoritiesConstants.ADMIN + "\")")
     public ResponseEntity<Void> deleteScheme(@PathVariable Long id) {
         log.debug("REST request to delete Scheme : {}", id);
         schemeService.delete(id);

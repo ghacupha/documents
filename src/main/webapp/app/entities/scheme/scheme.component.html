@@ -2,12 +2,14 @@
     <h2 id="page-heading">
         <span>Schemes</span>
 
-        <button id="jh-create-entity" class="btn btn-primary float-right jh-create-entity create-scheme" [routerLink]="['/scheme/new']">
-            <fa-icon icon="plus"></fa-icon>
-            <span>
+        <div *ghaHasAnyAuthority="'ROLE_ADMIN'">
+            <button id="jh-create-entity" class="btn btn-primary float-right jh-create-entity create-scheme" [routerLink]="['/scheme/new']">
+                <fa-icon icon="plus"></fa-icon>
+                <span>
             Create a new Scheme
             </span>
-        </button>
+            </button>
+        </div>
     </h2>
 
     <gha-alert-error></gha-alert-error>
@@ -21,44 +23,56 @@
     <div class="table-responsive" id="entities" *ngIf="schemes?.length > 0">
         <table class="table table-striped" aria-describedby="page-heading">
             <thead>
-                <tr jhiSort [(predicate)]="predicate" [(ascending)]="ascending" [callback]="loadPage.bind(this)">
-                    <th scope="col"  jhiSortBy="id"><span>ID</span> <fa-icon icon="sort"></fa-icon></th>
-                    <th scope="col"  jhiSortBy="schemeName"><span>Scheme Name</span> <fa-icon icon="sort"></fa-icon></th>
-                    <th scope="col"  jhiSortBy="schemeCode"><span>Scheme Code</span> <fa-icon icon="sort"></fa-icon></th>
-                    <th scope="col"  jhiSortBy="schemeDescription"><span>Scheme Description</span> <fa-icon icon="sort"></fa-icon></th>
-                    <th scope="col"></th>
-                </tr>
+            <tr jhiSort [(predicate)]="predicate" [(ascending)]="ascending" [callback]="loadPage.bind(this)">
+                <th scope="col" jhiSortBy="id"><span>ID</span>
+                    <fa-icon icon="sort"></fa-icon>
+                </th>
+                <th scope="col" jhiSortBy="schemeName"><span>Scheme Name</span>
+                    <fa-icon icon="sort"></fa-icon>
+                </th>
+                <th scope="col" jhiSortBy="schemeCode"><span>Scheme Code</span>
+                    <fa-icon icon="sort"></fa-icon>
+                </th>
+                <th scope="col" jhiSortBy="schemeDescription"><span>Scheme Description</span>
+                    <fa-icon icon="sort"></fa-icon>
+                </th>
+                <th scope="col"></th>
+            </tr>
             </thead>
             <tbody>
-                <tr *ngFor="let scheme of schemes ;trackBy: trackId">
-                    <td><a [routerLink]="['/scheme', scheme.id, 'view']">{{ scheme.id }}</a></td>
-                    <td>{{ scheme.schemeName }}</td>
-                    <td>{{ scheme.schemeCode }}</td>
-                    <td>{{ scheme.schemeDescription }}</td>
-                    <td class="text-right">
-                        <div class="btn-group">
-                            <button type="submit"
-                                    [routerLink]="['/scheme', scheme.id, 'view']"
-                                    class="btn btn-info btn-sm">
-                                <fa-icon icon="eye"></fa-icon>
-                                <span class="d-none d-md-inline">View</span>
-                            </button>
+            <tr *ngFor="let scheme of schemes ;trackBy: trackId">
+                <td><a [routerLink]="['/scheme', scheme.id, 'view']">{{ scheme.id }}</a></td>
+                <td>{{ scheme.schemeName }}</td>
+                <td>{{ scheme.schemeCode }}</td>
+                <td>{{ scheme.schemeDescription }}</td>
+                <td class="text-right">
+                    <div class="btn-group">
+                        <button type="submit"
+                                [routerLink]="['/scheme', scheme.id, 'view']"
+                                class="btn btn-info btn-sm">
+                            <fa-icon icon="eye"></fa-icon>
+                            <span class="d-none d-md-inline">View</span>
+                        </button>
 
+                        <div *ghaHasAnyAuthority="'ROLE_ADMIN'">
                             <button type="submit"
                                     [routerLink]="['/scheme', scheme.id, 'edit']"
                                     class="btn btn-primary btn-sm">
                                 <fa-icon icon="pencil-alt"></fa-icon>
                                 <span class="d-none d-md-inline">Edit</span>
                             </button>
+                        </div>
 
+                        <div *ghaHasAnyAuthority="'ROLE_ADMIN'">
                             <button type="submit" (click)="delete(scheme)"
                                     class="btn btn-danger btn-sm">
                                 <fa-icon icon="times"></fa-icon>
                                 <span class="d-none d-md-inline">Delete</span>
                             </button>
                         </div>
-                    </td>
-                </tr>
+                    </div>
+                </td>
+            </tr>
             </tbody>
         </table>
     </div>
@@ -69,7 +83,8 @@
         </div>
 
         <div class="row justify-content-center">
-            <ngb-pagination [collectionSize]="totalItems" [(page)]="ngbPaginationPage" [pageSize]="itemsPerPage" [maxSize]="5" [rotate]="true" [boundaryLinks]="true" (pageChange)="loadPage($event)"></ngb-pagination>
+            <ngb-pagination [collectionSize]="totalItems" [(page)]="ngbPaginationPage" [pageSize]="itemsPerPage" [maxSize]="5" [rotate]="true" [boundaryLinks]="true"
+                            (pageChange)="loadPage($event)"></ngb-pagination>
         </div>
     </div>
 </div>

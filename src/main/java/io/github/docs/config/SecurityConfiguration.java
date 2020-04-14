@@ -1,8 +1,8 @@
 package io.github.docs.config;
 
-import io.github.docs.security.*;
-import io.github.docs.security.jwt.*;
-
+import io.github.docs.security.AuthoritiesConstants;
+import io.github.docs.security.jwt.JWTConfigurer;
+import io.github.docs.security.jwt.TokenProvider;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Import;
 import org.springframework.http.HttpMethod;
@@ -43,12 +43,12 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
     @Override
     public void configure(WebSecurity web) {
         web.ignoring()
-            .antMatchers(HttpMethod.OPTIONS, "/**")
-            .antMatchers("/app/**/*.{js,html}")
-            .antMatchers("/i18n/**")
-            .antMatchers("/content/**")
-            .antMatchers("/swagger-ui/index.html")
-            .antMatchers("/test/**");
+           .antMatchers(HttpMethod.OPTIONS, "/**")
+           .antMatchers("/app/**/*.{js,html}")
+           .antMatchers("/i18n/**")
+           .antMatchers("/content/**")
+           .antMatchers("/swagger-ui/index.html")
+           .antMatchers("/test/**");
     }
 
     @Override
