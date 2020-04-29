@@ -35,6 +35,10 @@
     "dtoSuffix": "DTO",
     "otherModules": [],
     "enableTranslation": false,
-    "blueprints": []
+    "blueprints": [],
+    "appsFolders": ["documents"],
+    "directoryPath": "../",
+    "monitoring": "no",
+    "consoleOptions": []
   }
 }
