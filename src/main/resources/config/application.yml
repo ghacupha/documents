@@ -125,6 +125,10 @@ spring:
   mvc:
     favicon:
       enabled: false
+  servlet:
+    multipart:
+      max-file-size: 50MB
+      max-request-size: 50MB
   task:
     execution:
       thread-name-prefix: documents-task-
