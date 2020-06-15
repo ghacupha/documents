@@ -1,3 +1,7 @@
+[![Build Status](https://travis-ci.org/ghacupha/documents.svg?branch=master)](https://travis-ci.org/ghacupha/documents)
+
+[![codecov](https://codecov.io/gh/ghacupha/documents/branch/master/graph/badge.svg)](https://codecov.io/gh/ghacupha/documents)
+
 # documents
 
 This application was generated using JHipster 6.8.0, you can find documentation and help at [https://www.jhipster.tech/documentation-archive/v6.8.0](https://www.jhipster.tech/documentation-archive/v6.8.0).
