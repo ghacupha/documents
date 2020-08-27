@@ -92,11 +92,12 @@ export class ShareSpecificationComponent implements OnInit {
    */
   submit(): void {
     this.isSaving = true;
-    const formalDocument = this.createFromForm();
-    if (formalDocument.id !== undefined) {
-      this.subscribeToSaveResponse(this.formalDocumentService.update(formalDocument));
+    const sharingSpecificationData = this.createFromForm();
+    if (sharingSpecificationData.id !== undefined) {
+      // here we are updating a previous pre-existing request
+      this.subscribeToSaveResponse(this.formalDocumentService.update(sharingSpecificationData));
     } else {
-      this.subscribeToSaveResponse(this.formalDocumentService.create(formalDocument));
+      this.subscribeToSaveResponse(this.formalDocumentService.create(sharingSpecificationData));
     }
   }
 
