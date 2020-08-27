@@ -26,6 +26,10 @@ const LAYOUT_ROUTES = [navbarRoute, ...errorRoute];
           loadChildren: () => import('./bespoke/about/about.module').then(m => m.AboutModule)
         },
         {
+          path: 'document',
+          loadChildren: () => import('./bespoke/sharing/sharing.module').then(m => m.SharingModule)
+        },
+        {
           path: 'display',
           loadChildren: () => import('./bespoke/data-display/display-tables/display-tables.module').then(m => m.DisplayTablesModule)
         },
