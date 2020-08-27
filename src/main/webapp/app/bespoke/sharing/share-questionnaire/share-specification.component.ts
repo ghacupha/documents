@@ -17,7 +17,7 @@ import { ISharingSpecificationData, SharingSpecificationData } from 'app/bespoke
   styleUrls: ['./share-specification.component.scss']
 })
 export class ShareSpecificationComponent implements OnInit {
-  isSaving = false;
+  isSharing = false;
 
   editForm = this.fb.group({
     id: [],
@@ -49,21 +49,17 @@ export class ShareSpecificationComponent implements OnInit {
    * This means the destination components should have access to the service
    * that serves this data and updating that service before navigating back
    *
-   * @param formalDocument
+   * @param specificationData
    */
-  updateForm(formalDocument: IFormalDocument): void {
+  updateForm(specificationData: ISharingSpecificationData): void {
     this.editForm.patchValue({
-      id: formalDocument.id,
-      documentTitle: formalDocument.documentTitle,
-      documentSubject: formalDocument.documentSubject,
-      briefDescription: formalDocument.briefDescription,
-      documentDate: formalDocument.documentDate,
-      documentType: formalDocument.documentType,
-      documentStandardNumber: formalDocument.documentStandardNumber,
-      documentAttachment: formalDocument.documentAttachment,
-      documentAttachmentContentType: formalDocument.documentAttachmentContentType,
-      filename: formalDocument.filename,
-      schemes: formalDocument.schemes
+      id: specificationData.id,
+      sharingTitle: specificationData.sharingTitle,
+      sharingSubTitle: specificationData.sharingSubTitle,
+      briefDescription: specificationData.briefDescription,
+      documentSharingType: specificationData.documentSharingType,
+      recipients: specificationData.recipients,
+      maximumFileSize: specificationData.maximumFileSize
     });
   }
 
@@ -91,13 +87,13 @@ export class ShareSpecificationComponent implements OnInit {
    * This method calls the next phase on sharing the documents using the sharing service
    */
   submit(): void {
-    this.isSaving = true;
+    this.isSharing = true;
     const sharingSpecificationData = this.createFromForm();
     if (sharingSpecificationData.id !== undefined) {
       // here we are updating a previous pre-existing request
-      this.subscribeToSaveResponse(this.formalDocumentService.update(sharingSpecificationData));
+      this.subscribeToShareResponse(this.formalDocumentService.update(sharingSpecificationData));
     } else {
-      this.subscribeToSaveResponse(this.formalDocumentService.create(sharingSpecificationData));
+      this.subscribeToShareResponse(this.formalDocumentService.create(sharingSpecificationData));
     }
   }
 
@@ -119,20 +115,20 @@ export class ShareSpecificationComponent implements OnInit {
     };
   }
 
-  protected subscribeToSaveResponse(result: Observable<HttpResponse<IFormalDocument>>): void {
+  protected subscribeToShareResponse(result: Observable<HttpResponse<IFormalDocument>>): void {
     result.subscribe(
-      () => this.onSaveSuccess(),
-      () => this.onSaveError()
+      () => this.onShareSuccess(),
+      () => this.onShareError()
     );
   }
 
-  protected onSaveSuccess(): void {
-    this.isSaving = false;
+  protected onShareSuccess(): void {
+    this.isSharing = false;
     this.previousState();
   }
 
-  protected onSaveError(): void {
-    this.isSaving = false;
+  protected onShareError(): void {
+    this.isSharing = false;
   }
 
   trackById(index: number, item: IScheme): any {
