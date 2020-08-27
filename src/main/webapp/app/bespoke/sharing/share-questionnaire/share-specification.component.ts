@@ -18,8 +18,6 @@ import { ISharingSpecificationData, SharingSpecificationData } from 'app/bespoke
 })
 export class ShareSpecificationComponent implements OnInit {
   isSaving = false;
-  schemes: IScheme[] = [];
-  documentDateDp: any;
 
   editForm = this.fb.group({
     id: [],
@@ -35,19 +33,24 @@ export class ShareSpecificationComponent implements OnInit {
     protected dataUtils: JhiDataUtils,
     protected eventManager: JhiEventManager,
     protected formalDocumentService: FormalDocumentService,
-    protected schemeService: SchemeService,
     protected activatedRoute: ActivatedRoute,
     private fb: FormBuilder
   ) {}
 
   ngOnInit(): void {
-    this.activatedRoute.data.subscribe(({ formalDocument }) => {
-      this.updateForm(formalDocument);
-
-      this.schemeService.query().subscribe((res: HttpResponse<IScheme[]>) => (this.schemes = res.body || []));
+    // Fetch data from activatedRoute or service
+    this.activatedRoute.data.subscribe(({ sharingSpecificationData }) => {
+      this.updateForm(sharingSpecificationData);
     });
   }
 
+  /**
+   * This will be used to update form if we wanted to revise sharing data.
+   * This means the destination components should have access to the service
+   * that serves this data and updating that service before navigating back
+   *
+   * @param formalDocument
+   */
   updateForm(formalDocument: IFormalDocument): void {
     this.editForm.patchValue({
       id: formalDocument.id,
@@ -84,7 +87,10 @@ export class ShareSpecificationComponent implements OnInit {
     window.history.back();
   }
 
-  save(): void {
+  /**
+   * This method calls the next phase on sharing the documents using the sharing service
+   */
+  submit(): void {
     this.isSaving = true;
     const formalDocument = this.createFromForm();
     if (formalDocument.id !== undefined) {
@@ -94,6 +100,11 @@ export class ShareSpecificationComponent implements OnInit {
     }
   }
 
+  /**
+   * This is used to update share data on the sharing service
+   *
+   * @private
+   */
   private createFromForm(): ISharingSpecificationData {
     return {
       ...new SharingSpecificationData(),
