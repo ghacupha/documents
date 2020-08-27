@@ -1,1 +1,113 @@
-<p>share-specification works!</p>
+<div class="row justify-content-center">
+    <div class="col-8">
+        <form name="editForm" role="form" novalidate (ngSubmit)="save()" [formGroup]="editForm">
+            <h2 id="gha-formal-document-heading">Share Documents</h2>
+
+            <div>
+                <gha-alert-error></gha-alert-error>
+
+                <div class="form-group">
+                    <label class="form-control-label" for="field_documentTitle">Document Title</label>
+                    <input type="text" class="form-control" name="documentTitle" id="field_documentTitle"
+                           formControlName="documentTitle"/>
+                    <div *ngIf="editForm.get('documentTitle')!.invalid && (editForm.get('documentTitle')!.dirty || editForm.get('documentTitle')!.touched)">
+                        <small class="form-text text-danger"
+                               *ngIf="editForm.get('documentTitle')?.errors?.required">
+                            This field is required.
+                        </small>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-control-label" for="field_documentSubject">Document Subject</label>
+                    <input type="text" class="form-control" name="documentSubject" id="field_documentSubject"
+                           formControlName="documentSubject"/>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-control-label" for="field_briefDescription">Brief Description</label>
+                    <input type="text" class="form-control" name="briefDescription" id="field_briefDescription"
+                           formControlName="briefDescription"/>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-control-label" for="field_documentDate">Document Date</label>
+                    <div class="input-group">
+                        <input id="field_documentDate" type="text" class="form-control" name="documentDate" ngbDatepicker #documentDateDp="ngbDatepicker" formControlName="documentDate"/>
+                        <span class="input-group-append">
+                            <button type="button" class="btn btn-secondary" (click)="documentDateDp.toggle()"><fa-icon icon="calendar-alt"></fa-icon></button>
+                        </span>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-control-label" for="field_documentType">Document Type</label>
+                    <select class="form-control" name="documentType" formControlName="documentType" id="field_documentType">
+                        <option value="CONTRACT">TRANSACTION</option>
+                        <option value="FORMAL_DOCUMENT">FORMAL DOCUMENT</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-control-label" for="field_documentStandardNumber">Document Standard Number</label>
+                    <input type="text" class="form-control" name="documentStandardNumber" id="field_documentStandardNumber"
+                           formControlName="documentStandardNumber"/>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-control-label" for="field_documentAttachment">Document Attachment</label>
+                    <div>
+                        <div *ngIf="editForm.get('documentAttachment')!.value" class="form-text text-danger clearfix">
+                            <a class="pull-left" (click)="openFile(editForm.get('documentAttachmentContentType')!.value, editForm.get('documentAttachment')!.value)">open</a><br>
+                            <span class="pull-left">{{ editForm.get('documentAttachmentContentType')!.value }}, {{ byteSize(editForm.get('documentAttachment')!.value) }}</span>
+                            <button type="button" (click)="editForm.patchValue({documentAttachment: null});editForm.patchValue({documentAttachmentContentType: null});"
+                                    class="btn btn-secondary btn-xs pull-right">
+                                <fa-icon icon="times"></fa-icon>
+                            </button>
+                        </div>
+                        <input type="file" id="file_documentAttachment" (change)="setFileData($event, 'documentAttachment', false)"/>
+                    </div>
+                    <input type="hidden" class="form-control" name="documentAttachment" id="field_documentAttachment"
+                           formControlName="documentAttachment"/>
+                    <input type="hidden" class="form-control" name="documentAttachmentContentType" id="field_documentAttachmentContentType"
+                           formControlName="documentAttachmentContentType" />
+                    <div *ngIf="editForm.get('documentAttachment')!.invalid && (editForm.get('documentAttachment')!.dirty || editForm.get('documentAttachment')!.touched)">
+                        <small class="form-text text-danger"
+                               *ngIf="editForm.get('documentAttachment')?.errors?.required">
+                            This field is required.
+                        </small>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-control-label" for="field_filename">Filename</label>
+                    <input type="text" class="form-control" name="filename" id="field_filename"
+                           formControlName="filename"/>
+                    <div *ngIf="editForm.get('filename')!.invalid && (editForm.get('filename')!.dirty || editForm.get('filename')!.touched)">
+                        <small class="form-text text-danger"
+                               *ngIf="editForm.get('filename')?.errors?.required">
+                            This field is required.
+                        </small>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="field_schemes">Schemes</label>
+                    <select class="form-control" id="field_schemes" multiple name="schemes" formControlName="schemes">
+                        <option [ngValue]="getSelected(editForm.get('schemes')!.value, schemeOption)" *ngFor="let schemeOption of schemes; trackBy: trackById">{{ schemeOption.schemeCode }}</option>
+                    </select>
+                </div>
+            </div>
+
+            <div>
+                <button type="button" id="cancel-save" class="btn btn-secondary" (click)="previousState()">
+                    <fa-icon icon="ban"></fa-icon>&nbsp;<span>Cancel</span>
+                </button>
+
+                <button type="submit" id="save-entity" [disabled]="editForm.invalid || isSaving" class="btn btn-primary">
+                    <fa-icon icon="save"></fa-icon>&nbsp;<span>Save</span>
+                </button>
+            </div>
+        </form>
+    </div>
+</div>
