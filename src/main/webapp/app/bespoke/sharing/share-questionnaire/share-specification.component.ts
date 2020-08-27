@@ -9,6 +9,7 @@ import { HttpResponse } from '@angular/common/http';
 import { FormalDocument, IFormalDocument } from 'app/shared/model/formal-document.model';
 import { AlertError } from 'app/shared/alert/alert-error.model';
 import { Observable } from 'rxjs';
+import { ISharingSpecificationData, SharingSpecificationData } from 'app/bespoke/model/sharing-specification-data.model';
 
 @Component({
   selector: 'gha-share-specification',
@@ -21,11 +22,13 @@ export class ShareSpecificationComponent implements OnInit {
   documentDateDp: any;
 
   editForm = this.fb.group({
+    id: [],
     sharingTitle: [null, [Validators.required]],
-    sharingSubTitle: [],
+    sharingSubTitle: [null, [Validators.required]],
     briefDescription: [],
-    documentType: [],
-    recipientDetails: []
+    documentType: [null, [Validators.required]],
+    recipients: [null, [Validators.required]],
+    maximumFileSize: []
   });
 
   constructor(
@@ -91,20 +94,16 @@ export class ShareSpecificationComponent implements OnInit {
     }
   }
 
-  private createFromForm(): IFormalDocument {
+  private createFromForm(): ISharingSpecificationData {
     return {
-      ...new FormalDocument(),
+      ...new SharingSpecificationData(),
       id: this.editForm.get(['id'])!.value,
-      documentTitle: this.editForm.get(['documentTitle'])!.value,
-      documentSubject: this.editForm.get(['documentSubject'])!.value,
+      sharingTitle: this.editForm.get(['sharingTitle'])!.value,
+      sharingSubTitle: this.editForm.get(['sharingSubTitle'])!.value,
       briefDescription: this.editForm.get(['briefDescription'])!.value,
-      documentDate: this.editForm.get(['documentDate'])!.value,
-      documentType: this.editForm.get(['documentType'])!.value,
-      documentStandardNumber: this.editForm.get(['documentStandardNumber'])!.value,
-      documentAttachmentContentType: this.editForm.get(['documentAttachmentContentType'])!.value,
-      documentAttachment: this.editForm.get(['documentAttachment'])!.value,
-      filename: this.editForm.get(['filename'])!.value,
-      schemes: this.editForm.get(['schemes'])!.value
+      documentSharingType: this.editForm.get(['documentSharingType'])!.value,
+      recipients: this.editForm.get(['recipients'])!.value,
+      maximumFileSize: this.editForm.get(['maximumFileSize'])!.value
     };
   }
 
