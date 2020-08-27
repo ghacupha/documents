@@ -1,15 +1,12 @@
 import { Component, OnInit } from '@angular/core';
-import { IScheme } from 'app/shared/model/scheme.model';
 import { FormBuilder, Validators } from '@angular/forms';
 import { JhiDataUtils, JhiEventManager, JhiEventWithContent, JhiFileLoadError } from 'ng-jhipster';
-import { FormalDocumentService } from 'app/entities/formal-document/formal-document.service';
-import { SchemeService } from 'app/entities/scheme/scheme.service';
 import { ActivatedRoute } from '@angular/router';
 import { HttpResponse } from '@angular/common/http';
-import { FormalDocument, IFormalDocument } from 'app/shared/model/formal-document.model';
 import { AlertError } from 'app/shared/alert/alert-error.model';
 import { Observable } from 'rxjs';
 import { ISharingSpecificationData, SharingSpecificationData } from 'app/bespoke/model/sharing-specification-data.model';
+import { ShareSpecificationService } from 'app/bespoke/sharing/share-questionnaire/share-specification.service';
 
 @Component({
   selector: 'gha-share-specification',
@@ -32,7 +29,7 @@ export class ShareSpecificationComponent implements OnInit {
   constructor(
     protected dataUtils: JhiDataUtils,
     protected eventManager: JhiEventManager,
-    protected formalDocumentService: FormalDocumentService,
+    protected shareSpecificationService: ShareSpecificationService,
     protected activatedRoute: ActivatedRoute,
     private fb: FormBuilder
   ) {}
@@ -91,9 +88,9 @@ export class ShareSpecificationComponent implements OnInit {
     const sharingSpecificationData = this.createFromForm();
     if (sharingSpecificationData.id !== undefined) {
       // here we are updating a previous pre-existing request
-      this.subscribeToShareResponse(this.formalDocumentService.update(sharingSpecificationData));
+      this.subscribeToShareResponse(this.shareSpecificationService.update(sharingSpecificationData));
     } else {
-      this.subscribeToShareResponse(this.formalDocumentService.create(sharingSpecificationData));
+      this.subscribeToShareResponse(this.shareSpecificationService.create(sharingSpecificationData));
     }
   }
 
@@ -115,7 +112,7 @@ export class ShareSpecificationComponent implements OnInit {
     };
   }
 
-  protected subscribeToShareResponse(result: Observable<HttpResponse<IFormalDocument>>): void {
+  protected subscribeToShareResponse(result: Observable<ISharingSpecificationData>): void {
     result.subscribe(
       () => this.onShareSuccess(),
       () => this.onShareError()
@@ -131,7 +128,7 @@ export class ShareSpecificationComponent implements OnInit {
     this.isSharing = false;
   }
 
-  trackById(index: number, item: IScheme): any {
+  trackById(index: number, item: ISharingSpecificationData): any {
     return item.id;
   }
 
