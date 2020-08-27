@@ -7,6 +7,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { BespokeMaterialModule } from 'app/bespoke/bespoke-material.module';
 import { DataDisplayModule } from './data-display/data-display.module';
 import { BespokeNavigationModule } from './bespoke-navigation/bespoke-navigation.module';
+import { SharingModule } from './sharing/sharing.module';
 
 @NgModule({
   declarations: [],
@@ -18,8 +19,9 @@ import { BespokeNavigationModule } from './bespoke-navigation/bespoke-navigation
     FormsModule,
     BespokeRoutingModule,
     DataDisplayModule,
-    BespokeNavigationModule
+    BespokeNavigationModule,
+    SharingModule
   ],
-  exports: [AboutModule, DataDisplayModule]
+  exports: [AboutModule, DataDisplayModule, SharingModule]
 })
 export class BespokeModule {}
