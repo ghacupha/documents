@@ -2,7 +2,6 @@ import { Component, OnInit } from '@angular/core';
 import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { JhiDataUtils, JhiEventManager } from 'ng-jhipster';
 import { ActivatedRoute } from '@angular/router';
-import { Observable } from 'rxjs';
 import {
   EmailRecipient,
   IEmailRecipient,

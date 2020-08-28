@@ -1,6 +1,5 @@
 import { Injectable } from '@angular/core';
 import { DocumentSharingType, ISharingSpecificationData } from 'app/bespoke/model/sharing-specification-data.model';
-import { Observable, of } from 'rxjs';
 import { RouteStateService } from 'app/bespoke/route-state.service';
 import { Router } from '@angular/router';
 
