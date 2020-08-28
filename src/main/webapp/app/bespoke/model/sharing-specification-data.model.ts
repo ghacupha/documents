@@ -53,6 +53,10 @@ export interface IEmailRecipient {
  */
 export class EmailRecipient implements IEmailRecipient {
   constructor(public correspondentUsername?: string, public recipientUsername?: string, public recipientEmailAddress?: string) {}
+
+  toString(): string {
+    return `correspondent: ${this.correspondentUsername} recipient: ${this.recipientUsername} email: ${this.recipientEmailAddress}`;
+  }
 }
 
 /**
@@ -126,4 +130,14 @@ export class SharingSpecificationData implements ISharingSpecificationData {
     public recipients?: IEmailRecipient[],
     public maximumFileSize?: number
   ) {}
+
+  toString(): string {
+    const recipientsArrayString = '';
+
+    this.recipients?.forEach(recipient => {
+      recipientsArrayString.concat(recipient.toString() + ',');
+    });
+
+    return `Title: ${this.sharingTitle} SubTitle: ${this.sharingSubTitle} DocType: ${this.documentSharingType} shared with ${recipientsArrayString}`;
+  }
 }

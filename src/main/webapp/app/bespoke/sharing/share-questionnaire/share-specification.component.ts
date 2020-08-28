@@ -10,6 +10,7 @@ import {
   SharingSpecificationData
 } from 'app/bespoke/model/sharing-specification-data.model';
 import { ShareSpecificationService } from 'app/bespoke/sharing/share-questionnaire/share-specification.service';
+import { NGXLogger } from 'ngx-logger';
 
 @Component({
   selector: 'gha-share-specification',
@@ -22,7 +23,6 @@ export class ShareSpecificationComponent implements OnInit {
   recipientForm: FormGroup;
 
   editForm = this.fb.group({
-    id: [],
     sharingTitle: [null, [Validators.required]],
     sharingSubTitle: [null, [Validators.required]],
     briefDescription: [],
@@ -36,7 +36,8 @@ export class ShareSpecificationComponent implements OnInit {
     protected eventManager: JhiEventManager,
     protected shareSpecificationService: ShareSpecificationService,
     protected activatedRoute: ActivatedRoute,
-    private fb: FormBuilder
+    private fb: FormBuilder,
+    private log: NGXLogger
   ) {
     this.recipientForm = this.fb.group({
       name: '',
@@ -46,9 +47,9 @@ export class ShareSpecificationComponent implements OnInit {
 
   ngOnInit(): void {
     // Fetch data from activatedRoute or service
-    this.activatedRoute.data.subscribe(({ sharingSpecificationData }) => {
-      this.updateForm(sharingSpecificationData);
-    });
+    // this.activatedRoute.data.subscribe(({ sharingSpecificationData }) => {
+    //   this.updateForm(sharingSpecificationData);
+    // });
   }
 
   /**
@@ -60,7 +61,6 @@ export class ShareSpecificationComponent implements OnInit {
    */
   updateForm(specificationData: ISharingSpecificationData): void {
     this.editForm.patchValue({
-      id: specificationData.id,
       sharingTitle: specificationData.sharingTitle,
       sharingSubTitle: specificationData.sharingSubTitle,
       briefDescription: specificationData.briefDescription,
@@ -80,12 +80,13 @@ export class ShareSpecificationComponent implements OnInit {
   submit(): void {
     this.isSharing = true;
     const sharingSpecificationData = this.createFromForm();
-    if (sharingSpecificationData.id !== undefined) {
-      // here we are updating a previous pre-existing request
-      this.subscribeToShareResponse(this.shareSpecificationService.update(sharingSpecificationData));
-    } else {
-      this.subscribeToShareResponse(this.shareSpecificationService.create(sharingSpecificationData));
-    }
+    // if (sharingSpecificationData.id !== undefined) {
+    // here we are updating a previous pre-existing request
+    //   this.subscribeToShareResponse(this.shareSpecificationService.update(sharingSpecificationData));
+    // } else {
+    //   this.subscribeToShareResponse(this.shareSpecificationService.create(sharingSpecificationData));
+    // }
+    this.log.debug(`${sharingSpecificationData.toString()}`);
   }
 
   /**
@@ -96,13 +97,11 @@ export class ShareSpecificationComponent implements OnInit {
   private createFromForm(): ISharingSpecificationData {
     return {
       ...new SharingSpecificationData(),
-      id: this.editForm.get(['id'])!.value,
       sharingTitle: this.editForm.get(['sharingTitle'])!.value,
       sharingSubTitle: this.editForm.get(['sharingSubTitle'])!.value,
       briefDescription: this.editForm.get(['briefDescription'])!.value,
-      documentSharingType: this.editForm.get(['documentSharingType'])!.value,
-      // recipients: this.editForm.get(['recipients'])!.value,
       recipients: this.getRecipientsFromForm(),
+      documentSharingType: this.editForm.get(['documentSharingType'])!.value,
       maximumFileSize: this.editForm.get(['maximumFileSize'])!.value
     };
   }
@@ -170,18 +169,18 @@ export class ShareSpecificationComponent implements OnInit {
 
   private getRecipientsFromForm(): IEmailRecipient[] {
     const emailRecipients: IEmailRecipient[] = [];
-
     if (this.recipients()) {
       for (let i = 0; i < this.recipients().length; i++) {
-        emailRecipients.push({
-          ...new EmailRecipient(),
-          correspondentUsername: this.recipientForm.get(['correspondentUsername'])!.value,
-          recipientUsername: this.recipientForm.get(['recipientUsername'])!.value,
-          recipientEmailAddress: this.recipientForm.get(['recipientEmailAddress'])!.value
-        });
+        if (this.recipients().at(i) !== null) {
+          emailRecipients.push({
+            ...new EmailRecipient(),
+            correspondentUsername: this.recipientForm.get(['correspondentUsername'])!.value,
+            recipientUsername: this.recipientForm.get(['recipientUsername'])!.value,
+            recipientEmailAddress: this.recipientForm.get(['recipientEmailAddress'])!.value
+          });
+        }
       }
     }
-
     return emailRecipients;
   }
 }
