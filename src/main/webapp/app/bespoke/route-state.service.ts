@@ -10,7 +10,7 @@ import { NGXLogger } from 'ngx-logger';
 @Injectable({
   providedIn: 'root'
 })
-export class ShareStateService<T> {
+export class RouteStateService<T> {
   private _data!: T;
 
   constructor(private log: NGXLogger) {}

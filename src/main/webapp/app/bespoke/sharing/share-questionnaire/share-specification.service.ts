@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
-import { ISharingSpecificationData } from 'app/bespoke/model/sharing-specification-data.model';
-import { Observable } from 'rxjs';
+import { DocumentSharingType, ISharingSpecificationData } from 'app/bespoke/model/sharing-specification-data.model';
+import { Observable, of } from 'rxjs';
 import { RouteStateService } from 'app/bespoke/route-state.service';
 import { Router } from '@angular/router';
 
@@ -18,17 +18,25 @@ export class ShareSpecificationService {
     this.routeStateService.data = sharingSpecificationData;
 
     // Navigate to the corresponding component
-    this.router.navigate(['/']);
+    if (sharingSpecificationData.documentSharingType === DocumentSharingType.TRANSACTION) {
+      this.router.navigate(['/display/transactions-list']);
+    } else {
+      this.router.navigate(['/display/formal-docs-list']);
+    }
 
-    return Observable.apply(this.routeStateService);
+    return of(sharingSpecificationData);
   }
 
   create(sharingSpecificationData: ISharingSpecificationData): Observable<ISharingSpecificationData> {
     this.routeStateService.data = sharingSpecificationData;
 
     // Navigate to the corresponding component
-    this.router.navigate(['/']);
+    if (sharingSpecificationData.documentSharingType === DocumentSharingType.TRANSACTION) {
+      this.router.navigate(['/display/transactions-list']);
+    } else {
+      this.router.navigate(['/display/formal-docs-list']);
+    }
 
-    return Observable.apply(this.routeStateService);
+    return of(sharingSpecificationData);
   }
 }

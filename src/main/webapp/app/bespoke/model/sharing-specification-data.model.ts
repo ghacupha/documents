@@ -1,6 +1,3 @@
-import { DocumentType } from 'app/shared/model/enumerations/document-type.model';
-import { IScheme } from 'app/shared/model/scheme.model';
-
 /**
  * A document to be shared can either be transaction-document or a formal document.
  * This limitation helps the service determine whether to display a datatable of one or the other
@@ -122,8 +119,8 @@ export interface ISharingSpecificationData {
 export class SharingSpecificationData implements ISharingSpecificationData {
   constructor(
     public id?: number,
-    public documentTitle?: string,
-    public documentSubTitle?: string,
+    public sharingTitle?: string,
+    public sharingSubTitle?: string,
     public briefDescription?: string,
     public documentSharingType?: DocumentSharingType,
     public recipients?: IEmailRecipient[],

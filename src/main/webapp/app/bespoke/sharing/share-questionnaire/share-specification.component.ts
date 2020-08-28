@@ -1,11 +1,14 @@
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, Validators } from '@angular/forms';
-import { JhiDataUtils, JhiEventManager, JhiEventWithContent, JhiFileLoadError } from 'ng-jhipster';
+import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { JhiDataUtils, JhiEventManager } from 'ng-jhipster';
 import { ActivatedRoute } from '@angular/router';
-import { HttpResponse } from '@angular/common/http';
-import { AlertError } from 'app/shared/alert/alert-error.model';
 import { Observable } from 'rxjs';
-import { ISharingSpecificationData, SharingSpecificationData } from 'app/bespoke/model/sharing-specification-data.model';
+import {
+  EmailRecipient,
+  IEmailRecipient,
+  ISharingSpecificationData,
+  SharingSpecificationData
+} from 'app/bespoke/model/sharing-specification-data.model';
 import { ShareSpecificationService } from 'app/bespoke/sharing/share-questionnaire/share-specification.service';
 
 @Component({
@@ -15,6 +18,8 @@ import { ShareSpecificationService } from 'app/bespoke/sharing/share-questionnai
 })
 export class ShareSpecificationComponent implements OnInit {
   isSharing = false;
+  recipientsArray: IEmailRecipient[] = [];
+  recipientForm: FormGroup;
 
   editForm = this.fb.group({
     id: [],
@@ -32,7 +37,12 @@ export class ShareSpecificationComponent implements OnInit {
     protected shareSpecificationService: ShareSpecificationService,
     protected activatedRoute: ActivatedRoute,
     private fb: FormBuilder
-  ) {}
+  ) {
+    this.recipientForm = this.fb.group({
+      name: '',
+      recipientsArray: this.fb.array([])
+    });
+  }
 
   ngOnInit(): void {
     // Fetch data from activatedRoute or service
@@ -57,22 +67,6 @@ export class ShareSpecificationComponent implements OnInit {
       documentSharingType: specificationData.documentSharingType,
       recipients: specificationData.recipients,
       maximumFileSize: specificationData.maximumFileSize
-    });
-  }
-
-  byteSize(base64String: string): string {
-    return this.dataUtils.byteSize(base64String);
-  }
-
-  openFile(contentType: string, base64String: string): void {
-    this.dataUtils.openFile(contentType, base64String);
-  }
-
-  setFileData(event: Event, field: string, isImage: boolean): void {
-    this.dataUtils.loadFileToForm(event, this.editForm, field, isImage).subscribe(null, (err: JhiFileLoadError) => {
-      this.eventManager.broadcast(
-        new JhiEventWithContent<AlertError>('documentsApp.error', { message: err.message })
-      );
     });
   }
 
@@ -107,7 +101,8 @@ export class ShareSpecificationComponent implements OnInit {
       sharingSubTitle: this.editForm.get(['sharingSubTitle'])!.value,
       briefDescription: this.editForm.get(['briefDescription'])!.value,
       documentSharingType: this.editForm.get(['documentSharingType'])!.value,
-      recipients: this.editForm.get(['recipients'])!.value,
+      // recipients: this.editForm.get(['recipients'])!.value,
+      recipients: this.getRecipientsFromForm(),
       maximumFileSize: this.editForm.get(['maximumFileSize'])!.value
     };
   }
@@ -128,11 +123,7 @@ export class ShareSpecificationComponent implements OnInit {
     this.isSharing = false;
   }
 
-  trackById(index: number, item: ISharingSpecificationData): any {
-    return item.id;
-  }
-
-  getSelected(selectedVals: IScheme[], option: IScheme): IScheme {
+  getSelected(selectedVals: ISharingSpecificationData[], option: ISharingSpecificationData): ISharingSpecificationData {
     if (selectedVals) {
       for (let i = 0; i < selectedVals.length; i++) {
         if (option.id === selectedVals[i].id) {
@@ -141,5 +132,56 @@ export class ShareSpecificationComponent implements OnInit {
       }
     }
     return option;
+  }
+
+  /**
+   * This method returns the form-group elements for each of the recipient
+   */
+  recipients(): FormArray {
+    return this.recipientForm.get('recipientsArray') as FormArray;
+  }
+
+  /**
+   * This method defines the structure logic of a recipient whose data we add
+   * in the recipient array
+   */
+  newRecipient(): FormGroup {
+    return this.fb.group({
+      correspondentUsername: '',
+      recipientUsername: '',
+      recipientEmailAddress: ''
+    });
+  }
+
+  /**
+   * This method adds a recipient details row to the form-group
+   */
+  addRecipient(): void {
+    this.recipients().push(this.newRecipient());
+  }
+
+  /**
+   * This method removes a row of recipient details from the form-group
+   * @param i
+   */
+  removeRecipient(i: number): void {
+    this.recipients().removeAt(i);
+  }
+
+  private getRecipientsFromForm(): IEmailRecipient[] {
+    const emailRecipients: IEmailRecipient[] = [];
+
+    if (this.recipients()) {
+      for (let i = 0; i < this.recipients().length; i++) {
+        emailRecipients.push({
+          ...new EmailRecipient(),
+          correspondentUsername: this.recipientForm.get(['correspondentUsername'])!.value,
+          recipientUsername: this.recipientForm.get(['recipientUsername'])!.value,
+          recipientEmailAddress: this.recipientForm.get(['recipientEmailAddress'])!.value
+        });
+      }
+    }
+
+    return emailRecipients;
   }
 }
