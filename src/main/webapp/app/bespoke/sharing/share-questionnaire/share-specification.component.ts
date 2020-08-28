@@ -26,10 +26,9 @@ export class ShareSpecificationComponent implements OnInit {
     sharingTitle: [null, [Validators.required]],
     sharingSubTitle: [null, [Validators.required]],
     briefDescription: [],
-    documentType: [null, [Validators.required]],
-    recipients: [null, [Validators.required]],
+    recipientsArray: [null, [Validators.required]],
     documentSharingType: [null, [Validators.required]],
-    maximumFileSize: []
+    maximumFileSize: [null, [Validators.required]]
   });
 
   constructor(
@@ -41,7 +40,6 @@ export class ShareSpecificationComponent implements OnInit {
     private log: NGXLogger
   ) {
     this.recipientForm = this.fb.group({
-      name: '',
       recipientsArray: this.fb.array([])
     });
   }
@@ -66,7 +64,7 @@ export class ShareSpecificationComponent implements OnInit {
       sharingSubTitle: specificationData.sharingSubTitle,
       briefDescription: specificationData.briefDescription,
       documentSharingType: specificationData.documentSharingType,
-      recipients: specificationData.recipients,
+      recipientsArray: specificationData.recipients,
       maximumFileSize: specificationData.maximumFileSize
     });
   }
