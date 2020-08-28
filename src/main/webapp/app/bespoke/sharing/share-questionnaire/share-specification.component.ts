@@ -28,6 +28,7 @@ export class ShareSpecificationComponent implements OnInit {
     briefDescription: [],
     documentType: [null, [Validators.required]],
     recipients: [null, [Validators.required]],
+    documentSharingType: [null, [Validators.required]],
     maximumFileSize: []
   });
 
@@ -100,9 +101,9 @@ export class ShareSpecificationComponent implements OnInit {
       sharingTitle: this.editForm.get(['sharingTitle'])!.value,
       sharingSubTitle: this.editForm.get(['sharingSubTitle'])!.value,
       briefDescription: this.editForm.get(['briefDescription'])!.value,
-      recipients: this.getRecipientsFromForm(),
-      documentSharingType: this.editForm.get(['documentSharingType'])!.value,
-      maximumFileSize: this.editForm.get(['maximumFileSize'])!.value
+      recipients: this.recipientsArray,
+      maximumFileSize: this.editForm.get(['maximumFileSize'])!.value,
+      documentSharingType: this.editForm.get(['documentSharingType'])!.value
     };
   }
 
@@ -167,12 +168,15 @@ export class ShareSpecificationComponent implements OnInit {
     this.recipients().removeAt(i);
   }
 
-  private getRecipientsFromForm(): IEmailRecipient[] {
-    const emailRecipients: IEmailRecipient[] = [];
+  /**
+   * This method updates the recipients array with the recipients on the form during the
+   * submit method call
+   */
+  updateRecipients(): IEmailRecipient[] {
     if (this.recipients()) {
       for (let i = 0; i < this.recipients().length; i++) {
         if (this.recipients().at(i) !== null) {
-          emailRecipients.push({
+          this.recipientsArray.push({
             ...new EmailRecipient(),
             correspondentUsername: this.recipientForm.get(['correspondentUsername'])!.value,
             recipientUsername: this.recipientForm.get(['recipientUsername'])!.value,
@@ -181,6 +185,6 @@ export class ShareSpecificationComponent implements OnInit {
         }
       }
     }
-    return emailRecipients;
+    return this.recipientsArray;
   }
 }

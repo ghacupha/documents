@@ -36,7 +36,7 @@
                            formControlName="briefDescription"/>
                 </div>
 
-                <div class="form-group" [formGroup]="recipientForm">
+                <div class="form-group" [formGroup]="recipientForm" (ngSubmit)="updateRecipients()">
                     <table class="table" formArrayName="recipientsArray" id="field_recipientsArray">
                         <tr>
                             <th colspan="3">Recipients</th>
@@ -75,7 +75,7 @@
             </div>
 
             <div class="form-group">
-                <label class="form-control-label" for="field_maximumFileSize">Max File Size</label>
+                <label class="form-control-label" for="field_maximumFileSize">Max File Size (MBs)</label>
                 <input type="text" class="form-control" name="maximumFileSize" id="field_maximumFileSize"
                        formControlName="maximumFileSize"/>
             </div>
