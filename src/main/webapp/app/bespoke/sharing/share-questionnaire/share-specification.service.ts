@@ -14,29 +14,21 @@ import { Router } from '@angular/router';
 export class ShareSpecificationService {
   constructor(private routeStateService: RouteStateService<ISharingSpecificationData>, private router: Router) {}
 
-  update(sharingSpecificationData: ISharingSpecificationData): Observable<ISharingSpecificationData> {
+  /**
+   * This method will navigate to relevant datatables and ensure the said tables have access
+   * to the data they will need
+   *
+   * @param sharingSpecificationData This is the data that will be used to specify
+   * client/recipient information
+   */
+  share(sharingSpecificationData: ISharingSpecificationData): void {
     this.routeStateService.data = sharingSpecificationData;
 
     // Navigate to the corresponding component
     if (sharingSpecificationData.documentSharingType === DocumentSharingType.TRANSACTION) {
-      this.router.navigate(['/display/transactions-list']);
+      this.router.navigate(['display/transactions-list']);
     } else {
-      this.router.navigate(['/display/formal-docs-list']);
+      this.router.navigate(['display/formal-docs-list']);
     }
-
-    return of(sharingSpecificationData);
-  }
-
-  create(sharingSpecificationData: ISharingSpecificationData): Observable<ISharingSpecificationData> {
-    this.routeStateService.data = sharingSpecificationData;
-
-    // Navigate to the corresponding component
-    if (sharingSpecificationData.documentSharingType === DocumentSharingType.TRANSACTION) {
-      this.router.navigate(['/display/transactions-list']);
-    } else {
-      this.router.navigate(['/display/formal-docs-list']);
-    }
-
-    return of(sharingSpecificationData);
   }
 }

@@ -79,13 +79,7 @@ export class ShareSpecificationComponent implements OnInit {
   submit(): void {
     this.isSharing = true;
     const sharingSpecificationData = this.createFromForm();
-    // if (sharingSpecificationData.id !== undefined) {
-    // here we are updating a previous pre-existing request
-    //   this.subscribeToShareResponse(this.shareSpecificationService.update(sharingSpecificationData));
-    // } else {
-    //   this.subscribeToShareResponse(this.shareSpecificationService.create(sharingSpecificationData));
-    // }
-    this.log.debug(`${sharingSpecificationData.toString()}`);
+    this.shareSpecificationService.share(sharingSpecificationData);
   }
 
   /**
@@ -103,22 +97,6 @@ export class ShareSpecificationComponent implements OnInit {
       maximumFileSize: this.editForm.get(['maximumFileSize'])!.value,
       documentSharingType: this.editForm.get(['documentSharingType'])!.value
     };
-  }
-
-  protected subscribeToShareResponse(result: Observable<ISharingSpecificationData>): void {
-    result.subscribe(
-      () => this.onShareSuccess(),
-      () => this.onShareError()
-    );
-  }
-
-  protected onShareSuccess(): void {
-    this.isSharing = false;
-    this.previousState();
-  }
-
-  protected onShareError(): void {
-    this.isSharing = false;
   }
 
   getSelected(selectedVals: ISharingSpecificationData[], option: ISharingSpecificationData): ISharingSpecificationData {
