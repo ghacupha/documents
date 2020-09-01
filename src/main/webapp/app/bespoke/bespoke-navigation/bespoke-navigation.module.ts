@@ -8,12 +8,13 @@ import { AuthExpiredInterceptor } from 'app/blocks/interceptor/auth-expired.inte
 import { ErrorHandlerInterceptor } from 'app/blocks/interceptor/errorhandler.interceptor';
 import { NotificationInterceptor } from 'app/blocks/interceptor/notification.interceptor';
 import { DocumentsSharedModule } from 'app/shared/shared.module';
+import { ShareMenuNavigationComponent } from './share-menu-navigation/share-menu-navigation.component';
 
 @NgModule({
-  declarations: [DataTableComponent],
+  declarations: [DataTableComponent, ShareMenuNavigationComponent],
   imports: [CommonModule, DocumentsSharedModule, BespokeNavigationRoutingModule],
-  exports: [DataTableComponent],
-  entryComponents: [DataTableComponent],
+  exports: [DataTableComponent, ShareMenuNavigationComponent],
+  entryComponents: [DataTableComponent, ShareMenuNavigationComponent],
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
   providers: [
     {

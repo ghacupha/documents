@@ -1,0 +1,14 @@
+<li
+    *ghaHasAnyAuthority="'ROLE_USER'"
+    ngbDropdown
+    class="nav-item dropdown pointer"
+    routerLinkActive="active"
+    [routerLinkActiveOptions]="{ exact: true }"
+>
+    <a class="nav-link"  routerLink="/document/sharing/share-specification" routerLinkActive="active" id="share-menu-navigation">
+        <span>
+          <fa-icon icon="asterisk"></fa-icon>
+          <span>Share</span>
+        </span>
+    </a>
+</li>
