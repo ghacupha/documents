@@ -55,13 +55,13 @@ after_success:
   - bash <(curl -s https://codecov.io/bash)
 
 deploy:
-  - provider: script
-    script: bash src/main/docker/docker_push
-    on:
-      branch: master
-#  - provider: heroku
-#    api_key: '$HEROKU_API_KEY'
-#    app: documents-app
+  #  - provider: script
+  #    script: bash src/main/docker/docker_push
+  #    on:
+  #      branch: master
+  - provider: heroku
+    api_key: '$HEROKU_API_KEY'
+    app: documents-app
 
 notifications:
   webhooks:
