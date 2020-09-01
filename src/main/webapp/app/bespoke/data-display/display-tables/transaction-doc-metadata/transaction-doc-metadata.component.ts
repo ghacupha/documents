@@ -9,6 +9,8 @@ import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { ITransactionDocumentMetadata } from 'app/bespoke/model/transaction-document-metadata';
 import { Observable } from 'rxjs/index';
 import { HttpResponse } from '@angular/common/http';
+import { RouteStateService } from 'app/bespoke/route-state.service';
+import { IEmailRecipient, ISharingSpecificationData } from 'app/bespoke/model/sharing-specification-data.model';
 
 @Component({
   selector: 'gha-transaction-doc-metadata',
@@ -20,6 +22,8 @@ export class TransactionDocMetadataComponent implements OnInit {
   dtOptions!: DataTables.Settings;
   dtTrigger: Subject<any> = new Subject<any>();
 
+  shareSpecificationData!: ISharingSpecificationData;
+
   transactionDocMetaDataArray!: ITransactionDocumentMetadata[];
 
   constructor(
@@ -28,14 +32,18 @@ export class TransactionDocMetadataComponent implements OnInit {
     protected jhiAlertService: JhiAlertService,
     private log: NGXLogger,
     private transactionListService: TransactionDocMetadataService,
-    protected modalService: NgbModal
+    protected modalService: NgbModal,
+    private routeStateService: RouteStateService<ISharingSpecificationData>
   ) {
     this.firstPassDataUpdate();
+    this.shareSpecificationData = routeStateService.data;
   }
 
   ngOnInit(): void {
     this.dtOptions = this.getDataTableOptions();
     this.secondPassDataUpdate();
+
+    this.routeStateService.reset();
   }
 
   /**
@@ -54,14 +62,53 @@ export class TransactionDocMetadataComponent implements OnInit {
    * @param {string} emailRecipients
    * @param {string} recipientUsernames
    */
-  public share(emailRecipients: string, recipientUsernames: string, title1: string, title2: string): void {
+  public share(): void {
     const sharedDocuments: ITransactionDocumentMetadata[] = this.transactionDocMetaDataArray.filter(x => x.checked);
-    const usernames: string[] = recipientUsernames.trim().split(';');
-    const recipients: string[] = emailRecipients.trim().split(';');
+    // const usernames: string[] = recipientUsernames.trim().split(';');
+    const usernames: string[] = [];
+    const recipientEmails: string[] = [];
+    const recipientCorrespondents: string[] = [];
 
-    for (let i = 0; i < recipients.length; i++) {
-      this.subscribeToShareResponse(this.transactionListService.send(usernames[i], recipients[i], title1, title2, sharedDocuments));
-      this.log.debug(`${sharedDocuments.length} documents have been shared, with ${recipients[i]}`);
+    // update username array
+    this.shareSpecificationData.recipients!.forEach((recipient: IEmailRecipient) => {
+      if (recipient.recipientUsername != null) {
+        usernames.push(recipient.recipientUsername);
+      }
+    });
+
+    // update emails array
+    this.shareSpecificationData.recipients!.forEach(recipient => {
+      if (recipient.recipientEmailAddress != null) {
+        recipientEmails.push(recipient.recipientEmailAddress);
+      }
+    });
+
+    // update correspondent names array
+    this.shareSpecificationData.recipients!.forEach(recipient => {
+      if (recipient.recipientEmailAddress != null) {
+        if (recipient.correspondentUsername != null) {
+          recipientCorrespondents.push(recipient.correspondentUsername);
+        }
+      }
+    });
+
+    const title1: string | undefined = this.shareSpecificationData.sharingTitle;
+    const title2: string | undefined = this.shareSpecificationData.sharingSubTitle;
+    const brief: string | undefined = this.shareSpecificationData.briefDescription;
+
+    for (let i = 0; i < recipientEmails.length; i++) {
+      this.subscribeToShareResponse(
+        this.transactionListService.send(
+          usernames[i],
+          recipientEmails[i],
+          title1,
+          title2,
+          sharedDocuments,
+          recipientCorrespondents[i],
+          brief
+        )
+      );
+      this.log.debug(`${sharedDocuments.length} documents have been shared, with ${recipientEmails[i]} being ${brief}`);
     }
   }
 

@@ -1,26 +1,6 @@
 <br class="table-responsive">
 <h5>Transaction Metadata</h5>
 
-<form>
-    <div class="btn-group">
-        <button type="submit" (click)="share(emailRecipients.value, recipientUsernames.value, title1.value, title2.value)"
-                class="btn btn-info btn-sm">
-            <fa-icon icon="eye"></fa-icon>
-            <span class="d-none d-md-inline">Share With: </span>
-        </button>
-    </div>
-    <div  class="row">
-        <td><label for="recipient">Email(s)</label><input type="email" id="recipient" name="recipient" #emailRecipients></td>
-        <td><label for="username">Username(s)</label><input type="text" id="username" name="username" #recipientUsernames></td>
-    </div>
-    <div  class="row">
-        <td><label for="title1">Title1</label><input type="text" id="title1" name="title1" #title1></td>
-        <td><label for="title2">Title2</label><input type="text" id="title2" name="title2" #title2></td>
-    </div>
-</form>
-
-<br></br>
-
 <table class="table table-striped table-bordered table-sm row-border hover"
        datatable [dtOptions]="dtOptions" [dtTrigger]="dtTrigger">
     <thead>
@@ -85,4 +65,21 @@
     </tr>
     </tbody>
 </table>
-</div>
+
+<form>
+    <div class="btn-group">
+        <button type="submit" (click)="share()"
+                class="btn btn-info btn-sm">
+            <fa-icon icon="eye"></fa-icon>
+            <span class="d-none d-md-inline">Send</span>
+        </button>
+    </div>
+    <!--<div  class="row">
+        <td><label for="recipient">Email(s)</label><input type="email" id="recipient" name="recipient" #emailRecipients></td>
+        <td><label for="username">Username(s)</label><input type="text" id="username" name="username" #recipientUsernames></td>
+    </div>
+    <div  class="row">
+        <td><label for="title1">Title1</label><input type="text" id="title1" name="title1" #title1></td>
+        <td><label for="title2">Title2</label><input type="text" id="title2" name="title2" #title2></td>
+    </div>-->
+</form>

@@ -30,4 +30,8 @@ public class MailAttachmentRequest implements Serializable {
     private String recipientEmail;
 
     private List<TransactionDocumentMetadata> transactionDocumentMetadata;
+
+    private String recipientCorrespondent;
+
+    private String brief;
 }

@@ -6,17 +6,18 @@
     <link rel="shortcut icon" th:href="@{|${baseUrl}/favicon.ico|}" />
 </head>
 <body>
-<p th:text="#{email.attachment.greeting(${addressee})}">
-    Dear
-</p>
-<p th:text= "#{email.attachment.text1(${documentsUser})}">
-  Documents_app has shared some documents with you, please find attached.
+    <p th:text="#{email.attachment.greeting(${addressee})}">
+        Dear
+    </p>
+    <p>
+        <p th:text= "#{email.attachment.text1(${documentsUser})}"></p>
+          <p th:text= "#{email.attachment.text1(${documentsUser})}">Documents_app</p> has shared some documents with you, please find attached.
 
-</p>
-<p>
-    <span th:text="#{email.attachment.text2}">Regards, </span>
-    <br/>
-    <em th:text="#{email.attachment.signature}">Documents App.</em>
-</p>
+    </p>
+    <p>
+        <span th:text="#{email.attachment.text2}">Regards, </span>
+        <br/>
+        <em th:text="#{email.attachment.signature}">Documents App.</em>
+    </p>
 </body>
 </html>

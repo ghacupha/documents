@@ -44,23 +44,37 @@ export class TransactionDocMetadataService {
    * @param {string} recipientUsername
    * @param {string} emailRecipient
    * @param {ITransactionDocumentMetadata[]} sharedDocuments
+   * @param {string} recipientCorrespondent
+   * @param {string} brief
    * @returns {Observable<EntityArrayResponseType>}
    */
-  public send(recipientUsername?: string, emailRecipient?: string, titlePart1?: string, titlePart2?: string, sharedDocuments?: ITransactionDocumentMetadata[]): Observable<EntityArrayResponseType>  {
+  public send(
+    recipientUsername?: string,
+    emailRecipient?: string,
+    titlePart1?: string,
+    titlePart2?: string,
+    sharedDocuments?: ITransactionDocumentMetadata[],
+    recipientCorrespondent?: string,
+    brief?: string
+  ): Observable<EntityArrayResponseType> {
     const mailAttachment: IMailAttachmentRequest = {
       recipientUsername,
       titlePart1,
       titlePart2,
       recipientEmail: emailRecipient,
-      transactionDocumentMetadata: sharedDocuments
+      transactionDocumentMetadata: sharedDocuments,
+      recipientCorrespondent,
+      brief
     };
 
     const copy: IMailAttachmentRequest = this.convertAttachmentDateFromClient(mailAttachment);
 
-    this.log.debug(`Sharing ${mailAttachment.transactionDocumentMetadata?.length} attachments with recipient ${mailAttachment.recipientEmail}`);
+    this.log.debug(
+      `Sharing ${mailAttachment.transactionDocumentMetadata?.length} attachments with recipient ${mailAttachment.recipientEmail}`
+    );
 
     return this.http.post<ITransactionDocumentMetadata[]>(this.resourceSharingUrl, copy, { observe: 'response' });
-      // .pipe(map((res: ITransactionDocumentMetadata) => this.convertDateFromServer(res)));
+    // .pipe(map((res: ITransactionDocumentMetadata) => this.convertDateFromServer(res)));
   }
 
   protected convertAttachmentDateFromClient(mailAttachment: IMailAttachmentRequest): IMailAttachmentRequest {
@@ -73,7 +87,7 @@ export class TransactionDocMetadataService {
   }
 
   protected convertDateFromServer(res: ITransactionDocumentMetadata): ITransactionDocumentMetadata {
-      res.transactionDate = res.transactionDate ? moment(res.transactionDate) : undefined;
+    res.transactionDate = res.transactionDate ? moment(res.transactionDate) : undefined;
     return res;
   }
 
