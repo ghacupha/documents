@@ -25,9 +25,9 @@ export class ShareSpecificationService {
 
     // Navigate to the corresponding component
     if (sharingSpecificationData.documentSharingType === DocumentSharingType.TRANSACTION) {
-      this.router.navigate(['display/transactions-list']);
+      this.router.navigate(['/display/transactions-list']);
     } else {
-      this.router.navigate(['display/formal-docs-list']);
+      this.router.navigate(['/display/formal-docs-list']);
     }
   }
 }
