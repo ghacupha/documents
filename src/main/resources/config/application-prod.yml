@@ -56,6 +56,10 @@ spring:
       auth: true
       starttls.enable: true
       ssl.trust: smtp.gmail.com
+      mail:
+        mime:
+          address:
+            strict: false
   thymeleaf:
     cache: true
 
