@@ -1,3 +1,0 @@
-#!/bin/bash
-echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_LOGIN" --password-stdin
-docker push ghacupha/documents:0.0.2-SNAPSHOT
