@@ -22,6 +22,18 @@ const LAYOUT_ROUTES = [navbarRoute, ...errorRoute];
           loadChildren: () => import('./admin/admin-routing.module').then(m => m.AdminRoutingModule)
         },
         {
+          path: 'about',
+          loadChildren: () => import('./bespoke/about/about.module').then(m => m.AboutModule)
+        },
+        {
+          path: 'document',
+          loadChildren: () => import('./bespoke/sharing/sharing.module').then(m => m.SharingModule)
+        },
+        {
+          path: 'display',
+          loadChildren: () => import('./bespoke/data-display/display-tables/display-tables.module').then(m => m.DisplayTablesModule)
+        },
+        {
           path: 'account',
           loadChildren: () => import('./account/account.module').then(m => m.AccountModule)
         },
