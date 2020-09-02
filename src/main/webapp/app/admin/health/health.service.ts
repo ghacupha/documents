@@ -6,16 +6,7 @@ import { SERVER_API_URL } from 'app/app.constants';
 
 export type HealthStatus = 'UP' | 'DOWN' | 'UNKNOWN' | 'OUT_OF_SERVICE';
 
-export type HealthKey =
-  | 'binders'
-  | 'discoveryComposite'
-  | 'refreshScope'
-  | 'clientConfigServer'
-  | 'hystrix'
-  | 'diskSpace'
-  | 'mail'
-  | 'ping'
-  | 'db';
+export type HealthKey = 'diskSpace' | 'mail' | 'ping' | 'db';
 
 export interface Health {
   status: HealthStatus;
