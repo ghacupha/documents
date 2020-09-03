@@ -3,13 +3,10 @@ package io.github.docs.app.mail;
 import io.github.docs.app.model.FormalDocumentMetadata;
 import io.github.docs.app.model.MailAttachmentRequest;
 import io.github.docs.app.model.TransactionDocumentMetadata;
-import io.github.docs.service.TransactionDocumentService;
-import io.github.docs.service.dto.TransactionDocumentDTO;
 import io.github.jhipster.web.util.HeaderUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
-import org.springframework.scheduling.annotation.Async;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -17,8 +14,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 import javax.validation.Valid;
 import java.io.File;
-import java.io.FileOutputStream;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.CompletableFuture;
@@ -39,14 +34,14 @@ import java.util.concurrent.ExecutionException;
 public class MailingResource {
 
     private final MailingService mailingService;
-    private final TransactionDocumentService transactionDocumentService;
+    private final DocumentRetrieval<CompletableFuture<Map<String, File>>> documentRetrieval;
 
     @Value("${jhipster.clientApp.name}")
     private String applicationName;
 
-    public MailingResource(final MailingService mailingService, final TransactionDocumentService transactionDocumentService) {
+    public MailingResource(final MailingService mailingService, final DocumentRetrieval<CompletableFuture<Map<String, File>>> documentRetrieval) {
         this.mailingService = mailingService;
-        this.transactionDocumentService = transactionDocumentService;
+        this.documentRetrieval = documentRetrieval;
     }
 
     @PostMapping("/transaction-documents")
@@ -56,7 +51,7 @@ public class MailingResource {
 
         Map<String, File> DOCUMENT_MAP = null;
         try {
-            DOCUMENT_MAP = getAttachmentsMap(attachmentRequest.getDocumentMetadata()).get();
+            DOCUMENT_MAP = documentRetrieval.transactionDocumentsMap(attachmentRequest.getDocumentMetadata()).get();
         } catch (InterruptedException | ExecutionException e) {
             log.error("Execution of the document has been interrupted, see stack...", e);
         }
@@ -79,7 +74,7 @@ public class MailingResource {
 
         Map<String, File> DOCUMENT_MAP = null;
         try {
-            DOCUMENT_MAP = getAttachmentsFormalMap(attachmentRequest.getDocumentMetadata()).get();
+            DOCUMENT_MAP = documentRetrieval.formalDocumentMap(attachmentRequest.getDocumentMetadata()).get();
         } catch (InterruptedException | ExecutionException e) {
             log.error("Execution of the document has been interrupted, see stack...", e);;
         }
@@ -93,65 +88,5 @@ public class MailingResource {
         return ResponseEntity.accepted()
             .headers(HeaderUtil.createAlert(applicationName, noOfDocumentsShared + " documents have been mailed, successfully", noOfDocumentsShared))
             .body(attachmentRequest.getDocumentMetadata());
-    }
-
-    @Async
-    public CompletableFuture<Map<String, File>> getAttachmentsMap(List<TransactionDocumentMetadata> transactionDocuments) {
-
-        final Map<String, File> DOCUMENT_MAP = new HashMap<>();
-
-        transactionDocuments.forEach(metadata -> {
-
-            long documentId = metadata.getId();
-
-            TransactionDocumentDTO documentDTO =
-                transactionDocumentService.findOne(documentId).orElseThrow(() -> new IllegalArgumentException("Transaction document id : " + documentId + " not " + "found!!!"));
-
-            File attachment = new File(documentDTO.getFilename());
-            FileOutputStream fos = null;
-            try {
-                fos = new FileOutputStream(attachment);
-
-                // Writes bytes from the specified byte array to this file output stream
-                fos.write(documentDTO.getTransactionAttachment());
-            } catch (Exception e) {
-                System.out.println("File not found" + e);
-            }
-
-            DOCUMENT_MAP.put(documentDTO.getFilename(), attachment);
-
-        });
-
-        return CompletableFuture.completedFuture(DOCUMENT_MAP);
-    }
-
-    @Async
-    public CompletableFuture<Map<String, File>> getAttachmentsFormalMap(List<FormalDocumentMetadata> transactionDocuments) {
-
-        final Map<String, File> DOCUMENT_MAP = new HashMap<>();
-
-        transactionDocuments.forEach(metadata -> {
-
-            long documentId = metadata.getId();
-
-            TransactionDocumentDTO documentDTO =
-                transactionDocumentService.findOne(documentId).orElseThrow(() -> new IllegalArgumentException("Transaction document id : " + documentId + " not " + "found!!!"));
-
-            File attachment = new File(documentDTO.getFilename());
-            FileOutputStream fos = null;
-            try {
-                fos = new FileOutputStream(attachment);
-
-                // Writes bytes from the specified byte array to this file output stream
-                fos.write(documentDTO.getTransactionAttachment());
-            } catch (Exception e) {
-                System.out.println("File not found" + e);
-            }
-
-            DOCUMENT_MAP.put(documentDTO.getFilename(), attachment);
-
-        });
-
-        return CompletableFuture.completedFuture(DOCUMENT_MAP);
     }
 }
