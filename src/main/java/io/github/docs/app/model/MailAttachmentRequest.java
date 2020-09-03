@@ -18,7 +18,7 @@ import java.util.List;
 @ToString
 @AllArgsConstructor
 @NoArgsConstructor
-public class MailAttachmentRequest implements Serializable {
+public class MailAttachmentRequest<T> implements Serializable {
 
     private String recipientUsername;
 
@@ -29,7 +29,7 @@ public class MailAttachmentRequest implements Serializable {
     @NotNull
     private String recipientEmail;
 
-    private List<TransactionDocumentMetadata> transactionDocumentMetadata;
+    private List<T> documentMetadata;
 
     private String recipientCorrespondent;
 

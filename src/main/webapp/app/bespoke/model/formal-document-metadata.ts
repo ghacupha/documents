@@ -12,6 +12,7 @@ export interface IFormalDocumentMetadata {
   documentStandardNumber?: string;
   filename?: string;
   schemes?: IScheme[];
+  checked?: boolean;
 }
 
 export class FormalDocumentMetadata implements IFormalDocumentMetadata {
@@ -24,6 +25,7 @@ export class FormalDocumentMetadata implements IFormalDocumentMetadata {
     public documentType?: DocumentType,
     public documentStandardNumber?: string,
     public filename?: string,
-    public schemes?: IScheme[]
+    public schemes?: IScheme[],
+    public checked?: boolean
   ) {}
 }

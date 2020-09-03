@@ -43,6 +43,8 @@ export class TransactionDocMetadataService {
    *
    * @param {string} recipientUsername
    * @param {string} emailRecipient
+   * @param titlePart1
+   * @param titlePart2
    * @param {ITransactionDocumentMetadata[]} sharedDocuments
    * @param {string} recipientCorrespondent
    * @param {string} brief
@@ -57,29 +59,29 @@ export class TransactionDocMetadataService {
     recipientCorrespondent?: string,
     brief?: string
   ): Observable<EntityArrayResponseType> {
-    const mailAttachment: IMailAttachmentRequest = {
+    const mailAttachment: IMailAttachmentRequest<ITransactionDocumentMetadata> = {
       recipientUsername,
       titlePart1,
       titlePart2,
       recipientEmail: emailRecipient,
-      transactionDocumentMetadata: sharedDocuments,
+      documentMetadata: sharedDocuments,
       recipientCorrespondent,
       brief
     };
 
-    const copy: IMailAttachmentRequest = this.convertAttachmentDateFromClient(mailAttachment);
+    const copy: IMailAttachmentRequest<ITransactionDocumentMetadata> = this.convertAttachmentDateFromClient(mailAttachment);
 
-    this.log.debug(
-      `Sharing ${mailAttachment.transactionDocumentMetadata?.length} attachments with recipient ${mailAttachment.recipientEmail}`
-    );
+    this.log.debug(`Sharing ${mailAttachment.documentMetadata?.length} attachments with recipient ${mailAttachment.recipientEmail}`);
 
     return this.http.post<ITransactionDocumentMetadata[]>(this.resourceSharingUrl, copy, { observe: 'response' });
     // .pipe(map((res: ITransactionDocumentMetadata) => this.convertDateFromServer(res)));
   }
 
-  protected convertAttachmentDateFromClient(mailAttachment: IMailAttachmentRequest): IMailAttachmentRequest {
-    if (mailAttachment.transactionDocumentMetadata) {
-      mailAttachment.transactionDocumentMetadata.forEach((metadata: ITransactionDocumentMetadata) => {
+  protected convertAttachmentDateFromClient(
+    mailAttachment: IMailAttachmentRequest<ITransactionDocumentMetadata>
+  ): IMailAttachmentRequest<ITransactionDocumentMetadata> {
+    if (mailAttachment.documentMetadata) {
+      mailAttachment.documentMetadata.forEach((metadata: ITransactionDocumentMetadata) => {
         metadata.transactionDate = metadata.transactionDate != null ? moment(metadata.transactionDate) : moment();
       });
     }
