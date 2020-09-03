@@ -10,6 +10,7 @@ import {
 } from 'app/bespoke/model/sharing-specification-data.model';
 import { ShareSpecificationService } from 'app/bespoke/sharing/share-questionnaire/share-specification.service';
 import { NGXLogger } from 'ngx-logger';
+import { RouteStateService } from 'app/bespoke/route-state.service';
 
 @Component({
   selector: 'gha-share-specification',
@@ -35,6 +36,7 @@ export class ShareSpecificationComponent implements OnInit {
     protected eventManager: JhiEventManager,
     protected shareSpecificationService: ShareSpecificationService,
     protected activatedRoute: ActivatedRoute,
+    private routeStateService: RouteStateService<ISharingSpecificationData>,
     private fb: FormBuilder,
     private log: NGXLogger
   ) {
@@ -44,10 +46,8 @@ export class ShareSpecificationComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    // Fetch data from activatedRoute or service
-    // this.activatedRoute.data.subscribe(({ sharingSpecificationData }) => {
-    //   this.updateForm(sharingSpecificationData);
-    // });
+    // cleanup
+    this.routeStateService.reset();
   }
 
   /**

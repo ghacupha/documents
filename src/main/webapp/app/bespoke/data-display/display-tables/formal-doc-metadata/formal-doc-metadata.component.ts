@@ -10,6 +10,7 @@ import { IEmailRecipient, ISharingSpecificationData } from 'app/bespoke/model/sh
 import { Observable } from 'rxjs';
 import { HttpResponse } from '@angular/common/http';
 import { FormalDocumentDeleteDialogComponent } from 'app/entities/formal-document/formal-document-delete-dialog.component';
+import { RouteStateService } from 'app/bespoke/route-state.service';
 
 @Component({
   selector: 'gha-formal-doc-metadata',
@@ -31,9 +32,13 @@ export class FormalDocMetadataComponent implements OnInit {
     protected jhiAlertService: JhiAlertService,
     private log: NGXLogger,
     private listService: FormalDocumentMetadataService,
-    protected modalService: NgbModal
+    protected modalService: NgbModal,
+    private routeStateService: RouteStateService<ISharingSpecificationData>
   ) {
     this.firstPassDataUpdate();
+    this.shareSpecificationData = routeStateService.data;
+
+    this.routeStateService.reset();
   }
 
   ngOnInit(): void {
