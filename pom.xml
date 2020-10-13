@@ -670,7 +670,8 @@
                         <changeLogFile>${project.basedir}/src/main/resources/config/liquibase/master.xml</changeLogFile>
                         <diffChangeLogFile>${project.basedir}/src/main/resources/config/liquibase/changelog/${maven.build.timestamp}_changelog.xml</diffChangeLogFile>
                         <driver>org.postgresql.Driver</driver>
-                        <url>jdbc:postgresql://localhost:13001/documents</url>
+                        <!--<url>jdbc:postgresql://localhost:13001/documents</url>-->
+                        <url>${env.LOCAL_PG_SERVER}/documents</url>
                         <defaultSchemaName></defaultSchemaName>
                         <username>${env.PG_DATABASE_DEV_USER}</username>
                         <password>${env.PG_DATABASE_DEV_PASSWORD}</password>
